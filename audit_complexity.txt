@@ -1,0 +1,43 @@
+core/facade.py
+    C 16:0 AuditFacade - A (2)
+    M 21:4 AuditFacade.__init__ - A (1)
+    M 37:4 AuditFacade.run_full_audit - A (1)
+core/controller.py
+    F 27:0 _keep_alive_worker - A (5)
+    F 60:0 _run_job - A (4)
+    F 19:0 start_audit_background - A (1)
+core/services/pdf_crawler.py
+    F 79:0 crawl_site_logic - C (18)
+    F 36:0 _fetch_sitemap - B (7)
+    F 17:0 is_exact_domain - A (5)
+    F 67:0 _extract_links_from_html - A (3)
+core/services/pdf_processor.py
+    F 70:0 _run_verapdf - B (8)
+    F 38:0 _get_pdf_metadata - B (7)
+    F 109:0 _process_single_pdf - B (7)
+    F 166:0 process_pdf_links - B (6)
+    F 19:0 get_verapdf_version - A (2)
+core/services/generate_report_from_json.py
+    F 174:0 generate_html_content - C (13)
+    F 262:0 create_report - A (5)
+    F 14:0 _get_report_style - A (1)
+    F 135:0 _get_about_section - A (1)
+    F 155:0 _build_summary_html - A (1)
+core/utils/config_loader.py
+    F 9:0 load_config - A (2)
+core/utils/error_utils.py
+    F 9:0 setup_logging - A (2)
+    F 29:0 log_info - A (1)
+    F 33:0 log_error - A (1)
+    F 37:0 log_warning - A (1)
+web_app/routes_main.py
+    F 143:0 cleanup_files - B (9)
+    F 60:0 list_reports - B (8)
+    F 115:0 get_logs - A (5)
+    F 45:0 start_audit - A (3)
+    F 98:0 download_file - A (3)
+    F 30:0 index - A (1)
+    F 35:0 about - A (1)
+    F 40:0 languages - A (1)
+web_app/app.py
+    F 14:0 create_app - A (1)

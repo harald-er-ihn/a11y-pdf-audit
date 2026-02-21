@@ -1,0 +1,26 @@
+{
+  "general": {
+    "app_name": "a11y-pdf-audit",
+    "version": "1.1.0"
+  },
+  "assets": {
+    "logo_file": "static/AccessibilityMatters.webp",
+    "logo_alt": "Hashtag 'Accessibility Matters' with colorful paint splashes behind the text"
+  },
+  "paths": {
+    "output_dir_fly": "/app/output",
+    "output_dir_local": "output",
+    "verapdf_cli_fly": "/opt/verapdf/veraPDF-cli.jar",
+    "verapdf_cli_local": "verapdf_local/bin/greenfield-apps-1.28.2.jar"
+  },
+  "crawler": {
+    "user_agent": "Mozilla/5.0 (compatible; a11y-pdf-audit/1.0; +https://a11y-pdf-audit.fly.dev)",
+    "timeout": 10,
+    "default_max_pages": 10,
+    "default_depth": 1
+  },
+  "audit": {
+    "java_cmd": "java",
+    "verapdf_params": ["-cp", "{jar_path}", "org.verapdf.apps.GreenfieldCliWrapper"]
+  }
+}

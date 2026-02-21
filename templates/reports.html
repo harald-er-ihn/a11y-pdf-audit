@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Reports – PDF A11y Auditor on Fly.io{% endblock %}
+
+{% block meta_description %}View live logs and download generated accessibility audit reports (PDF/UA).{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Audit Reports Overview</h1>
+    <p class="intro-text">
+        View live server logs and download generated reports from your accessibility scans.
+    </p>
+    
+    <!-- 
+    <form action="/cleanup" method="POST" onsubmit="return confirm('TRUELY Delete All Reports?');" style="display:inline;" class="mb-20">
+        <button type="submit" class="btn-danger">🗑️ Delete All Reports</button>
+    </form>
+    -->
+    <!-- LOG FENSTER -->
+    <div class="log-container">
+        <div class="log-header">
+            <span>🖥️ Live Server Log</span>
+            <span id="log-status">Connecting...</span>
+        </div>
+        <div class="log-content" id="terminal-output">
+            Waiting for logs...
+        </div>
+    </div>
+
+    <!-- H2 für bessere Struktur -->
+    <h2>Downloads</h2>
+    <p>Download the results of your accessibility scans here.</p>
+    
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th>Available Files</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="file-list-body">
+            {% for file in files %}
+            <tr>
+                <td>{{ file }}</td>
+                <td>
+                    <a href="/download/{{ file }}" class="btn-primary" style="padding: 5px 10px; font-size: 0.9rem;">Download</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2" class="text-center" style="padding: 2rem;">
+                    <em>No reports found yet. Start an audit first.</em>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    /* ... (JavaScript bleibt unverändert) ... */
+    const logOutput = document.getElementById('terminal-output');
+    const logStatus = document.getElementById('log-status');
+    let isAutoScrolling = true;
+    let reloadTriggered = false;
+
+    logOutput.addEventListener('scroll', () => {
+        if (logOutput.scrollTop + logOutput.clientHeight >= logOutput.scrollHeight - 10) {
+            isAutoScrolling = true;
+        } else {
+            isAutoScrolling = false;
+        }
+    });
+
+    function fetchLogs() {
+        if (reloadTriggered) return;
+
+        fetch('/api/logs')
+            .then(response => response.json())
+            .then(data => {
+                if (data.logs) {
+                    const text = data.logs;
+                    logOutput.textContent = text;
+                    
+                    if (text.trim() === "") {
+                         logStatus.textContent = "● Idle";
+                         logStatus.style.color = "#aaa";
+                    } else {
+                        logStatus.textContent = "● Live";
+                        logStatus.style.color = "#00ff00";
+                    }
+                    
+                    if (isAutoScrolling) {
+                        logOutput.scrollTop = logOutput.scrollHeight;
+                    }
+
+                    if (text.includes("Prozess fertig.") || text.includes("Job beendet:")) {
+                        logStatus.textContent = "✅ Done - Refreshing...";
+                        reloadTriggered = true;
+                        
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2500); 
+                    }
+                }
+            })
+            .catch(err => {
+                logStatus.textContent = "○ Offline";
+                logStatus.style.color = "#ff0000";
+            });
+    }
+
+    setInterval(fetchLogs, 2000);
+    fetchLogs();
+</script>
+{% endblock %}

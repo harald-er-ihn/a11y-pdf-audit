@@ -1,0 +1,54 @@
+************* Module controller
+core/controller.py:48:15: W0718: Catching too general exception Exception (broad-exception-caught)
+core/controller.py:48:8: W0612: Unused variable 'e' (unused-variable)
+core/controller.py:6:0: W0611: Unused import logging (unused-import)
+core/controller.py:10:0: W0611: Unused import time (unused-import)
+************* Module services.pdf_crawler
+core/services/pdf_crawler.py:58:15: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_crawler.py:79:0: R0914: Too many local variables (23/15) (too-many-locals)
+core/services/pdf_crawler.py:85:4: C0415: Import outside toplevel (os) (import-outside-toplevel)
+core/services/pdf_crawler.py:157:19: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_crawler.py:128:23: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_crawler.py:79:0: R0912: Too many branches (14/12) (too-many-branches)
+core/services/pdf_crawler.py:113:8: R1702: Too many nested blocks (7/5) (too-many-nested-blocks)
+core/services/pdf_crawler.py:14:0: W0611: Unused log_error imported from core.utils.error_utils (unused-import)
+************* Module services.pdf_processor
+core/services/pdf_processor.py:64:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_processor.py:53:20: C0207: Use str(reader.metadata['/CreationDate']).replace('D:', '').split('+', maxsplit=1)[0] instead (use-maxsplit-arg)
+core/services/pdf_processor.py:109:0: R0914: Too many local variables (18/15) (too-many-locals)
+************* Module services.generate_report_from_json
+core/services/generate_report_from_json.py:210:0: C0301: Line too long (131/100) (line-too-long)
+core/services/generate_report_from_json.py:211:0: C0301: Line too long (101/100) (line-too-long)
+core/services/generate_report_from_json.py:174:0: C0116: Missing function or method docstring (missing-function-docstring)
+core/services/generate_report_from_json.py:174:0: R0914: Too many local variables (27/15) (too-many-locals)
+core/services/generate_report_from_json.py:262:0: C0116: Missing function or method docstring (missing-function-docstring)
+core/services/generate_report_from_json.py:262:0: R0913: Too many arguments (6/5) (too-many-arguments)
+core/services/generate_report_from_json.py:270:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/generate_report_from_json.py:283:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/generate_report_from_json.py:288:15: W0718: Catching too general exception Exception (broad-exception-caught)
+************* Module utils.error_utils
+core/utils/error_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+core/utils/error_utils.py:29:0: C0116: Missing function or method docstring (missing-function-docstring)
+core/utils/error_utils.py:33:0: C0116: Missing function or method docstring (missing-function-docstring)
+core/utils/error_utils.py:37:0: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module routes_main
+web_app/routes_main.py:23:7: W0718: Catching too general exception Exception (broad-exception-caught)
+web_app/routes_main.py:30:0: C0116: Missing function or method docstring (missing-function-docstring)
+web_app/routes_main.py:35:0: C0116: Missing function or method docstring (missing-function-docstring)
+web_app/routes_main.py:40:0: C0116: Missing function or method docstring (missing-function-docstring)
+web_app/routes_main.py:45:0: C0116: Missing function or method docstring (missing-function-docstring)
+web_app/routes_main.py:98:0: C0116: Missing function or method docstring (missing-function-docstring)
+web_app/routes_main.py:115:0: C0116: Missing function or method docstring (missing-function-docstring)
+web_app/routes_main.py:138:11: W0718: Catching too general exception Exception (broad-exception-caught)
+web_app/routes_main.py:175:11: W0718: Catching too general exception Exception (broad-exception-caught)
+web_app/routes_main.py:166:23: W0718: Catching too general exception Exception (broad-exception-caught)
+web_app/routes_main.py:5:0: W0611: Unused import logging (unused-import)
+web_app/routes_main.py:14:0: W0611: Unused log_warning imported from core.utils.error_utils (unused-import)
+************* Module app
+web_app/app.py:41:0: C0301: Line too long (121/100) (line-too-long)
+web_app/app.py:43:0: C0301: Line too long (147/100) (line-too-long)
+web_app/app.py:26:15: R1735: Consider using '{"config": load_config()}' instead of a call to 'dict'. (use-dict-literal)
+
+------------------------------------------------------------------
+Your code has been rated at 9.12/10 (previous run: 9.12/10, +0.00)
+

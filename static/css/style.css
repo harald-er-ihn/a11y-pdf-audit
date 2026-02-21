@@ -1,0 +1,198 @@
+/* Grundlegende Typografie & Layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+main {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Überschriften */
+h1 { color: #2c3e50; margin-bottom: 0.5rem; }
+h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 2rem; }
+h3 { color: #555; margin-top: 1.5rem; }
+
+/* Header Titel (jetzt Div für SEO, sieht aus wie H2) */
+.header-title {
+    color: #34495e;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+    display: block;
+}
+
+/* Bilder */
+.header-logo {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+/* Formulare */
+fieldset {
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+}
+
+legend {
+    font-weight: bold;
+    padding: 0 0.5rem;
+    color: #005A9C;
+}
+
+label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+input[type="url"], input[type="number"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.hint {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Buttons */
+.btn-primary {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: #005A9C;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn-primary:hover { background-color: #004a80; }
+
+.btn-secondary {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.btn-secondary:hover { background-color: #5a6268; }
+
+.btn-danger {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.btn-danger:hover { background-color: #a93226; }
+
+/* Donation Button - Golden */
+.btn-donate {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: #FFC439; /* PayPal Gold */
+    color: #000;
+    text-decoration: none;
+    border-radius: 20px; /* Rund */
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: 1px solid #daaa2e;
+}
+.btn-donate:hover { background-color: #f2b826; }
+
+/* Tabellen */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+.report-table th, .report-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.report-table th { background-color: #f2f2f2; }
+
+.architecture-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+.architecture-table th { text-align: left; padding: 10px 12px; font-family: monospace; }
+.architecture-table td { font-family: monospace; padding: 6px 12px; }
+
+/* Logs */
+.log-container {
+    background-color: #1e1e1e;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+    box-shadow: inset 0 0 10px #000;
+    border: 1px solid #333;
+}
+.log-header {
+    color: #fff;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+}
+.log-content {
+    height: 160px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Footer Styling */
+.footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+}
+.footer p { margin-bottom: 1rem; }
+
+/* Utility */
+.text-center { text-align: center; }
+.text-success { color: #2e7d32; }
+.text-error { color: #c0392b; }
+.mt-40 { margin-top: 40px; }
+.mb-20 { margin-bottom: 20px; }

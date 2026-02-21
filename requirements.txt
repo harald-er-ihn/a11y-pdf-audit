@@ -1,0 +1,25 @@
+# --- Basisbibliotheken ---
+requests==2.31.0
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# --- PDF-Verarbeitung ---
+PyPDF2==3.0.1
+
+# --- Formatierung ---
+black==24.1a1
+
+# --- Codeanalyse ---
+pbr==7.0.3
+pylint==3.0.3
+flake8==7.0.0
+bandit==1.7.5
+radon==6.0.1
+
+# --- Server ---
+Flask>=2.2,<3
+gunicorn>=20.1,<21
+
+# --- PDF-Erstellung (CRITICAL UPDATE) ---
+# Version 63+ behebt den PDF.__init__ Fehler und verbessert PDF/UA Support
+weasyprint>=63.0

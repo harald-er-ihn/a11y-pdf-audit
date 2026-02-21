@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Started – PDF A11y Auditor{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <meta http-equiv="refresh" content="5;url=/reports"> 
+{% endblock %}
+
+{% block content %}
+<div class="container content-center" style="text-align: center; padding: 3rem 0;">
+    <h1 style="color: #2e7d32;">✅ Audit started successfully!</h1>
+    <p class="intro-text">
+        Depending on your crawling parameters this may take time.
+    </p>
+
+    <p>The crawler is now scanning:</p>
+    <p><strong>{{ url }}</strong></p>
+    <p><em>You will be redirected to the report overview shortly.</em></p>
+    <a href="/reports" class="btn-primary">Go to Reports immediately</a>
+</div>
+{% endblock %}

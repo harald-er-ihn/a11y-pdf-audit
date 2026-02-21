@@ -1,0 +1,37 @@
+# Python / virtualenv
+venv/
+.venv/
+.env
+
+# Bytecode / caches
+__pycache__/
+*.pyc
+
+# Output / build artifacts
+output/
+*.log
+dist/
+build/
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Docker
+.dockerignore
+
+.DS_Store
+
+# Node
+node_modules/
+
+# Local Audit & Log files
+mein_projekt.txt
+fly.befehle.txt
+audit_*.txt
+fly.logs.txt
+show_code.py
+git_upload.sh
+docker_clean.sh
+code_audit.sh
+git-Orphan-Branch-Methode.sh

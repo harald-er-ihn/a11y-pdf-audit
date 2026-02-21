@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Dynamic Meta Description -->
+    <meta name="description" content="{% block meta_description %}PDF A11y Auditor – Automated accessibility checks for downloadable PDFs using VeraPDF.{% endblock %}">
+    
+    <!-- Canonical Tag -->
+    <link rel="canonical" href="https://a11y-pdf-audit.fly.dev{{ request.path }}">
+
+    <title>{% block title %}PDF A11y Auditor{% endblock %}</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicons/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="/static/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicons/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="PDF A11y Auditor" />
+    <link rel="manifest" href="/static/favicons/site.webmanifest" />
+    <meta name="theme-color" content="#ffffff">
+  {% endblock %}
+</head>
+
+<body class="{% block body_class %}standard-page{% endblock %}">
+  
+  {% include 'header.html' %}
+
+  <main class="content-wrapper">
+    {% block content %}
+    <!-- Content will be injected here -->
+    {% endblock %}
+  </main>
+
+  {% include 'footer.html' %}
+  
+</body>
+</html>
