@@ -8,152 +8,97 @@ import json
 import os
 from datetime import datetime
 
+import pikepdf
+import weasyprint
 from weasyprint import HTML
+
+from core.utils.config_loader import load_config
+from core.utils.error_utils import log_error, log_info, setup_logging
 
 
 def _get_report_style():
-    """
-    Liefert das CSS für den PDF-Bericht.
-    Layout ohne Tabellen für den Header!
-    """
+    """Liefert das CSS."""
     return """
         @page {
-            size: A4;
-            margin: 2.5cm;
-            margin-bottom: 2cm;
+            size: A4; margin: 2.5cm; margin-bottom: 2cm;
             @bottom-center {
-                content: counter(page);
-                font-family: sans-serif;
-                font-size: 10pt;
-                color: #222;
+                content: counter(page); font-family: sans-serif;
+                font-size: 10pt; color: #222;
             }
         }
-
-        body { 
-            font-family: sans-serif; 
-            font-size: 11pt; 
-            color: #000; 
-            line-height: 1.5;
+        body {
+            font-family: sans-serif; font-size: 11pt;
+            color: #000; line-height: 1.5;
         }
-        
-        /* HEADER LAYOUT: Flexbox/Flow statt Tabelle für Barrierefreiheit */
         .header-container {
-            margin-bottom: 30px;
-            border-bottom: 2px solid #005A9C;
-            padding-bottom: 10px;
-            overflow: hidden; /* Clearfix */
+            margin-bottom: 30px; border-bottom: 2px solid #005A9C;
+            padding-bottom: 10px; overflow: hidden;
         }
-        
-        .header-logo-wrapper {
-            float: left;
-            width: 25%;
-        }
-        
-        .header-logo-img {
-            width: 100%;
-            height: auto;
-            max-width: 3.5cm;
-        }
-        
+        .header-logo-wrapper { float: left; width: 25%; }
+        .header-logo-img { width: 100%; height: auto; max-width: 3.5cm; }
         .header-text-wrapper {
-            float: right;
-            width: 70%;
-            text-align: right;
-            padding-top: 10px;
+            float: right; width: 70%; text-align: right; padding-top: 10px;
         }
-
-        h1 { 
-            font-size: 22pt; 
-            margin: 0;
-            color: #005A9C; 
-            font-weight: bold;
+        h1 { font-size: 22pt; margin: 0; color: #005A9C; font-weight: bold; }
+        h2 {
+            font-size: 14pt; margin-top: 24pt; margin-bottom: 10pt;
+            color: #111; border-bottom: 1px solid #777; page-break-after: avoid;
         }
-        
-        h2 { 
-            font-size: 14pt; 
-            margin-top: 24pt; 
-            margin-bottom: 10pt;
-            color: #111; 
-            border-bottom: 1px solid #777;
-            page-break-after: avoid;
+        .summary-box {
+            background-color: #f2f2f2; padding: 15px;
+            border-left: 5px solid #005A9C; margin-bottom: 20px; color: #111;
         }
-        
-        h3 {
-            font-size: 12pt;
-            margin-top: 16pt;
-            margin-bottom: 6pt;
-            color: #222;
-            font-weight: bold;
-        }
-        
-        .summary-box { 
-            background-color: #f2f2f2;
-            padding: 15px; 
-            border-left: 5px solid #005A9C;
-            margin-bottom: 20px; 
-            color: #111;
-        }
-        
         .status-pass { color: #006600; font-weight: bold; }
         .status-fail { color: #CC0000; font-weight: bold; }
         .status-error { color: #A0522D; font-weight: bold; }
-        
-        .meta-info { 
-            font-size: 10pt; 
-            color: #333; 
-            margin-top: 2px; 
-            display: block; 
+        .meta-info {
+            font-size: 10pt; color: #333; margin-top: 2px; display: block;
         }
-        
-        .verapdf-info { 
-            background: #eee; 
-            padding: 10px; 
-            font-family: monospace; 
-            font-size: 9pt; 
-            white-space: pre-wrap; 
-            border-radius: 4px;
-            color: #111;
+        .verapdf-info {
+            background: #eee; padding: 10px; font-family: monospace;
+            font-size: 9pt; white-space: pre-wrap;
+            border-radius: 4px; color: #111;
         }
-        
         a { color: #004085; text-decoration: underline; }
-        ul { padding-left: 1.5em; }
+        ul { padding-left: 1.5em; list-style-type: none; }
         li { margin-bottom: 8pt; }
-        
         .tech-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 10pt;
-            margin-bottom: 10pt;
+            width: 100%; border-collapse: collapse;
+            font-size: 10pt; margin-bottom: 10pt;
         }
-        .tech-table td {
-            padding: 4px;
-            border-bottom: 1px solid #ccc;
-        }
+        .tech-table td { padding: 4px; border-bottom: 1px solid #ccc; }
+        /* PDF/UA-konforme Listenstruktur */
+        Lbl::before { content: "• "; color: #005A9C; font-weight: bold; }
+        LBody { display: inline; }
     """
 
 
-def _get_about_section():
-    return """
+def _get_about_section(cfg_gen):
+    """Liefert den About-Text mit absoluten URLs aus Config für das PDF."""
+    base = cfg_gen.get("base_url", "https://a11y-pdf-audit.fly.dev")
+    return f"""
     <h2>Automated Accessibility Checks for Downloadable PDFs</h2>
-    
-    <h3>Purpose and Idea</h3>
-    <p>
-        The a11y PDF Audit is a modular web application designed to automatically check websites for accessible PDF files.
-        It crawls any given URL, downloads discovered PDFs, validates them using VeraPDF,
-        and generates structured HTML and PDF reports automatically.
-    </p>
-
-
+    <p>Learn more about the technical architecture, features, and motivation behind the PDF A11y Auditor tool.</p>
+    <h3>Technical Architecture Overview</h3>
+    <ul>
+    <li><a href="{base}/about#PurposeIdea" target="_blank">Purpose and Idea︎</a></li>
+    <li><a href="{base}/about#GermanFederalMonitoringAgencyForAccessibilityInInformationTechnology" target="_blank">
+    German Federal Monitoring Agency for Accessibility in Information Technology︎</a></li>
+    <li><a href="{base}/about#MainFeatures" target="_blank">Main Features</a></li>
+    <li><a href="{base}/about#LimitationsIssues" target="_blank">Limitations and Issues</a></li>
+    <li><a href="{base}/about#Performance" target="_blank">Performance︎</a></li>
+    <li><a href="{base}/about#QualityTesting" target="_blank">Quality and Testing</a></li>
+    </ul>
     <h3>Development & License</h3>
-    <p>
-    Developed by Dr. Harald Hutter – Licensed under MIT License.
-    <a href="https://a11y-pdf-audit.fly.dev/">https://a11y-pdf-audit.fly.dev/</a>
-    </p>
+    <p>Developed by {cfg_gen.get("author", "Unknown")}. License: MIT License.<br>
+    <a href="{base}/">{base}/</a></p>
     """
 
 
-def _build_summary_html(stats, total, base_url, config_info):
+def _build_summary(stats, total, base_url, config_info):
+    """Baut den Zusammenfassungs-HTML-Block."""
     date_str = datetime.now().strftime("%Y-%m-%d")
+
     return (
         f'<div class="summary-box">'
         f"<p><strong>URL:</strong> {html.escape(base_url)}</p>"
@@ -165,109 +110,160 @@ def _build_summary_html(stats, total, base_url, config_info):
         f"<li><strong>Total Files:</strong> {total}</li>"
         f'<li><span class="status-pass">PASS: {stats["PASS"]}</span></li>'
         f'<li><span class="status-fail">FAIL: {stats["FAIL"]}</span></li>'
-        f'<li><span class="status-error">ERRORS: {stats["ERROR"]}</span></li>'
-        f"</ul>"
-        f"</div>"
+        f'<li><span class="status-error">ERRORS: {stats["ERROR"]}</span>'
+        f"</li></ul></div>"
     )
 
 
-def generate_html_content(results, verapdf_version, base_url, logo_path, config_info):
-    stats = {
-        "PASS": sum(1 for r in results if r["status"] == "PASS"),
-        "FAIL": sum(1 for r in results if r["status"] == "FAIL"),
-        "ERROR": sum(1 for r in results if r["status"] == "ERROR"),
-    }
-    total = len(results)
+def _build_file_list(results):
+    """Erzeugt die Liste der Dateien als HTML."""
+    items = []
 
-    css = _get_report_style()
-    summary = _build_summary_html(stats, total, base_url, config_info)
-    about = _get_about_section()
-
-    # Logo Setup
-    logo_img = ""
-    if logo_path and os.path.exists(logo_path):
-        abs_path = os.path.abspath(logo_path)
-        alt_text = "Accessibility Matters Logo - Colorful paint splashes"
-        logo_img = (
-            f'<img src="file://{abs_path}" alt="{alt_text}" class="header-logo-img">'
-        )
-
-    # Neues Header-Layout ohne Tabelle
-    header_html = f"""
-    <div class="header-container">
-        <div class="header-logo-wrapper">
-            {logo_img}
-        </div>
-        <div class="header-text-wrapper">
-            <h1>Audit Report</h1>
-        </div>
-    </div>
-    """
-
-    verapdf_block = (
-        f'<div class="verapdf-info"><h3>VeraPDF Info</h3>'
-        f"{html.escape(verapdf_version)}</div>"
-        "<p style='font-size:0.9em; margin-top:5px;'>The veraPDF validation engine implements the PDF/A and PDF/UA specification. "
-        "See <a href='https://docs.verapdf.org/validation/'>Matterhorn protocol</a> for details.</p>"
-    )
-
-    file_items = []
     for entry in results:
         status = entry.get("status", "UNKNOWN")
-        cls = "status-pass" if status == "PASS" else "status-fail"
+        status_strict = entry.get("status_strict", "UNKNOWN")
+
+        cls_sr = "status-pass" if status == "PASS" else "status-fail"
         if status == "ERROR":
-            cls = "status-error"
+            cls_sr = "status-error"
+
+        cls_strict = "status-pass" if status_strict == "PASS" else "status-fail"
+        if status_strict == "ERROR":
+            cls_strict = "status-error"
 
         fname = html.escape(entry.get("filename", "unknown"))
         details = html.escape(entry.get("details", ""))
-        safe_url = html.escape(entry.get("url", ""))
+        url = html.escape(entry.get("url", ""))
         author = html.escape(entry.get("author", "Unknown"))
         date = html.escape(entry.get("date", "Unknown"))
 
-        item = (
-            f"<li>"
-            f'<strong><a href="{safe_url}">{fname}</a></strong> '
-            f'<span class="{cls}">[{status}]</span><br>'
-            f'<span class="{cls}" style="font-size: 0.9em;">{details}</span><br>'
-            f'<span class="meta-info">Author: {author} | Date: {date}</span>'
-            f"</li>"
+        # URL escapen, aber doppelte Anführungszeichen im HTML verwenden!
+        item_html = (
+            "<li style='margin-bottom: 12pt;'>"
+            f"<Lbl></Lbl>"
+            "<LBody style='display: inline-block; vertical-align: top; width: 90%;'>"
+            f'<strong><a href="{url}">{fname}</a></strong><br>'
+            f"<span style='font-size:0.9em;'>"
+            f"ScreenReader: <span class='{cls_sr}'>[{status}]</span> | "
+            f"Strict ISO: <span class='{cls_strict}'>[{status_strict}]</span>"
+            f"</span>"
+            f"<div class='{cls_sr}' style='font-size:0.9em; margin-top: 2px;'>{details}</div>"
+            f"<div class='meta-info'>Author: {author} | Date:{date}</div>"
+            "</LBody>"
+            "</li>"
         )
-        file_items.append(item)
 
-    file_list = (
-        "<ul>" + "".join(file_items) + "</ul>"
-        if file_items
-        else "<p>No PDFs found.</p>"
+        items.append(item_html)
+
+    if not items:
+        return "<p>No PDFs found.</p>"
+    return "<ul>" + "".join(items) + "</ul>"
+
+
+def generate_html_content(  # pylint: disable=too-many-arguments
+    results, verapdf_version, base_url, logo_path, config_info
+):
+    """Erzeugt das komplette HTML."""
+    cfg = load_config()
+    cfg_gen = cfg.get("general", {})
+    author = cfg_gen.get("author", "Unknown")
+    year = cfg_gen.get("copyright_year", "2026")
+    base_proj_url = cfg_gen.get("base_url", "")
+
+    # --- Statistik vorbereiten ---
+    stats = {"PASS": 0, "FAIL": 0, "ERROR": 0}
+    for r in results:
+        s_val = r.get("status")
+        if s_val in stats:
+            stats[s_val] += 1
+
+    # --- Header & Info-Abschnitt ---
+    header = (
+        f'<div class="header-container">'
+        f'<div class="header-logo-wrapper"><img src="{logo_path}" alt="Logo" class="header-logo-img"></div>'
+        f'<div class="header-text-wrapper"><h1>Accessibility Audit Report</h1>'
+        f"<p>{datetime.now().strftime('%Y-%m-%d')} — via a11y-pdf-audit</p></div></div>"
     )
 
-    footer_html = (
-        '<div class="footer-element">'
-        "<p>© Dr. Harald Hutter 2026 – https://a11y-pdf-audit.fly.dev/ – License: MIT License</p>"
-        "</div>"
+    verapdf_info = f'<div class="verapdf-info">VeraPDF Version: {html.escape(verapdf_version)}</div>'
+
+    footer = (
+        f'<div class="footer-element"><p>© {author} {year} – '
+        f"{base_proj_url}/ – License: MIT License</p></div>"
     )
+
+    summary = _build_summary(stats, len(results), base_url, config_info)
+    file_list = _build_file_list(results)
 
     return (
         f'<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
-        f"<title>Audit Report</title><style>{css}</style></head><body>"
-        f"{footer_html}"
-        f"{header_html}"
-        f"{summary}"
-        f"{about}"
-        f"<h2>Validation Details</h2>"
-        f"{verapdf_block}"
+        f"<title>Audit Report</title><style>{_get_report_style()}</style>"
+        f"</head><body>{footer}{header}{summary}{_get_about_section(cfg_gen)}"
+        f"<h2>Validation Details</h2>{verapdf_info}"
         f"<h2>Detailed Results</h2>{file_list}</body></html>"
     )
 
 
-def create_report(
+def _apply_pdf_metadata(pdf_path):
+    """Setzt Metadaten aus config/config.json ins fertige PDF."""
+    try:
+        cfg = load_config()
+        meta_cfg = cfg.get("pdf_metadata", {})
+
+        with pikepdf.open(pdf_path, allow_overwriting_input=True) as pdf:
+            pdf.docinfo["/Title"] = str(meta_cfg.get("Title", "")).strip()
+            pdf.docinfo["/Author"] = str(meta_cfg.get("Author", "")).strip()
+            pdf.docinfo["/Subject"] = str(meta_cfg.get("Subject", "")).strip()
+
+            keywords = meta_cfg.get("Keywords")
+            if isinstance(keywords, list):
+                pdf.docinfo["/Keywords"] = ", ".join(map(str, keywords))
+            elif isinstance(keywords, str):
+                pdf.docinfo["/Keywords"] = keywords
+
+            # Creator
+            gen = cfg.get("general", {})
+            name = gen.get("app_name", "a11y-pdf-audit")
+            ver = gen.get("version", "1.0")
+
+            creator_val = f"{name} Toolset v{ver}"
+            pdf.docinfo["/Creator"] = creator_val
+
+            v_str = getattr(weasyprint, "__version__", "unknown")
+            producer_val = (
+                str(meta_cfg.get("Producer", "")).strip() or f"WeasyPrint {v_str}"
+            )
+            pdf.docinfo["/Producer"] = producer_val
+
+            lang_val = meta_cfg.get("Lang")
+            if isinstance(lang_val, list):
+                lang_val = lang_val[0]
+
+            if isinstance(lang_val, str) and lang_val:
+                root_dict = pdf.trailer["/Root"]
+                root_dict["/Lang"] = lang_val
+                pdf.trailer["/Root"] = root_dict
+
+            pdf.save(pdf_path)
+        return True
+
+    except Exception as err:  # pylint: disable=broad-exception-caught
+        log_error(f"⚠️ Fehler beim Setzen der Metadaten: {err}")
+        return False
+
+
+def create_report(  # pylint: disable=too-many-arguments
     json_file, output_pdf, base_url, verapdf_version, logo_path, config_info
 ):
+    """Erstellt das PDF."""
     if not os.path.exists(json_file):
+        log_error(f"❌ JSON-Datei fehlt: {json_file}")
         return False
     try:
         with open(json_file, "r", encoding="utf-8") as f:
             results = json.load(f)
-    except Exception:
+    except Exception as err:  # pylint: disable=broad-exception-caught
+        log_error(f"❌ Fehler beim Lesen des JSONs ({json_file}): {err}")
         return False
 
     html_str = generate_html_content(
@@ -276,14 +272,39 @@ def create_report(
 
     try:
         os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
+        # PDF/UA-1
         HTML(string=html_str, base_url=os.getcwd()).write_pdf(
             target=output_pdf, pdf_variant="pdf/ua-1", pdf_version="1.7", zoom=1
         )
+        _apply_pdf_metadata(output_pdf)
         return True
-    except Exception:
-        # Fallback
+    except Exception as err:  # pylint: disable=broad-exception-caught
+        log_error(f"⚠️ Haupt-PDF-Erstellung fehlgeschlagen: {err}")
         try:
+            # Fallback
             HTML(string=html_str, base_url=os.getcwd()).write_pdf(target=output_pdf)
+            _apply_pdf_metadata(output_pdf)
             return True
-        except Exception:
+        except Exception as err2:  # pylint: disable=broad-exception-caught
+            log_error(f"❌ Fallback fehlgeschlagen: {err2}")
             return False
+
+
+def main_test():
+    """Testfunktion für lokale Ausführung."""
+    setup_logging(log_dir="output")
+    log_info("✅ Modul geladen – Testlauf gestartet")
+    cfg = load_config()
+
+    j_file = "output/reports/test.json"
+    o_pdf = "output/reports/test.pdf"
+    b_url = cfg["general"]["base_url"]
+
+    # Dummy string to test without running actual java process
+    v_ver = f"veraPDF (Test Mode) via {cfg['general']['app_name']}"
+    l_path = cfg["assets"]["logo_file"]
+    c_info = {"max_pages": 10000, "depth": 10}
+
+
+if __name__ == "__main__":
+    main_test()

@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
 ![Flask](https://img.shields.io/badge/Flask-3.0-green?logo=flask)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
-![Pylint Score](https://img.shields.io/badge/Pylint-9.12%2F10-success)
+![Pylint Score](https://img.shields.io/badge/Pylint-9.63%2F10-success)
 ![Security](https://img.shields.io/badge/Bandit-Secure-success)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
@@ -17,13 +17,16 @@ Ensuring digital accessibility is crucial. This tool automates the tedious proce
 
 It uses **[VeraPDF](https://verapdf.org/)**, a purpose-built, open-source file-format validator covering all PDF/A and PDF/UA parts and conformance levels, to check for compliance with accessibility standards (PDF/UA-1).
 
-## ⭐ Main Features
+## ⭐ Main Features (New in v1.2.0)
 
-*   🔍 **Automatic Validation:** Checks PDF/UA compliance via VeraPDF.
-*   🌐 **Recursive Crawler:** Searches websites for downloadable PDFs (configurable depth & limit).
-*   📊 **Reporting:** Generates detailed reports in JSON, HTML, and PDF formats (using WeasyPrint).
-*   💻 **Web Interface:** Easy-to-use Flask frontend with live logs and report overview.
-*   ⚙️ **Modular Architecture:** Built using Facade & Controller patterns for scalability (Docker/Fly.io ready).
+*   🔍 **Dual-Audit System:** Validates PDFs simultaneously against the strict ISO PDF/UA-1 standard AND our custom, pragmatic **ScreenReadable** profile (ignoring visual font metrics and strict matrix algorithms that don't affect screen readers like JAWS/NVDA).
+*   🌐 **Recursive Crawler:** Searches websites for downloadable PDFs (configurable depth & limit) with smart error handling.
+*   📊 **Reporting:** Generates detailed reports in JSON, HTML, and PDF formats (using WeasyPrint) with side-by-side Strict vs. ScreenReadable results.
+*   💻 **Web Interface:** Easy-to-use Flask frontend with live server logs and report overview.
+*   🚀 **Resilient Processing:** Intelligent timeout handling with dynamic multipliers (x4) for large PDFs to prevent crashes.
+*   🧹 **Auto-Cleanup:** Automatically deletes reports older than 14 days to preserve server storage.
+*   ⚙️ **Modular Architecture:** Config-driven setup (via `config.json`), separated CSS, and Facade & Controller patterns for scalability (Docker/Fly.io ready).
+*   💯 **Perfect Performance:** Achieves 100/100 in Google PageSpeed Insights (Performance, Accessibility, Best Practices, SEO).
 
 ---
 
@@ -39,7 +42,7 @@ The project is structured to separate concerns between scanning, processing, and
 | `└── controller.py` | Background thread management & Keep-Alive logic |
 | `web_app/` | Flask web interface (Routes & Views) |
 | `templates/` | HTML templates for frontend & reports |
-| `static/` | CSS, JS, and assets |
+| `static/` | CSS |
 | `config/config.json` | Central configuration file |
 | `Dockerfile` | Container definition for deployment |
 
@@ -52,20 +55,20 @@ We maintain high code quality standards through automated linting and security c
 | Tool | Purpose | Status / Result |
 | :--- | :--- | :--- |
 | **flake8** | Formatting & Style Checking | ✅ No critical issues found. |
-| **pylint** | Code Quality / Docstrings | ⭐ Score: > 9.0 / 10 points. |
+| **pylint** | Code Quality / Docstrings | ⭐ Score: > 9.5 / 10 points. |
 | **bandit** | Security Analysis | 🔒 No high severity findings. |
 | **radon cc** | Cyclomatic Complexity | 🌿 Mainly A-level functions. |
 
 ---
 
-## ⚠️ Known Issues / Limitations
+## 🟡 Known Issues / Limitations
 
 **VeraPDF vs. axesCheck (PAC)**
 There is a known discrepancy between **VeraPDF** (used by this tool) and **axesCheck/PAC** regarding ISO 14289-1:2014 (PDF/UA-1), specifically rule **7.5 (Tables)**.
 
 *   **VeraPDF** tends to be very strict and may report `FAIL` on tables where the headers cannot be determined *algorithmically* according to its strict interpretation of the standard.
 *   **axesCheck** might pass the same file if the logical structure is semantically sufficient for screen readers.
-*   *Conclusion:* Use the reports from this tool as a strict technical baseline. A "FAIL" in VeraPDF warrants a manual check, but the document might still be accessible in practice.
+*   **Solution:** Version 1.2.0 introduces the **ScreenReadable Profile** alongside the strict check to bridge this gap.
 
 ---
 
@@ -98,3 +101,6 @@ This tool is free to use. However, running servers costs money, and developing a
 ## 🧑🏻‍💻 Author & 📜 License
 Developed by Dr. Harald Hutter.
 Licensed under the MIT License.
+
+VeraPDF is open source software dual licensed under MPL v2+ and GPL v3+ 
+- see the [VeraPDF License](https://verapdf.org/home/) for details. 

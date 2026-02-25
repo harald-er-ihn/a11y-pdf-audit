@@ -1,46 +1,66 @@
 {% extends "base.html" %}
-
 {% block title %}Start Audit – PDF A11y Auditor{% endblock %}
-
-{% block meta_description %}Start a new web crawl to identify accessibility issues in PDF files (PDF/UA and WCAG) using our automated audit tool.{% endblock %}
-
+{% block meta_description %}
+  Start a new web crawl to identify accessibility issues in PDF files (PDF/UA and WCAG) using our automated audit tool.
+{% endblock %}
 {% block content %}
-<div class="container">
+  <div class="container">
     <h1>Start a New Accessibility Audit</h1>
     <p class="intro-text">
-        Welcome to the <strong>PDF A11y Auditor</strong>!<br>
-        Enter a website URL below to automatically crawl for downloadable PDFs and check their accessibility compliance (PDF/UA & WCAG) using
-        <a href="https://verapdf.org/" target="_blank" rel="noopener noreferrer">
+      Welcome to the <strong>PDF A11y Auditor</strong>!
+      <br>
+      Enter a website URL below to automatically crawl for downloadable PDFs and check their accessibility compliance (PDF/UA & WCAG) using
+      <a href="https://verapdf.org/"
+         target="_blank"
+         rel="noopener noreferrer"
+         title="VeraPDF Official Website">
         <strong>VeraPDF</strong> - Industry Supported PDF/A Validation</a>.
-    </p>
-    <div style="text-align: right; margin-bottom: 1rem;">
-        <a href="/reports" class="btn-secondary">View existing Reports &rarr;</a>
-    </div>
-    <h2>Crawler Settings</h2>
-    <form action="/start-audit" method="POST">
-      <fieldset>
-        <legend>Recommendation: Start with small (default) Settings</legend>
-        
-        <label for="url">Start URL (required)</label>
-        <input type="url" id="url" name="url" placeholder="https://www.tu-dortmund.de/" required>
-        <p class="hint">Please include https://</p>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <label for="max_pages">Max. Pages</label>
-                <input type="number" id="max_pages" name="max_pages" value="10" min="1" max="10000">
-                <p class="hint">(max=10000)</p>
-            </div>
-            
-            <div class="form-group">
-                <label for="depth">Crawl Depth</label>
-                <input type="number" id="depth" name="depth" value="1" min="0" max="10">
-                <p class="hint">0 = Start page only, 1 = Direct links, etc. (max=10)</p>
-            </div>
+        </p>
+        <div class="text-right mb-20">
+          <a href="/reports" class="btn-secondary" title="View existing Reports">View existing Reports</a>
         </div>
-      </fieldset>
-      <h2>Submit</h2>
-      <button type="submit" class="btn-primary">🚀 Start Audit</button>
-    </form>
-</div>
-{% endblock %}
+        <h2>Crawler Settings</h2>
+        <form action="/start-audit" method="POST">
+          <fieldset>
+            <legend>
+              Recommendation: default Settings
+              <small>
+                (📘 Read more about
+                <a href="/about#LimitationsIssues"
+                   target="_blank"
+                   title="Read about Limitations">Limitations︎</a> and
+                <a href="/about#Performance"
+                   target="_blank"
+                   title="Read about Performance︎">Performance︎</a>.)
+              </small>
+            </legend>
+            <label for="url">Start URL (required)</label>
+            <input type="text"
+                   id="url"
+                   name="url"
+                   placeholder="www.tu-dortmund.de"
+                   required>
+            <p class="hint">We automatically add "https://" if omitted and check if the site is reachable.</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="max_pages">Max. Pages</label>
+                <input type="number"
+                       id="max_pages"
+                       name="max_pages"
+                       value="100"
+                       min="1"
+                       max="10000">
+                <p class="hint">(max=10000)</p>
+              </div>
+              <div class="form-group">
+                <label for="depth">Crawl Depth</label>
+                <input type="number" id="depth" name="depth" value="3" min="0" max="10">
+                <p class="hint">0 = Start page only, 1 = Direct links, etc. (max=10)</p>
+              </div>
+            </div>
+          </fieldset>
+          <h2>Submit</h2>
+          <button type="submit" class="btn-primary">🚀 Start Audit</button>
+        </form>
+      </div>
+    {% endblock %}

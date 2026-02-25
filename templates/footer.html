@@ -1,20 +1,24 @@
 <footer class="footer">
   <div class="footer-content">
-      <p>
-          <a href="/" class="btn-secondary">🏠 Home</a>
-          <!-- Added rel="noopener noreferrer" for security on external links -->
-          <a href="https://www.paypal.me/hutterharald" target="_blank" rel="noopener noreferrer" class="btn-donate">☕ Donate / Support Me</a>
-      </p>
-      
-      <p class="footer-note">
-         <strong>PDF A11y Auditor</strong> – Version 1.1<br>
-         Automated Accessibility Checks for Downloadable PDFs<br>
-         <br/>
-         © Dr. Harald Hutter 2026 – All rights reserved.
-      </p>
-      
-      <button onclick="window.open('https://linktr.ee/harald.hutter/', '_blank', 'noopener,noreferrer');" class="btn-secondary" style="font-size:0.8rem">
-         Visit Harald's Personal Page ↗︎
-      </button>
+    <p>
+      <a href="/" class="btn-secondary" title="Back Home">🏠 Home</a>
+      <!-- Added rel="noopener noreferrer" for security on external links -->
+      <a href="https://www.paypal.me/hutterharald"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="btn-donate"
+         title="Support Me via PayPal">☕ Donate / Support Me</a>
+    </p>
+    <p class="footer-note">
+      <strong>PDF A11y Auditor</strong> – Version {{ config.general.version }}
+      <br>
+      Automated Accessibility Checks for Downloadable PDFs
+      <br>
+      <br />
+      © Dr. Harald Hutter 2026 – All rights reserved.
+    </p>
+    <button onclick="window.open('https://linktr.ee/harald.hutter/', '_blank', 'noopener,noreferrer');"
+            class="btn-secondary font-08"
+            title="Harald's Personal Homepage">Visit Harald's Personal Page</button>
   </div>
 </footer>

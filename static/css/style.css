@@ -61,7 +61,7 @@ label {
     font-weight: 600;
 }
 
-input[type="url"], input[type="number"] {
+input[type="text"], input[type="url"], input[type="number"] {
     width: 100%;
     padding: 0.75rem;
     margin-top: 0.25rem;
@@ -196,3 +196,35 @@ input[type="url"], input[type="number"] {
 .text-error { color: #c0392b; }
 .mt-40 { margin-top: 40px; }
 .mb-20 { margin-bottom: 20px; }
+
+/* --- Utility Classes for HTML refactoring --- */
+.mt-30 { margin-top: 30px; }
+.mt-40 { margin-top: 40px; }
+.mb-20 { margin-bottom: 20px; }
+.p-2rem { padding: 2rem; }
+.text-right { text-align: right; }
+.font-08 { font-size: 0.8rem; }
+.font-09 { font-size: 0.9rem; }
+.font-12 { font-size: 1.2rem; }
+.w-15 { width: 15%; }
+.pre-wrap { white-space: pre-wrap; }
+.inline-form { display: inline; }
+
+.bg-gray-box {
+    background-color: #f2f2f2;
+    padding: 15px;
+    border-left: 5px solid #005A9C;
+    margin: 20px 0;
+}
+
+.log-box-bg {
+    text-align: left;
+    background: #eee;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.status-idle { color: #aaa; }
+.status-live { color: #00ff00; }
+.status-offline { color: #ff0000; }

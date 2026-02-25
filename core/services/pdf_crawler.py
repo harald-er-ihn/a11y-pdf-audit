@@ -3,6 +3,7 @@ Service zum Crawlen von Webseiten nach PDF-Dateien.
 Strikt auf eine Domain beschränkt (keine Subdomains).
 """
 
+import os
 import re
 import time
 from collections import deque
@@ -11,19 +12,35 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from core.utils.error_utils import log_error, log_info, log_warning
+from core.utils.error_utils import log_info, log_warning
+
+
+class CrawlContext:  # pylint: disable=too-few-public-methods
+    """Hält den Zustand des Crawlers, um lokale Variablen zu reduzieren."""
+
+    def __init__(self, start_url, output_file, config):
+        self.queue = deque([(start_url, 0)])
+        self.visited = {start_url}
+        self.all_pdfs = set()
+        self.pages_scanned = 0
+        self.file_handle = open(output_file, "w", encoding="utf-8")
+        self.config = config
+        self.session = requests.Session()
+
+    def close(self):
+        """Schließt Datei-Handles."""
+        if self.file_handle:
+            self.file_handle.close()
 
 
 def is_exact_domain(url, allowed_netloc):
     """
-    Prüft, ob die URL exakt zur erlaubten Domain gehört (keine Subdomains).
+    Prüft, ob die URL exakt zur erlaubten Domain gehört.
     """
     try:
         netloc = urlparse(url).netloc
-        # Wenn netloc leer ist, ist es relativ -> intern -> okay
         if not netloc:
             return True
-        # Exakter Vergleich (mit und ohne www Toleranz)
         return (
             netloc == allowed_netloc
             or netloc == allowed_netloc.replace("www.", "")
@@ -34,19 +51,17 @@ def is_exact_domain(url, allowed_netloc):
 
 
 def _fetch_sitemap(start_url):
-    """
-    Versucht, die sitemap.xml zu finden und PDF-Links daraus zu extrahieren.
-    """
+    """Versucht, die sitemap.xml zu finden."""
     pdf_links = set()
-    parsed_start = urlparse(start_url)
-    sitemap_urls = [
-        f"{parsed_start.scheme}://{parsed_start.netloc}/sitemap.xml",
-        f"{parsed_start.scheme}://{parsed_start.netloc}/sitemap_index.xml",
+    parsed = urlparse(start_url)
+    sitemaps = [
+        f"{parsed.scheme}://{parsed.netloc}/sitemap.xml",
+        f"{parsed.scheme}://{parsed.netloc}/sitemap_index.xml",
     ]
 
     headers = {"User-Agent": "a11y-pdf-audit-bot"}
 
-    for sm_url in sitemap_urls:
+    for sm_url in sitemaps:
         try:
             resp = requests.get(sm_url, headers=headers, timeout=10)
             if resp.status_code == 200:
@@ -55,7 +70,7 @@ def _fetch_sitemap(start_url):
                 for loc in locs:
                     if loc.lower().endswith(".pdf"):
                         pdf_links.add(loc)
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             pass
 
     if pdf_links:
@@ -64,7 +79,7 @@ def _fetch_sitemap(start_url):
     return list(pdf_links)
 
 
-def _extract_links_from_html(content, current_url):
+def _extract_links(content, current_url):
     """Parst HTML und gibt absolute Links zurück."""
     soup = BeautifulSoup(content, "html.parser")
     found = []
@@ -76,89 +91,88 @@ def _extract_links_from_html(content, current_url):
     return found
 
 
+def _process_links(links, ctx, depth):
+    """Verarbeitet extrahierte Links einer Seite."""
+    for full_url in links:
+        if full_url.lower().endswith(".pdf"):
+            if full_url not in ctx.all_pdfs:
+                ctx.all_pdfs.add(full_url)
+                fname = os.path.basename(urlparse(full_url).path)
+                log_info(f"📄 PDF: {fname}")
+                ctx.file_handle.write(full_url + "\n")
+                ctx.file_handle.flush()
+
+        elif depth < ctx.config["max_depth"]:
+            is_valid_domain = is_exact_domain(full_url, ctx.config["allowed_netloc"])
+            is_media = any(
+                full_url.lower().endswith(x) for x in [".jpg", ".png", ".zip", ".mp4"]
+            )
+
+            if is_valid_domain and full_url not in ctx.visited and not is_media:
+                ctx.visited.add(full_url)
+                ctx.queue.append((full_url, depth + 1))
+
+
 def crawl_site_logic(
     start_url, output_file, max_pages=50, max_depth=1, user_agent="Bot"
 ):
-    """
-    Hauptfunktion des Crawlers.
-    """
-    import os
-
+    """Hauptfunktion des Crawlers."""
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-    # Wir nutzen strict netloc für die Begrenzung
     allowed_netloc = urlparse(start_url).netloc
-    log_info(f"Crawler Scope: Nur {allowed_netloc} (keine anderen Subdomains)")
+    log_info(f"Crawler Scope: Nur {allowed_netloc}")
 
-    all_pdfs = set()
-    queue = deque([(start_url, 0)])
-    visited = {start_url}
-    pages_scanned = 0
+    config = {
+        "max_depth": max_depth,
+        "allowed_netloc": allowed_netloc,
+        "user_agent": user_agent,
+    }
 
-    session = requests.Session()
-    headers = {"User-Agent": user_agent}
+    ctx = CrawlContext(start_url, output_file, config)
 
-    # 1. Sitemap Check
-    sitemap_pdfs = _fetch_sitemap(start_url)
-    for pdf in sitemap_pdfs:
-        all_pdfs.add(pdf)
-
-    with open(output_file, "w", encoding="utf-8") as f_out:
-        f_out.write(f"# Crawl Results for {start_url}\n\n")
-
+    try:
+        # Sitemap Check
+        sitemap_pdfs = _fetch_sitemap(start_url)
+        ctx.all_pdfs.update(sitemap_pdfs)
+        ctx.file_handle.write(f"# Crawl Results for {start_url}\n\n")
         for pdf in sitemap_pdfs:
-            f_out.write(pdf + "\n")
+            ctx.file_handle.write(pdf + "\n")
 
-        # 2. Regulärer Crawl
-        while queue and pages_scanned < max_pages:
-            url, depth = queue.popleft()
+        # BFS Crawl
+        while ctx.queue and ctx.pages_scanned < max_pages:
+            url, depth = ctx.queue.popleft()
 
-            if pages_scanned % 10 == 0 or depth == 0:
-                log_info(f"[{pages_scanned+1}/{max_pages}] Scan (T{depth}): {url}")
+            if ctx.pages_scanned % 10 == 0 or depth == 0:
+                log_info(f"[{ctx.pages_scanned+1}/{max_pages}] T{depth}: {url}")
 
             try:
-                # HEAD Check
+                # HEAD Request
                 try:
-                    head = session.head(
-                        url, headers=headers, timeout=5, allow_redirects=True
+                    head = ctx.session.head(
+                        url, headers={"User-Agent": user_agent}, timeout=5
                     )
-                    if "text/html" not in head.headers.get("Content-Type", "").lower():
-                        pages_scanned += 1
+                    ctype = head.headers.get("Content-Type", "").lower()
+                    if "text/html" not in ctype:
+                        ctx.pages_scanned += 1
                         continue
-                except Exception:
+                except Exception:  # pylint: disable=broad-exception-caught
                     pass
 
-                response = session.get(url, headers=headers, timeout=10)
-                links = _extract_links_from_html(response.content, url)
+                # GET Request
+                resp = ctx.session.get(
+                    url, headers={"User-Agent": user_agent}, timeout=10
+                )
+                links = _extract_links(resp.content, url)
+                _process_links(links, ctx, depth)
 
-                for full_url in links:
-                    # PDF gefunden?
-                    if full_url.lower().endswith(".pdf"):
-                        if full_url not in all_pdfs:
-                            all_pdfs.add(full_url)
-                            log_info(
-                                f"📄 PDF: {os.path.basename(urlparse(full_url).path)}"
-                            )
-                            f_out.write(full_url + "\n")
-                            f_out.flush()
+            except Exception as err:  # pylint: disable=broad-exception-caught
+                log_warning(f"Fehler bei {url}: {err}")
 
-                    # Weiter crawlen?
-                    elif depth < max_depth:
-                        # STRIKTER CHECK: Nur exakte Domain
-                        if is_exact_domain(full_url, allowed_netloc):
-                            if full_url not in visited:
-                                if not any(
-                                    full_url.lower().endswith(ext)
-                                    for ext in [".jpg", ".png", ".zip", ".mp4"]
-                                ):
-                                    visited.add(full_url)
-                                    queue.append((full_url, depth + 1))
-
-            except Exception as e:
-                log_warning(f"Fehler bei {url}: {e}")
-
-            pages_scanned += 1
+            ctx.pages_scanned += 1
             time.sleep(0.2)
 
-    log_info(f"[-] Crawler fertig. Total PDFs: {len(all_pdfs)}")
-    return list(all_pdfs)
+    finally:
+        ctx.close()
+
+    log_info(f"[-] Crawler fertig. Total PDFs: {len(ctx.all_pdfs)}")
+    return list(ctx.all_pdfs)

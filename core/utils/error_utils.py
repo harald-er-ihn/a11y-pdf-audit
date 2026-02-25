@@ -1,3 +1,7 @@
+"""
+Zentrale Hilfsfunktionen für Logging und Fehlerbehandlung.
+"""
+
 import logging
 import os
 import sys
@@ -7,7 +11,10 @@ logger = logging.getLogger("a11y-audit")
 
 
 def setup_logging(log_dir=None):
-    """Konfiguriert das Logging."""
+    """
+    Konfiguriert das Logging.
+    Ausgaben landen in stdout (für Docker) UND optional in einer Datei.
+    """
     handlers = [logging.StreamHandler(sys.stdout)]
 
     if log_dir:
@@ -27,12 +34,15 @@ def setup_logging(log_dir=None):
 
 
 def log_info(msg):
+    """Loggt eine Info-Nachricht."""
     logger.info(msg)
 
 
 def log_error(msg):
+    """Loggt eine Fehler-Nachricht."""
     logger.error(msg)
 
 
 def log_warning(msg):
+    """Loggt eine Warnung."""
     logger.warning(msg)

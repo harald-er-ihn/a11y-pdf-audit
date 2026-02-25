@@ -7,7 +7,11 @@ lxml==4.9.3
 PyPDF2==3.0.1
 
 # --- Formatierung ---
-black==24.1a1
+black==23.12.1
+djlint==1.36.4
+isort==5.13.2
+html5validator==0.4
+
 
 # --- Codeanalyse ---
 pbr==7.0.3
@@ -23,3 +27,6 @@ gunicorn>=20.1,<21
 # --- PDF-Erstellung (CRITICAL UPDATE) ---
 # Version 63+ behebt den PDF.__init__ Fehler und verbessert PDF/UA Support
 weasyprint>=63.0
+
+# --- PDF-Metadaten ---
+pikepdf>=8.10.0

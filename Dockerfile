@@ -51,4 +51,5 @@ ENV TZ=Europe/Berlin
 
 EXPOSE 8000
 
-CMD ["gunicorn", "web_app.app:app", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120"]
+# ÄNDERUNG: --workers auf 1 gesetzt
+CMD ["gunicorn", "web_app.app:app", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "120"]

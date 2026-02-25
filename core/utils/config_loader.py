@@ -23,12 +23,15 @@ def load_config():
         config["active_paths"] = {
             "output": config["paths"]["output_dir_fly"],
             "verapdf": config["paths"]["verapdf_cli_fly"],
+            "custom_profile": config["paths"]["custom_profile_fly"],
         }
     else:
         # Lokal: absolute Pfade relativ zum Projektroot
         config["active_paths"] = {
             "output": os.path.join(base_dir, config["paths"]["output_dir_local"]),
             "verapdf": os.path.join(base_dir, config["paths"]["verapdf_cli_local"]),
+            "custom_profile": os.path.join(
+                base_dir, config["paths"]["custom_profile_local"]
+            ),
         }
-
     return config
