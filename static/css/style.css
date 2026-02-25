@@ -91,17 +91,6 @@ input[type="text"], input[type="url"], input[type="number"] {
 }
 .btn-primary:hover { background-color: #004a80; }
 
-.btn-secondary {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    background-color: #6c757d;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-.btn-secondary:hover { background-color: #5a6268; }
 
 .btn-danger {
     background-color: #c0392b;
@@ -228,3 +217,56 @@ input[type="text"], input[type="url"], input[type="number"] {
 .status-idle { color: #aaa; }
 .status-live { color: #00ff00; }
 .status-offline { color: #ff0000; }
+
+/* --- Navigation Grid Layout --- */
+
+/* Der Container für die Buttons */
+.nav-row {
+    display: grid;
+    /* Auf dem Handy: 2 Spalten, die sich den Platz exakt teilen (1fr) */
+    grid-template-columns: repeat(2, 1fr); 
+    /* Abstand horizontal und vertikal absolut identisch */
+    gap: 10px; 
+    margin: 1.5rem 0;
+    width: 100%;
+}
+.btn-secondary {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.btn-secondary:hover { background-color: #5a6268; }
+
+/* Optimierung deines bestehenden Buttons */
+.btn-secondary {
+    /* WICHTIG: Kein inline-block mehr, damit der Button die Grid-Zelle füllt */
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 0.5rem; /* Etwas mehr Höhe für bessere Touch-Bedienung */
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover { 
+    background-color: #5a6268; 
+}
+
+/* Desktop-Ansicht: Wenn genug Platz ist, alle 4 nebeneinander */
+@media (min-width: 600px) {
+    .nav-row {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
