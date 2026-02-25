@@ -1,11 +1,10 @@
 core/controller.py:73:80: E501 line too long (85 > 79 characters)
 core/controller.py:80:80: E501 line too long (87 > 79 characters)
-core/facade.py:44:80: E501 line too long (85 > 79 characters)
-core/facade.py:49:80: E501 line too long (87 > 79 characters)
-core/facade.py:52:80: E501 line too long (83 > 79 characters)
-core/facade.py:66:80: E501 line too long (81 > 79 characters)
-core/facade.py:75:80: E501 line too long (83 > 79 characters)
-core/facade.py:87:13: F821 undefined name 'shutil'
+core/facade.py:45:80: E501 line too long (85 > 79 characters)
+core/facade.py:50:80: E501 line too long (87 > 79 characters)
+core/facade.py:53:80: E501 line too long (83 > 79 characters)
+core/facade.py:67:80: E501 line too long (81 > 79 characters)
+core/facade.py:76:80: E501 line too long (83 > 79 characters)
 core/services/generate_report_from_json.py:45:80: E501 line too long (80 > 79 characters)
 core/services/generate_report_from_json.py:81:80: E501 line too long (114 > 79 characters)
 core/services/generate_report_from_json.py:84:80: E501 line too long (85 > 79 characters)
@@ -60,5 +59,4 @@ web_app/routes_main.py:77:80: E501 line too long (108 > 79 characters)
 web_app/routes_main.py:79:80: E501 line too long (83 > 79 characters)
 web_app/routes_main.py:144:80: E501 line too long (84 > 79 characters)
 54    E501 line too long (85 > 79 characters)
-1     F821 undefined name 'shutil'
 6     F841 local variable 'j_file' is assigned to but never used

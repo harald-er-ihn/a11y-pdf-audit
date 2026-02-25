@@ -4,6 +4,7 @@ Kapselt die Aufrufe der verschiedenen Services.
 """
 
 import os
+import shutil
 import time
 
 from core.services.generate_report_from_json import create_report

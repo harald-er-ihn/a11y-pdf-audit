@@ -61,7 +61,11 @@ fi
 
 # Run container
 echo "Starting container ${CONTAINER} (image: ${IMAGE})..."
-docker run -d --name "${CONTAINER}" -p "${HOST_PORT}:${CONTAINER_PORT}" "${IMAGE}" >/tmp/docker_start.cid
+docker run -d --name "${CONTAINER}" \
+  -v "$(pwd)/output:/app/output" \
+  -p "${HOST_PORT}:${CONTAINER_PORT}" "${IMAGE}" \
+   >/tmp/docker_start.cid
+
 CID=$(cat /tmp/docker_start.cid)
 rm -f /tmp/docker_start.cid
 echo "Container started: ${CID}"

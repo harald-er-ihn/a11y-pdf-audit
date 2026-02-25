@@ -1,7 +1,7 @@
 core/facade.py
-    M 38:4 AuditFacade.run_full_audit - A (5)
-    C 17:0 AuditFacade - A (4)
-    M 22:4 AuditFacade.__init__ - A (1)
+    M 39:4 AuditFacade.run_full_audit - A (5)
+    C 18:0 AuditFacade - A (4)
+    M 23:4 AuditFacade.__init__ - A (1)
 core/controller.py
     F 50:0 _cleanup_old_reports - B (9)
     F 25:0 _keep_alive_worker - A (5)
