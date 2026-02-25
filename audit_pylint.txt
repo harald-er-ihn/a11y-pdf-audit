@@ -1,5 +1,3 @@
-************* Module routes_main
-web_app/routes_main.py:132:25: E0001: Parsing failed: 'unindent does not match any outer indentation level (<unknown>, line 132)' (syntax-error)
 ************* Module facade
 core/facade.py:39:4: R0914: Too many local variables (16/15) (too-many-locals)
 ************* Module services.pdf_crawler
@@ -7,29 +5,3 @@ core/services/pdf_crawler.py:26:27: R1732: Consider using 'with' for resource-al
 core/services/pdf_crawler.py:116:0: R0914: Too many local variables (17/15) (too-many-locals)
 ************* Module services.pdf_processor
 core/services/pdf_processor.py:155:0: C0301: Line too long (112/100) (line-too-long)
-core/services/pdf_processor.py:111:0: R0914: Too many local variables (19/15) (too-many-locals)
-************* Module services.generate_report_from_json
-core/services/generate_report_from_json.py:85:0: C0301: Line too long (116/100) (line-too-long)
-core/services/generate_report_from_json.py:183:0: C0301: Line too long (108/100) (line-too-long)
-core/services/generate_report_from_json.py:188:0: C0301: Line too long (101/100) (line-too-long)
-core/services/generate_report_from_json.py:163:0: R0914: Too many local variables (18/15) (too-many-locals)
-core/services/generate_report_from_json.py:299:4: W0612: Unused variable 'j_file' (unused-variable)
-core/services/generate_report_from_json.py:300:4: W0612: Unused variable 'o_pdf' (unused-variable)
-core/services/generate_report_from_json.py:301:4: W0612: Unused variable 'b_url' (unused-variable)
-core/services/generate_report_from_json.py:304:4: W0612: Unused variable 'v_ver' (unused-variable)
-core/services/generate_report_from_json.py:305:4: W0612: Unused variable 'l_path' (unused-variable)
-core/services/generate_report_from_json.py:306:4: W0612: Unused variable 'c_info' (unused-variable)
-************* Module services.pdf_converter
-core/services/pdf_converter.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-core/services/pdf_converter.py:35:11: W0718: Catching too general exception Exception (broad-exception-caught)
-core/services/pdf_converter.py:28:17: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
-core/services/pdf_converter.py:30:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-************* Module utils.zip_utils
-core/utils/zip_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-************* Module app
-web_app/app.py:11:0: E0001: Cannot import 'web_app.routes_main' due to 'unindent does not match any outer indentation level (<unknown>, line 132)' (syntax-error)
-web_app/app.py:11:0: E0611: No name 'routes_main' in module 'web_app' (no-name-in-module)
-
-------------------------------------------------------------------
-Your code has been rated at 9.41/10 (previous run: 9.66/10, -0.25)
-
