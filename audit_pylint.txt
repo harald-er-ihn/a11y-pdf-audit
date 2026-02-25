@@ -1,5 +1,5 @@
 ************* Module facade
-core/facade.py:75:54: E0602: Undefined variable 'results' (undefined-variable)
+core/facade.py:38:4: R0914: Too many local variables (16/15) (too-many-locals)
 core/facade.py:87:12: E0602: Undefined variable 'shutil' (undefined-variable)
 ************* Module services.pdf_crawler
 core/services/pdf_crawler.py:26:27: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
@@ -32,5 +32,5 @@ web_app/routes_main.py:72:0: C0301: Line too long (103/100) (line-too-long)
 web_app/routes_main.py:77:0: C0301: Line too long (108/100) (line-too-long)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.53/10 (previous run: 9.53/10, +0.00)
+Your code has been rated at 9.59/10 (previous run: 9.53/10, +0.06)
 

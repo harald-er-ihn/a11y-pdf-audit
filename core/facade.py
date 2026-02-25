@@ -63,13 +63,13 @@ class AuditFacade:  # pylint: disable=too-few-public-methods
         )
 
         log_info("--- [2/3] Processing PDFs ---")
-        process_pdf_links(
+        # WICHTIG: Das Ergebnis der Funktion in der Variable 'results' speichern!
+        results = process_pdf_links(
             link_list_file=link_file,
             output_json=json_file,
             temp_dir=self.temp_pdf_dir,
             verapdf_path=self.verapdf_path,
         )
-
         # In run_full_audit am Ende ergänzen:
         log_info("--- [4/4] Finalizing Repair-Package ---")
         repaired_files = [r["repaired_path"] for r in results if r.get("repaired")]
