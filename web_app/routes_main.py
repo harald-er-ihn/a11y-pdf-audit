@@ -141,7 +141,7 @@ def list_reports():
 @main_bp.route("/download/<path:filename>")
 def download_file(filename):
     """Download Route."""
-    if not filename.lower().endswith(".pdf"):
+    if not (filename.lower().endswith(".pdf") or filename.lower().endswith(".zip")):
         log_warning(f"Illegaler Download: {filename}")
         abort(403)
 

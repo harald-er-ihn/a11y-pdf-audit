@@ -51,7 +51,7 @@ web_app/routes_main.py
     F 36:0 start_audit - B (6)
     F 116:0 list_reports - B (6)
     F 166:0 get_logs - A (5)
-    F 142:0 download_file - A (3)
+    F 142:0 download_file - A (4)
     F 30:0 index - A (1)
     F 90:0 about - A (1)
     F 97:0 screenreadable - A (1)
