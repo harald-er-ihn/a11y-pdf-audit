@@ -1,4 +1,6 @@
-/* Grundlegende Typografie & Layout */
+/* ============================================================
+   1. GRUNDLEGENDE TYPOGRAFIE & LAYOUT
+   ============================================================ */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 900px;
@@ -16,31 +18,68 @@ main {
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-/* Überschriften */
+.container {
+    width: 100%;
+}
+
+/* ============================================================
+   2. ÜBERSCHRIFTEN & HEADER
+   ============================================================ */
 h1 { color: #2c3e50; margin-bottom: 0.5rem; }
 h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 2rem; }
 h3 { color: #555; margin-top: 1.5rem; }
 
-/* Header Titel (jetzt Div für SEO, sieht aus wie H2) */
+/* Header Titel (Div für SEO, optisch wie H2) */
 .header-title {
     color: #34495e;
     font-size: 1.5em;
     font-weight: bold;
     border-bottom: 2px solid #eee;
     padding-bottom: 0.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: block;
 }
 
-/* Bilder */
+/* Bilder / Logo */
 .header-logo {
     max-width: 100%;
     height: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     display: block;
+    /* Verhindert schwarze Artefakte auf manchen Readern */
+    background-color: transparent; 
 }
 
-/* Formulare */
+/* ============================================================
+   3. NAVIGATION (GRID)
+   ============================================================ */
+.nav-row {
+    display: grid;
+    /* Mobil: 2 Spalten, exakt gleich breit */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+/* Spezialverhalten für Buttons in der Navigation */
+.nav-row .btn-secondary {
+    display: flex;
+    width: 100%;
+    padding: 0.8rem 0.5rem;
+    margin: 0; /* Verhindert Versatz im Grid */
+}
+
+@media (min-width: 600px) {
+    .nav-row {
+        /* Desktop: Alle 4 nebeneinander */
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================================
+   4. FORMULARE & INPUTS
+   ============================================================ */
 fieldset {
     border: 1px solid #ddd;
     padding: 1.5rem;
@@ -61,7 +100,9 @@ label {
     font-weight: 600;
 }
 
-input[type="text"], input[type="url"], input[type="number"] {
+input[type="text"], 
+input[type="url"], 
+input[type="number"] {
     width: 100%;
     padding: 0.75rem;
     margin-top: 0.25rem;
@@ -71,52 +112,84 @@ input[type="text"], input[type="url"], input[type="number"] {
     font-size: 1rem;
 }
 
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 120px;
+}
+
 .hint {
     font-size: 0.85rem;
     color: #666;
     margin-top: 0.25rem;
 }
 
-/* Buttons */
+/* ============================================================
+   5. BUTTONS
+   ============================================================ */
+/* Basis für alle Buttons */
+.btn-primary, .btn-secondary, .btn-danger, .btn-donate {
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: 500;
+    border: none;
+    box-sizing: border-box;
+}
+
+.btn-primary:active, .btn-secondary:active { transform: scale(0.98); }
+
+/* Primärer Button (Breit & auffällig) */
 .btn-primary {
     display: inline-block;
     padding: 0.8rem 2rem;
     background-color: #005A9C;
     color: white;
-    border: none;
-    border-radius: 4px;
     font-size: 1.1rem;
-    cursor: pointer;
-    text-decoration: none;
 }
 .btn-primary:hover { background-color: #004a80; }
 
+/* Sekundärer Button (Kompakt im Text, breit in der Nav) */
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    background-color: #6c757d;
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.btn-secondary:hover { background-color: #5a6268; }
 
 .btn-danger {
     background-color: #c0392b;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
+    padding: 5px 12px;
 }
 .btn-danger:hover { background-color: #a93226; }
 
-/* Donation Button - Golden */
 .btn-donate {
     display: inline-block;
     padding: 0.6rem 1.2rem;
     background-color: #FFC439; /* PayPal Gold */
     color: #000;
-    text-decoration: none;
-    border-radius: 20px; /* Rund */
+    border-radius: 20px;
     font-size: 0.9rem;
     font-weight: bold;
     border: 1px solid #daaa2e;
 }
 .btn-donate:hover { background-color: #f2b826; }
 
-/* Tabellen */
+/* ============================================================
+   6. TABELLEN
+   ============================================================ */
 .report-table {
     width: 100%;
     border-collapse: collapse;
@@ -129,18 +202,9 @@ input[type="text"], input[type="url"], input[type="number"] {
 }
 .report-table th { background-color: #f2f2f2; }
 
-.architecture-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-.architecture-table th { text-align: left; padding: 10px 12px; font-family: monospace; }
-.architecture-table td { font-family: monospace; padding: 6px 12px; }
-
-/* Logs */
+/* ============================================================
+   7. LOGS & TERMINAL
+   ============================================================ */
 .log-container {
     background-color: #1e1e1e;
     color: #00ff00;
@@ -162,16 +226,18 @@ input[type="text"], input[type="url"], input[type="number"] {
     justify-content: space-between;
 }
 .log-content {
-    height: 160px;
+    height: 180px;
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-all;
 }
 
-/* Footer Styling */
+/* ============================================================
+   8. FOOTER
+   ============================================================ */
 .footer {
     margin-top: 3rem;
-    padding-top: 1rem;
+    padding: 2rem 0;
     border-top: 1px solid #ddd;
     text-align: center;
     color: #666;
@@ -179,25 +245,21 @@ input[type="text"], input[type="url"], input[type="number"] {
 }
 .footer p { margin-bottom: 1rem; }
 
-/* Utility */
+/* ============================================================
+   9. UTILITY CLASSES
+   ============================================================ */
 .text-center { text-align: center; }
+.text-right { text-align: right; }
 .text-success { color: #2e7d32; }
 .text-error { color: #c0392b; }
-.mt-40 { margin-top: 40px; }
-.mb-20 { margin-bottom: 20px; }
 
-/* --- Utility Classes for HTML refactoring --- */
 .mt-30 { margin-top: 30px; }
 .mt-40 { margin-top: 40px; }
 .mb-20 { margin-bottom: 20px; }
-.p-2rem { padding: 2rem; }
-.text-right { text-align: right; }
+
 .font-08 { font-size: 0.8rem; }
 .font-09 { font-size: 0.9rem; }
-.font-12 { font-size: 1.2rem; }
 .w-15 { width: 15%; }
-.pre-wrap { white-space: pre-wrap; }
-.inline-form { display: inline; }
 
 .bg-gray-box {
     background-color: #f2f2f2;
@@ -206,67 +268,6 @@ input[type="text"], input[type="url"], input[type="number"] {
     margin: 20px 0;
 }
 
-.log-box-bg {
-    text-align: left;
-    background: #eee;
-    padding: 1rem;
-    border-radius: 5px;
-    margin-top: 1rem;
-}
-
 .status-idle { color: #aaa; }
 .status-live { color: #00ff00; }
 .status-offline { color: #ff0000; }
-
-/* --- Navigation Grid Layout --- */
-
-/* Der Container für die Buttons */
-.nav-row {
-    display: grid;
-    /* Auf dem Handy: 2 Spalten, die sich den Platz exakt teilen (1fr) */
-    grid-template-columns: repeat(2, 1fr); 
-    /* Abstand horizontal und vertikal absolut identisch */
-    gap: 10px; 
-    margin: 1.5rem 0;
-    width: 100%;
-}
-.btn-secondary {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    background-color: #6c757d;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-.btn-secondary:hover { background-color: #5a6268; }
-
-/* Optimierung deines bestehenden Buttons */
-.btn-secondary {
-    /* WICHTIG: Kein inline-block mehr, damit der Button die Grid-Zelle füllt */
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    padding: 0.8rem 0.5rem; /* Etwas mehr Höhe für bessere Touch-Bedienung */
-    background-color: #6c757d;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    text-align: center;
-    box-sizing: border-box;
-    transition: background-color 0.2s;
-}
-
-.btn-secondary:hover { 
-    background-color: #5a6268; 
-}
-
-/* Desktop-Ansicht: Wenn genug Platz ist, alle 4 nebeneinander */
-@media (min-width: 600px) {
-    .nav-row {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
