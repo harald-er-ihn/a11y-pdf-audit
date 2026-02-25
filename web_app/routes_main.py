@@ -128,8 +128,9 @@ def list_reports():
         if os.path.exists(vol_root):
             candidates.update(os.listdir(vol_root))
 
-        files = sorted(
-            [f for f in candidates if f.lower().endswith(".pdf")],
+        
+         files = sorted(
+            [f for f in candidates if f.lower().endswith((".pdf", ".zip"))],
             reverse=True,
         )
     except OSError as err:

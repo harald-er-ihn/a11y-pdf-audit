@@ -1,3 +1,5 @@
+************* Module routes_main
+web_app/routes_main.py:132:25: E0001: Parsing failed: 'unindent does not match any outer indentation level (<unknown>, line 132)' (syntax-error)
 ************* Module facade
 core/facade.py:39:4: R0914: Too many local variables (16/15) (too-many-locals)
 ************* Module services.pdf_crawler
@@ -24,12 +26,10 @@ core/services/pdf_converter.py:28:17: W1510: 'subprocess.run' used without expli
 core/services/pdf_converter.py:30:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 ************* Module utils.zip_utils
 core/utils/zip_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-************* Module routes_main
-web_app/routes_main.py:54:0: C0301: Line too long (104/100) (line-too-long)
-web_app/routes_main.py:56:0: C0301: Line too long (143/100) (line-too-long)
-web_app/routes_main.py:72:0: C0301: Line too long (103/100) (line-too-long)
-web_app/routes_main.py:77:0: C0301: Line too long (108/100) (line-too-long)
+************* Module app
+web_app/app.py:11:0: E0001: Cannot import 'web_app.routes_main' due to 'unindent does not match any outer indentation level (<unknown>, line 132)' (syntax-error)
+web_app/app.py:11:0: E0611: No name 'routes_main' in module 'web_app' (no-name-in-module)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.66/10 (previous run: 9.59/10, +0.07)
+Your code has been rated at 9.41/10 (previous run: 9.66/10, -0.25)
 
