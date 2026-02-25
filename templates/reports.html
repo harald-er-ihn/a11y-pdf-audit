@@ -28,11 +28,23 @@
           <tr>
             <td>{{ file }}</td>
             <td>
-              <a href="/download/{{ file }}"
-                 class="btn-primary font-09"
-                 title="Download {{ file }}">Download</a>
+              {% if file.endswith('.zip') %}
+                <a href="/download/{{ file }}"
+                   class="btn-primary font-09 green"
+                   title="Download {{ file }}">📦 Download All Fixes (ZIP)</a>
+              {% else %}
+                <a href="/download/{{ file }}"
+                   class="btn-primary font-09"
+                   title="Download {{ file }}">Download</a>
+              {% endif %}
             </td>
           </tr>
+          {% for file in files %}
+            <tr>
+              <td>{{ file }}</td>
+              <td></td>
+            </tr>
+          {% endfor %}
         {% else %}
           <tr>
             <td colspan="2" class="text-center" style="padding: 2rem;">

@@ -11,6 +11,7 @@ from core.services.pdf_crawler import crawl_site_logic
 from core.services.pdf_processor import get_verapdf_version, process_pdf_links
 from core.utils.config_loader import load_config
 from core.utils.error_utils import log_info
+from core.utils.zip_utils import create_repair_zip
 
 
 class AuditFacade:  # pylint: disable=too-few-public-methods
@@ -68,6 +69,22 @@ class AuditFacade:  # pylint: disable=too-few-public-methods
             temp_dir=self.temp_pdf_dir,
             verapdf_path=self.verapdf_path,
         )
+
+        # In run_full_audit am Ende ergänzen:
+        log_info("--- [4/4] Finalizing Repair-Package ---")
+        repaired_files = [r["repaired_path"] for r in results if r.get("repaired")]
+
+        if repaired_files:
+            zip_name = f"FIX_PACK_{timestamp}_{safe_name}.zip"
+            zip_path = os.path.join(self.reports_dir, zip_name)
+            create_repair_zip(repaired_files, zip_path)
+            log_info(f"✅ ZIP-Paket erstellt: {zip_name}")
+        else:
+            log_info("ℹ️ Keine Reparaturen notwendig, kein ZIP erstellt.")
+
+        # Cleanup temp_pdfs
+        if os.path.exists(self.temp_pdf_dir):
+            shutil.rmtree(self.temp_pdf_dir)
 
         log_info("--- [3/3] Generating Report ---")
         version = get_verapdf_version(self.verapdf_path)

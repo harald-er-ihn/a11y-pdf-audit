@@ -1,9 +1,12 @@
+************* Module facade
+core/facade.py:75:54: E0602: Undefined variable 'results' (undefined-variable)
+core/facade.py:87:12: E0602: Undefined variable 'shutil' (undefined-variable)
 ************* Module services.pdf_crawler
 core/services/pdf_crawler.py:26:27: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
 core/services/pdf_crawler.py:116:0: R0914: Too many local variables (17/15) (too-many-locals)
 ************* Module services.pdf_processor
-core/services/pdf_processor.py:154:0: C0301: Line too long (112/100) (line-too-long)
-core/services/pdf_processor.py:110:0: R0914: Too many local variables (19/15) (too-many-locals)
+core/services/pdf_processor.py:155:0: C0301: Line too long (112/100) (line-too-long)
+core/services/pdf_processor.py:111:0: R0914: Too many local variables (19/15) (too-many-locals)
 ************* Module services.generate_report_from_json
 core/services/generate_report_from_json.py:85:0: C0301: Line too long (116/100) (line-too-long)
 core/services/generate_report_from_json.py:183:0: C0301: Line too long (108/100) (line-too-long)
@@ -15,6 +18,13 @@ core/services/generate_report_from_json.py:301:4: W0612: Unused variable 'b_url'
 core/services/generate_report_from_json.py:304:4: W0612: Unused variable 'v_ver' (unused-variable)
 core/services/generate_report_from_json.py:305:4: W0612: Unused variable 'l_path' (unused-variable)
 core/services/generate_report_from_json.py:306:4: W0612: Unused variable 'c_info' (unused-variable)
+************* Module services.pdf_converter
+core/services/pdf_converter.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+core/services/pdf_converter.py:35:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_converter.py:28:17: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
+core/services/pdf_converter.py:30:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+************* Module utils.zip_utils
+core/utils/zip_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module routes_main
 web_app/routes_main.py:54:0: C0301: Line too long (104/100) (line-too-long)
 web_app/routes_main.py:56:0: C0301: Line too long (143/100) (line-too-long)
@@ -22,5 +32,5 @@ web_app/routes_main.py:72:0: C0301: Line too long (103/100) (line-too-long)
 web_app/routes_main.py:77:0: C0301: Line too long (108/100) (line-too-long)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.73/10 (previous run: 9.73/10, +0.00)
+Your code has been rated at 9.53/10 (previous run: 9.53/10, +0.00)
 

@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 import requests
 from PyPDF2 import PdfReader
 
+from core.services.pdf_converter import convert_to_pdfa
 from core.utils.config_loader import load_config
 from core.utils.error_utils import log_error, log_info, log_warning
 
@@ -243,9 +244,22 @@ def _process_single_pdf(url, idx, total, temp_dir, verapdf_path):
                 "status_strict": st_st,
                 "details": sr_det,
                 "details_strict": st_det,
-                "profile": "ScreenReadable",
+                "repaired": False,  # NEU
+                "repaired_path": None,  # NEU
             }
         )
+
+        # REPARATUR-LOGIK (v1.3.0)
+        if sr_st == "FAIL":
+            repaired_fname = f"FIXED_{fname}"
+            repaired_path = os.path.join(temp_dir, repaired_fname)
+
+        # Original noch auf Platte (falls gelöscht, nochmal downloaden oder lpath behalten)
+        if convert_to_pdfa(lpath, repaired_path):
+            entry["repaired"] = True
+            entry["repaired_path"] = repaired_path
+            log_info(f"   🔧 Reparaturversuch erfolgreich: {repaired_fname}")
+
         _log_verification_result(fname, sr_st, st_st, sr_det)
     except Exception as err:  # pylint: disable=broad-exception-caught
         entry.update({"status": "ERROR", "details": f"Download/System Fehler: {err}"})

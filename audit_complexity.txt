@@ -1,7 +1,7 @@
 core/facade.py
-    C 16:0 AuditFacade - A (2)
-    M 21:4 AuditFacade.__init__ - A (1)
-    M 37:4 AuditFacade.run_full_audit - A (1)
+    M 38:4 AuditFacade.run_full_audit - A (5)
+    C 17:0 AuditFacade - A (4)
+    M 22:4 AuditFacade.__init__ - A (1)
 core/controller.py
     F 50:0 _cleanup_old_reports - B (9)
     F 25:0 _keep_alive_worker - A (5)
@@ -17,15 +17,15 @@ core/services/pdf_crawler.py
     M 30:4 CrawlContext.close - A (2)
     M 21:4 CrawlContext.__init__ - A (1)
 core/services/pdf_processor.py
-    F 110:0 _run_verapdf - B (10)
-    F 260:0 process_pdf_links - B (8)
-    F 20:0 get_verapdf_version - B (7)
-    F 189:0 _log_verification_result - B (7)
-    F 203:0 _process_single_pdf - B (6)
-    F 76:0 _get_pdf_metadata - A (5)
-    F 92:0 _parse_verapdf_output - A (5)
-    F 170:0 _download_file - A (4)
-    F 60:0 _parse_creation_date - A (3)
+    F 111:0 _run_verapdf - B (10)
+    F 204:0 _process_single_pdf - B (8)
+    F 274:0 process_pdf_links - B (8)
+    F 21:0 get_verapdf_version - B (7)
+    F 190:0 _log_verification_result - B (7)
+    F 77:0 _get_pdf_metadata - A (5)
+    F 93:0 _parse_verapdf_output - A (5)
+    F 171:0 _download_file - A (4)
+    F 61:0 _parse_creation_date - A (3)
 core/services/generate_report_from_json.py
     F 207:0 _apply_pdf_metadata - B (8)
     F 118:0 _build_file_list - B (7)
@@ -35,6 +35,8 @@ core/services/generate_report_from_json.py
     F 76:0 _get_about_section - A (1)
     F 98:0 _build_summary - A (1)
     F 293:0 main_test - A (1)
+core/services/pdf_converter.py
+    F 7:0 convert_to_pdfa - A (3)
 core/utils/config_loader.py
     F 9:0 load_config - A (2)
 core/utils/error_utils.py
@@ -42,6 +44,8 @@ core/utils/error_utils.py
     F 36:0 log_info - A (1)
     F 41:0 log_error - A (1)
     F 46:0 log_warning - A (1)
+core/utils/zip_utils.py
+    F 7:0 create_repair_zip - A (4)
 web_app/routes_main.py
     F 188:0 cleanup_files - B (9)
     F 36:0 start_audit - B (6)

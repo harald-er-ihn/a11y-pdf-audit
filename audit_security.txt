@@ -1,4 +1,4 @@
-Run started:2026-02-25 21:11:25.934747
+Run started:2026-02-25 21:57:54.011777
 
 Test results:
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -10,6 +10,26 @@ Test results:
 41	        except Exception:  # pylint: disable=broad-exception-caught
 42	            pass
 43	
+
+--------------------------------------------------
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.5/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: core/services/pdf_converter.py:2:0
+1	import os
+2	import subprocess
+3	
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: core/services/pdf_converter.py:28:17
+27	        log_info(f"   🛠️ Repariere: {os.path.basename(input_path)}")
+28	        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+29	
 
 --------------------------------------------------
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -48,28 +68,28 @@ Test results:
    Severity: Low   Confidence: High
    CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b110_try_except_pass.html
-   Location: core/services/pdf_processor.py:87:4
-86	            meta["date"] = _parse_creation_date(reader.metadata)
-87	    except Exception:  # pylint: disable=broad-exception-caught
-88	        pass
-89	    return meta
+   Location: core/services/pdf_processor.py:88:4
+87	            meta["date"] = _parse_creation_date(reader.metadata)
+88	    except Exception:  # pylint: disable=broad-exception-caught
+89	        pass
+90	    return meta
 
 --------------------------------------------------
 
 Code scanned:
-	Total lines of code: 1035
+	Total lines of code: 1103
 	Total lines skipped (#nosec): 2
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 1
 
 Run metrics:
 	Total issues (by severity):
 		Undefined: 0
-		Low: 5
+		Low: 7
 		Medium: 0
 		High: 0
 	Total issues (by confidence):
 		Undefined: 0
 		Low: 0
 		Medium: 0
-		High: 5
+		High: 7
 Files skipped (0):

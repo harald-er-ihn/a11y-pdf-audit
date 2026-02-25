@@ -187,6 +187,17 @@ input[type="number"] {
 }
 .btn-donate:hover { background-color: #f2b826; }
 
+
+.btn-primary.green {
+    background-color: #2e7d32; /* Sattes Waldgrün */
+    border: 1px solid #1b5e20;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary.green:hover {
+    background-color: #1b5e20;
+    transform: translateY(-1px);
+}
 /* ============================================================
    6. TABELLEN
    ============================================================ */

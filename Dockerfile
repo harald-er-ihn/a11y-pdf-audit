@@ -11,6 +11,7 @@ COPY requirements.txt /app/requirements.txt
 # Systempakete inkl. Java, Zeitzone, etc.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        ghostscript \
         default-jre \
         curl \
         unzip \
