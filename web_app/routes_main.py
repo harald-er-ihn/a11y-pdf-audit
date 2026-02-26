@@ -120,18 +120,18 @@ def list_reports():
     rep_dir = os.path.join(vol_root, "reports")
     os.makedirs(rep_dir, exist_ok=True)
 
-    files = []
-    try:
-        candidates = set()
-        if os.path.exists(rep_dir):
-            candidates.update(os.listdir(rep_dir))
-        if os.path.exists(vol_root):
-            candidates.update(os.listdir(vol_root))
+    # Filtern nach PDF und ZIP
+    files = [f for f in candidates if f.lower().endswith((".pdf", ".zip"))]
+        
+    # Sortier-Logik: Wir extrahieren den Zeitstempel (Teil nach dem ersten _)
+    # Beispiel: REPORT_20260226-001642... -> Key wird '20260226-001642'
+    def sort_key(filename):
+        parts = filename.split('_')
+        if len(parts) > 1:
+            return parts[1] # Das ist das Datum-Zeit-Stück
+        return filename
 
-        files = sorted(
-            [f for f in candidates if f.lower().endswith((".pdf", ".zip"))],
-            reverse=True,
-        )
+        files.sort(key=sort_key, reverse=True)
     except OSError as err:
         log_error(f"Fehler beim Listen: {err}")
 

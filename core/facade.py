@@ -83,10 +83,6 @@ class AuditFacade:  # pylint: disable=too-few-public-methods
         else:
             log_info("ℹ️ Keine Reparaturen notwendig, kein ZIP erstellt.")
 
-        # Cleanup temp_pdfs
-        if os.path.exists(self.temp_pdf_dir):
-            shutil.rmtree(self.temp_pdf_dir)
-
         log_info("--- [3/3] Generating Report ---")
         version = get_verapdf_version(self.verapdf_path)
 
@@ -103,4 +99,10 @@ class AuditFacade:  # pylint: disable=too-few-public-methods
         )
 
         log_info(f"--- Fertig: {pdf_report} ---")
+
+        # Cleanup temp_pdfs
+        if os.path.exists(self.temp_pdf_dir):
+            shutil.rmtree(self.temp_pdf_dir)
+        log_info("--- Fertig:  Cleanup temp_pdfs  ---")
+
         return pdf_report

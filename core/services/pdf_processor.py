@@ -111,6 +111,7 @@ def _parse_verapdf_output(output, local_path):
 def _run_verapdf(verapdf_cli_path, local_path, profile_path=None, forced_timeout=None):
     """Führt den VeraPDF Check für eine Datei aus."""
     cfg = load_config()
+    t_factor = cfg["audit"].get("timeout_factor", 4)
     timeout_check = forced_timeout or cfg["audit"].get("timeout_check_sec", 120)
     retries = cfg["audit"].get("verapdf_retries", 1)
 

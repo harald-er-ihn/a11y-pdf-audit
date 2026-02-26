@@ -34,18 +34,16 @@ class CrawlContext:  # pylint: disable=too-few-public-methods
 
 
 def is_exact_domain(url, allowed_netloc):
-    """
-    Prüft, ob die URL exakt zur erlaubten Domain gehört.
-    """
     try:
-        netloc = urlparse(url).netloc
+        netloc = urlparse(url).netloc.lower()  # .lower() hier wichtig!
         if not netloc:
             return True
-        return (
-            netloc == allowed_netloc
-            or netloc == allowed_netloc.replace("www.", "")
-            or allowed_netloc == netloc.replace("www.", "")
-        )
+
+        # Bereinigte allowed_netloc (ohne www.)
+        clean_allowed = allowed_netloc.lower().replace("www.", "")
+        clean_netloc = netloc.replace("www.", "")
+
+        return clean_netloc == clean_allowed
     except ValueError:
         return False
 
@@ -118,8 +116,7 @@ def crawl_site_logic(
 ):
     """Hauptfunktion des Crawlers."""
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
-
-    allowed_netloc = urlparse(start_url).netloc
+    allowed_netloc = urlparse(start_url).netloc.lower()  # Hier einmal klein machen
     log_info(f"Crawler Scope: Nur {allowed_netloc}")
 
     config = {

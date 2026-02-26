@@ -1,4 +1,4 @@
-Run started:2026-02-25 23:30:40.848217
+Run started:2026-02-26 08:10:10.249930
 
 Test results:
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -36,22 +36,22 @@ Test results:
    Severity: Low   Confidence: High
    CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b110_try_except_pass.html
-   Location: core/services/pdf_crawler.py:73:8
-72	                        pdf_links.add(loc)
-73	        except Exception:  # pylint: disable=broad-exception-caught
-74	            pass
-75	
+   Location: core/services/pdf_crawler.py:71:8
+70	                        pdf_links.add(loc)
+71	        except Exception:  # pylint: disable=broad-exception-caught
+72	            pass
+73	
 
 --------------------------------------------------
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
    Severity: Low   Confidence: High
    CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b110_try_except_pass.html
-   Location: core/services/pdf_crawler.py:158:16
-157	                        continue
-158	                except Exception:  # pylint: disable=broad-exception-caught
-159	                    pass
-160	
+   Location: core/services/pdf_crawler.py:155:16
+154	                        continue
+155	                except Exception:  # pylint: disable=broad-exception-caught
+156	                    pass
+157	
 
 --------------------------------------------------
 >> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
@@ -77,7 +77,7 @@ Test results:
 --------------------------------------------------
 
 Code scanned:
-	Total lines of code: 1104
+	Total lines of code: 1097
 	Total lines skipped (#nosec): 2
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 1
 
@@ -92,4 +92,5 @@ Run metrics:
 		Low: 0
 		Medium: 0
 		High: 7
-Files skipped (0):
+Files skipped (1):
+	web_app/routes_main.py (syntax error while parsing AST from file)
