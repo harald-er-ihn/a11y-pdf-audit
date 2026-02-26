@@ -1,15 +1,15 @@
-Run started:2026-02-26 17:26:18.151955
+Run started:2026-02-26 17:44:29.812571
 
 Test results:
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
    Severity: Low   Confidence: High
    CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b110_try_except_pass.html
-   Location: core/controller.py:41:8
-40	            requests.get(target_url, timeout=10)
-41	        except Exception:  # pylint: disable=broad-exception-caught
-42	            pass
-43	
+   Location: core/controller.py:35:8
+34	            requests.get(target_url, timeout=10)
+35	        except Exception:
+36	            pass
+37	        if stop_event.wait(timeout=20):
 
 --------------------------------------------------
 >> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
@@ -87,7 +87,7 @@ Test results:
 --------------------------------------------------
 
 Code scanned:
-	Total lines of code: 1141
+	Total lines of code: 1130
 	Total lines skipped (#nosec): 2
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 1
 

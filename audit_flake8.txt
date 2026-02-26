@@ -1,5 +1,6 @@
-core/controller.py:73:80: E501 line too long (85 > 79 characters)
-core/controller.py:80:80: E501 line too long (87 > 79 characters)
+core/controller.py:19:80: E501 line too long (86 > 79 characters)
+core/controller.py:62:80: E501 line too long (87 > 79 characters)
+core/controller.py:75:80: E501 line too long (85 > 79 characters)
 core/facade.py:9:1: F401 'core.utils.error_utils.log_error' imported but unused
 core/facade.py:29:80: E501 line too long (85 > 79 characters)
 core/facade.py:32:80: E501 line too long (83 > 79 characters)
@@ -66,7 +67,7 @@ web_app/routes_main.py:85:80: E501 line too long (83 > 79 characters)
 web_app/routes_main.py:131:80: E501 line too long (85 > 79 characters)
 web_app/routes_main.py:144:80: E501 line too long (89 > 79 characters)
 web_app/routes_main.py:161:80: E501 line too long (84 > 79 characters)
-57    E501 line too long (85 > 79 characters)
+58    E501 line too long (86 > 79 characters)
 2     F401 'core.utils.error_utils.log_error' imported but unused
 3     F541 f-string is missing placeholders
 6     F841 local variable 'j_file' is assigned to but never used

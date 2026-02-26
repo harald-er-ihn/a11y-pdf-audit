@@ -3,10 +3,10 @@ core/facade.py
     C 13:0 AuditFacade - A (5)
     M 14:4 AuditFacade.__init__ - A (1)
 core/controller.py
-    F 50:0 _cleanup_old_reports - B (9)
-    F 25:0 _keep_alive_worker - A (5)
-    F 76:0 _run_job - A (4)
-    F 18:0 start_audit_background - A (1)
+    F 41:0 _cleanup_old_reports - B (8)
+    F 24:0 _keep_alive_worker - A (5)
+    F 59:0 _run_job - A (5)
+    F 17:0 start_audit_background - A (1)
 core/services/pdf_crawler.py
     F 88:0 _process_links - B (9)
     F 110:0 crawl_site_logic - B (9)

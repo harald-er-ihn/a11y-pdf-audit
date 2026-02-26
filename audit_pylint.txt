@@ -5,6 +5,9 @@ core/facade.py:26:4: C0116: Missing function or method docstring (missing-functi
 core/facade.py:45:18: E1123: Unexpected keyword argument 'force_ai' in function call (unexpected-keyword-arg)
 core/facade.py:13:0: R0903: Too few public methods (1/2) (too-few-public-methods)
 core/facade.py:9:0: W0611: Unused log_error imported from core.utils.error_utils (unused-import)
+************* Module controller
+core/controller.py:35:15: W0718: Catching too general exception Exception (broad-exception-caught)
+core/controller.py:83:11: W0718: Catching too general exception Exception (broad-exception-caught)
 ************* Module services.pdf_crawler
 core/services/pdf_crawler.py:26:27: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
 core/services/pdf_crawler.py:110:0: R0914: Too many local variables (17/15) (too-many-locals)
@@ -47,8 +50,7 @@ web_app/routes_main.py:60:0: C0301: Line too long (104/100) (line-too-long)
 web_app/routes_main.py:62:0: C0301: Line too long (143/100) (line-too-long)
 web_app/routes_main.py:78:0: C0301: Line too long (103/100) (line-too-long)
 web_app/routes_main.py:83:0: C0301: Line too long (108/100) (line-too-long)
-web_app/routes_main.py:89:8: E1123: Unexpected keyword argument 'force_ai' in function call (unexpected-keyword-arg)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.27/10 (previous run: 9.27/10, +0.00)
+Your code has been rated at 9.30/10 (previous run: 9.27/10, +0.03)
 

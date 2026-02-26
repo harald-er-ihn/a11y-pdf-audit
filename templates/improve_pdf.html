@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Improve PDF (AI) – PDF A11y Auditor{% endblock %}
+{% block content %}
+  <div class="container mt-40">
+    <h1>AI PDF Reconstruction (v1.3.0)</h1>
+    <p class="intro-text">How we transform "flat" PDFs into structured, accessible documents.</p>
+    <div class="bg-gray-box">
+      <h3>The Multi-Stage Process</h3>
+      <ol>
+        <li>
+          <strong>Technical Fix:</strong> We use Ghostscript to repair the PDF syntax, embed missing fonts, and normalize color spaces.
+        </li>
+        <li>
+          <strong>AI Analysis:</strong> Using the <em>Marker</em> engine, we analyze the visual layout to detect headers, tables, and lists.
+        </li>
+        <li>
+          <strong>Semantic Tagging:</strong> The reconstructed content is converted into valid HTML and then rebaked into a PDF/UA compliant container.
+        </li>
+      </ol>
+    </div>
+    <h2>Requirements & Limitations</h2>
+    <p>AI reconstruction is extremely resource-intensive. Therefore:</p>
+    <ul>
+      <li>
+        <strong>Local Only:</strong> This feature is currently only available when running the tool in a local Docker environment with at least 4GB of RAM.
+      </li>
+      <li>
+        <strong>Fly.io:</strong> On Fly.io, the "Improve" checkbox will automatically fall back to the technical Ghostscript fix to prevent server crashes.
+      </li>
+    </ul>
+    <div class="mt-40">
+      <a href="/" class="btn-secondary">Back to Start</a>
+    </div>
+  </div>
+{% endblock %}
