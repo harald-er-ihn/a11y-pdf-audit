@@ -114,26 +114,37 @@ def languages():
 
 @main_bp.route("/reports")
 def list_reports():
-    """Listet verfügbare PDF-Berichte."""
+    """Listet verfügbare PDF-Berichte und ZIP-Pakete auf."""
     cfg = load_config()
     vol_root = cfg["active_paths"]["output"]
     rep_dir = os.path.join(vol_root, "reports")
     os.makedirs(rep_dir, exist_ok=True)
 
-    # Filtern nach PDF und ZIP
-    files = [f for f in candidates if f.lower().endswith((".pdf", ".zip"))]
-        
-    # Sortier-Logik: Wir extrahieren den Zeitstempel (Teil nach dem ersten _)
-    # Beispiel: REPORT_20260226-001642... -> Key wird '20260226-001642'
-    def sort_key(filename):
-        parts = filename.split('_')
-        if len(parts) > 1:
-            return parts[1] # Das ist das Datum-Zeit-Stück
-        return filename
+    files = []
+    try:
+        # 1. Sammle alle Dateien aus beiden Verzeichnissen (Set verhindert Dubletten)
+        candidates = set()
+        if os.path.exists(rep_dir):
+            candidates.update(os.listdir(rep_dir))
+        if os.path.exists(vol_root):
+            candidates.update(os.listdir(vol_root))
 
+        # 2. Filtern nach PDF und ZIP
+        files = [f for f in candidates if f.lower().endswith((".pdf", ".zip"))]
+
+        # 3. Sortier-Hilfsfunktion: Zeitstempel nach dem ersten '_' extrahieren
+        def sort_key(filename):
+            parts = filename.split("_")
+            # Erwartet Format: REPORT_20260226-001642... oder FIX_PACK_20260226-001642...
+            if len(parts) > 1:
+                return parts[1]  # Das Datum-Zeit-Stück
+            return filename
+
+        # 4. Sortieren (Neueste zuerst)
         files.sort(key=sort_key, reverse=True)
+
     except OSError as err:
-        log_error(f"Fehler beim Listen: {err}")
+        log_error(f"Fehler beim Listen der Dateien: {err}")
 
     return render_template("reports.html", files=files)
 
