@@ -56,5 +56,5 @@ web_app/routes_main.py:84:0: C0301: Line too long (103/100) (line-too-long)
 web_app/routes_main.py:89:0: C0301: Line too long (108/100) (line-too-long)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.43/10 (previous run: 9.36/10, +0.07)
+Your code has been rated at 9.43/10 (previous run: 9.43/10, +0.00)
 
