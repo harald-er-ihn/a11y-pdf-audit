@@ -47,8 +47,7 @@ def start_audit():
         depth = int(request.form.get("depth", 1))
     except ValueError:
         return "Ungültige Eingabe", 400
-    improve_pdf = request.form.get("improve_pdf") == "on"
-
+    force_ai = request.form.get("improve_pdf") == "on"
     if url:
         url = url.strip()
 
@@ -87,7 +86,7 @@ def start_audit():
             )
 
         # 3. Audit starten, da URL valide ist
-        start_audit_background(url, max_p, depth, force_ai=improve_pdf)
+        start_audit_background(url, max_p, depth, force_ai=force_ai)
         return render_template("success.html", url=url)
 
     return "URL fehlt", 400

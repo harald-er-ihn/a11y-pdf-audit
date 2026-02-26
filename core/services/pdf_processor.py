@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 import requests
 from PyPDF2 import PdfReader
 
-from core.services.pdf_converter import convert_to_pdfa, run_improvement
+from core.services.pdf_converter import run_improvement
 from core.utils.config_loader import load_config
 from core.utils.error_utils import log_error, log_info, log_warning
 
