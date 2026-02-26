@@ -52,5 +52,5 @@ web_app/routes_main.py:84:0: C0301: Line too long (108/100) (line-too-long)
 web_app/routes_main.py:90:8: E1123: Unexpected keyword argument 'force_ai' in function call (unexpected-keyword-arg)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.19/10 (previous run: 9.65/10, -0.46)
+Your code has been rated at 9.19/10 (previous run: 9.19/10, +0.00)
 
