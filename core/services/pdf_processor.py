@@ -217,36 +217,38 @@ def _process_single_pdf(url, idx, total, temp_dir, verapdf_path, force_ai=False)
     }
 
     try:
-        # Download (vereinfacht für dieses Listing)
-        resp = requests.get(url, timeout=20)
+        # Download
+        resp = requests.get(url, timeout=20, stream=True)
         with open(lpath, "wb") as f:
-            f.write(resp.content)
+            for chunk in resp.iter_content(chunk_size=8192):
+                f.write(chunk)
 
-        # 1. Audit (Strict & SR) - Logik wie gehabt
-        from core.services.pdf_processor import _run_verapdf  # interner Aufruf
-
+        # 1. Audit Original (Rufe die Funktion einfach direkt auf, sie ist ja in derselben Datei)
         st_st, st_det, _, t_used = _run_verapdf(verapdf_path, lpath)
+
+        cfg = load_config()
         sr_st, sr_det, _, _ = _run_verapdf(
-            verapdf_path,
-            lpath,
-            load_config()["active_paths"].get("custom_profile"),
-            t_used,
+            verapdf_path, lpath, cfg["active_paths"].get("custom_profile"), t_used
         )
 
-        entry.update(
-            {
-                "status": sr_st,
-                "status_strict": st_st,
-                "details": sr_det,
-                "details_strict": st_det,
-            }
-        )
+        entry.update({"status": sr_st, "status_strict": st_st, "details": sr_det})
 
+        # 2. Verbesserung (AI oder GS)
         if sr_st == "FAIL":
             improved_path = os.path.join(temp_dir, f"IMPROVED_{fname}")
             if run_improvement(lpath, improved_path, force_ai=force_ai):
                 entry["repaired"] = True
                 entry["repaired_path"] = improved_path
+
+                # ERFOLGSKONTROLLE
+                _, _, _, _ = _run_verapdf(verapdf_path, improved_path)
+                sr_aft, _, _, _ = _run_verapdf(
+                    verapdf_path,
+                    improved_path,
+                    cfg["active_paths"].get("custom_profile"),
+                    t_used,
+                )
+                entry["status_after"] = sr_aft
 
     except Exception as err:
         log_error(f"Fehler bei {fname}: {err}")

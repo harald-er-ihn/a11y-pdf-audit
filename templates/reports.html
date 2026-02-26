@@ -1,11 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Reports – PDF A11y Auditor on Fly.io{% endblock %}
-{% block meta_description %}View live logs and download generated accessibility audit reports (PDF/UA).{% endblock %}
+{% block title %}Reports – PDF A11y Auditor{% endblock %}
 {% block content %}
   <div class="container">
     <h1>Audit Reports Overview</h1>
-    <p class="intro-text">View live server logs and download generated reports from your accessibility scans.</p>
-    <!-- LOG FENSTER -->
     <div class="log-container">
       <div class="log-header">
         <span>🖥️ Live Server Log</span>
@@ -13,14 +10,12 @@
       </div>
       <div class="log-content" id="terminal-output">Waiting for logs...</div>
     </div>
-    <!-- H2 für bessere Struktur -->
     <h2>Downloads</h2>
-    <p>Download the results of your accessibility scans here.</p>
     <table class="report-table">
       <thead>
         <tr>
           <th>Available Files</th>
-          <th>Action</th>
+          <th class="text-right">Action</th>
         </tr>
       </thead>
       <tbody id="file-list-body">
@@ -28,82 +23,51 @@
           <tr>
             <td>{{ file }}</td>
             <td class="text-right">
-              <!-- text-right für saubere Buttons -->
-              {% if file.lower().startswith('improve') or file.lower().endswith('.zip') %}
-                <a href="/download/{{ file }}"
-                   class="btn-primary green font-09"
-                   title="Download Improved PDF Files (ZIP)">📦 Download Improved PDF Files (ZIP)</a>
+              {% if file.lower().endswith('.zip') %}
+                <a href="/download/{{ file }}" class="btn-primary green font-09">📦 Download Fix-Pack (ZIP)</a>
+              {% elif 'IMPROVED_REPORT' in file.upper() %}
+                <a href="/download/{{ file }}" class="btn-primary green font-09">📈 View Success-Report (PDF)</a>
+              {% else %}
+                <a href="/download/{{ file }}" class="btn-primary font-09">📄 Download Main Report (PDF)</a>
               {% endif %}
-              <a href="/download/{{ file }}"
-                 class="btn-primary font-09"
-                 title="Download PDF Report">📄 Download Report (PDF)</a>
-            {% endif %}
-          </td>
-        </tr>
-      {% else %}
-        <tr>
-          <td colspan="2" class="text-center" style="padding: 2rem;">
-            <em>No reports found yet. Start an audit first.</em>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-<script>
-    /* ... (JavaScript bleibt unverändert) ... */
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="2" class="text-center" style="padding: 2rem;">
+              <em>No reports found yet. Start an audit first.</em>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>
     const logOutput = document.getElementById('terminal-output');
     const logStatus = document.getElementById('log-status');
     let isAutoScrolling = true;
     let reloadTriggered = false;
 
-    logOutput.addEventListener('scroll', () => {
-        if (logOutput.scrollTop + logOutput.clientHeight >= logOutput.scrollHeight - 10) {
-            isAutoScrolling = true;
-        } else {
-            isAutoScrolling = false;
-        }
-    });
-
     function fetchLogs() {
         if (reloadTriggered) return;
-
         fetch('/api/logs')
             .then(response => response.json())
             .then(data => {
                 if (data.logs) {
-                    const text = data.logs;
-                    logOutput.textContent = text;
-                    
-                    if (text.trim() === "") {
-                         logStatus.textContent = "● Idle";
-                         logStatus.className = "status-idle";
-                    } else {
-                        logStatus.textContent = "● Live";
-                        logStatus.className = "status-live";
-                    }
-                    
-                    if (isAutoScrolling) {
-                        logOutput.scrollTop = logOutput.scrollHeight;
-                    }
-
-                    if (text.includes("Prozess fertig.") || text.includes("Job beendet:")) {
+                    logOutput.textContent = data.logs;
+                    logStatus.textContent = data.logs.trim() === "" ? "● Idle" : "● Live";
+                    logStatus.className = data.logs.trim() === "" ? "status-idle" : "status-live";
+                    if (isAutoScrolling) logOutput.scrollTop = logOutput.scrollHeight;
+                    if (data.logs.includes("Prozess fertig.")) {
                         logStatus.textContent = "✅ Done - Refreshing...";
                         reloadTriggered = true;
-                        
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2500); 
+                        setTimeout(() => { window.location.reload(); }, 2500);
                     }
                 }
             })
-            .catch(err => {
-                logStatus.textContent = "○ Offline";
-                logStatus.className = "status-offline";
-            });
+            .catch(() => { logStatus.textContent = "○ Offline"; });
     }
-
     setInterval(fetchLogs, 2000);
     fetchLogs();
-</script>
+  </script>
 {% endblock %}

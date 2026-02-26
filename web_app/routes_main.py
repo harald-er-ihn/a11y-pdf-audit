@@ -63,7 +63,7 @@ def start_audit():
             }
             # stream=True sorgt dafür, dass wir nur den Header laden und nicht die ganze Seite
             requests.get(
-                url, headers=headers, timeout=5, allow_redirects=True, stream=True
+                url, headers=headers, timeout=3, allow_redirects=True, stream=True
             )
             # WICHTIG: Wir rufen absichtlich KEIN raise_for_status() auf!
             # Wenn ein Server mit 403 (Forbidden) oder 500 antwortet, bedeutet das:
