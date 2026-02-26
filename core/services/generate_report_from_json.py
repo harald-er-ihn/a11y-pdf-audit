@@ -290,6 +290,63 @@ def create_report(  # pylint: disable=too-many-arguments
             return False
 
 
+# In generate_report_from_json.py die Funktion _build_improved_list hinzufügen:
+
+
+def _build_improved_file_list(results):
+    """Baut die Liste der verbesserten Dateien für das Ende des Reports."""
+    improved_items = [r for r in results if r.get("repaired")]
+
+    if not improved_items:
+        return "<p>No files were improved during this run.</p>"
+
+    html = "<ul>"
+    for entry in improved_items:
+        fname = html.escape(entry.get("filename", "unknown"))
+        st_before = entry.get("status", "FAIL")
+        st_after = entry.get("status_after", "UNKNOWN")
+
+        # Farbauswahl für den Vorher/Nachher Vergleich
+        cls_after = "status-pass" if st_after == "PASS" else "status-fail"
+
+        html += f"""
+        <li style='margin-bottom: 10pt;'>
+            <Lbl></Lbl>
+            <LBody>
+                <strong>{fname}</strong><br>
+                <span style='font-size: 0.9em;'>
+                    Improvement Result: 
+                    <span class='status-fail'>[{st_before}]</span> ➔ 
+                    <span class='{cls_after}'>[{st_after}]</span>
+                </span>
+            </LBody>
+        </li>
+        """
+    html += "</ul>"
+    return html
+
+
+def generate_html_content(results, verapdf_version, base_url, logo_path, config_info):
+    # ... (dein bisheriger Code bis zum Ende der Detailed Results) ...
+
+    main_html = f"""
+        <!DOCTYPE html><html>...
+        <body>
+            {footer}{header}{summary}{_get_about_section(cfg_gen)}
+            <h2>Validation Details</h2>{verapdf_info}
+            <h2>Detailed Results (Original Files)</h2>{file_list}
+            
+            <!-- NEUE SEKTION -->
+            <div style="page-break-before: always;"></div>
+            <h2>Improved PDF Files (Success Audit)</h2>
+            <p>The following files failed the initial audit and were automatically processed for accessibility improvements. 
+            The status below shows the re-validation results of the <em>improved</em> versions.</p>
+            {_build_improved_file_list(results)}
+        </body></html>
+    """
+    return main_html
+
+
 def main_test():
     """Testfunktion für lokale Ausführung."""
     setup_logging(log_dir="output")

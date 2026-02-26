@@ -21,6 +21,8 @@ RUN apt-get update && \
         libffi8 \
         libglib2.0-0 \
         fonts-dejavu-core \
+        fonts-liberation \
+        fonts-liberation2 \
         build-essential \
         python3-dev \
         python3-setuptools \

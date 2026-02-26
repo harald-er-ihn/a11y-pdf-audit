@@ -232,24 +232,18 @@ def _process_single_pdf(url, idx, total, temp_dir, verapdf_path, force_ai=False)
         )
 
         entry.update({"status": sr_st, "status_strict": st_st, "details": sr_det})
-
-        # 2. Verbesserung (AI oder GS)
-        if sr_st == "FAIL":
-            improved_path = os.path.join(temp_dir, f"IMPROVED_{fname}")
-            if run_improvement(lpath, improved_path, force_ai=force_ai):
-                entry["repaired"] = True
-                entry["repaired_path"] = improved_path
-
-                # ERFOLGSKONTROLLE
-                _, _, _, _ = _run_verapdf(verapdf_path, improved_path)
-                sr_aft, _, _, _ = _run_verapdf(
-                    verapdf_path,
-                    improved_path,
-                    cfg["active_paths"].get("custom_profile"),
-                    t_used,
-                )
-                entry["status_after"] = sr_aft
-
+    
+    # In pdf_processor.py -> _process_single_pdf
+    if sr_st == "FAIL":
+        improved_path = os.path.join(temp_dir, f"IMPROVED_{fname}")
+        if run_improvement(lpath, improved_path, force_ai=force_ai):
+            entry["repaired"] = True
+            entry["repaired_path"] = improved_path
+        
+            # Prüfung des verbesserten Files (für den Report)
+            _, _, _, _ = _run_verapdf(verapdf_path, improved_path)
+            sr_aft, _, _, _ = _run_verapdf(verapdf_path, improved_path, cfg["active_paths"].get("custom_profile"), t_used)
+            entry["status_after"] = sr_aft # Das hier ist der Key für den Report!
     except Exception as err:
         log_error(f"Fehler bei {fname}: {err}")
     return entry
