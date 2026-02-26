@@ -31,4 +31,8 @@ weasyprint>=63.0
 # --- PDF-Metadaten ---
 pikepdf>=8.10.0
 psutil==5.9.8
-
+transformers==4.38.0
+pillow==10.2.0
+torch==2.2.0
+langdetect==1.0.9
+deep-translator==1.11.4

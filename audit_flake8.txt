@@ -31,12 +31,15 @@ core/services/generate_report_from_json.py:301:5: F841 local variable 'b_url' is
 core/services/generate_report_from_json.py:304:5: F841 local variable 'v_ver' is assigned to but never used
 core/services/generate_report_from_json.py:305:5: F841 local variable 'l_path' is assigned to but never used
 core/services/generate_report_from_json.py:306:5: F841 local variable 'c_info' is assigned to but never used
-core/services/pdf_converter.py:6:1: F401 'core.utils.error_utils.log_warning' imported but unused
-core/services/pdf_converter.py:46:80: E501 line too long (80 > 79 characters)
-core/services/pdf_converter.py:90:18: F541 f-string is missing placeholders
-core/services/pdf_converter.py:98:80: E501 line too long (80 > 79 characters)
-core/services/pdf_converter.py:113:18: F541 f-string is missing placeholders
-core/services/pdf_converter.py:116:18: F541 f-string is missing placeholders
+core/services/pdf_converter.py:8:1: F401 'core.utils.error_utils.log_warning' imported but unused
+core/services/pdf_converter.py:51:80: E501 line too long (80 > 79 characters)
+core/services/pdf_converter.py:75:80: E501 line too long (80 > 79 characters)
+core/services/pdf_converter.py:80:80: E501 line too long (80 > 79 characters)
+core/services/pdf_converter.py:86:33: W291 trailing whitespace
+core/services/pdf_converter.py:96:80: E501 line too long (80 > 79 characters)
+core/services/pdf_converter.py:106:80: E501 line too long (81 > 79 characters)
+core/services/pdf_converter.py:132:80: E501 line too long (84 > 79 characters)
+core/services/pdf_converter.py:150:80: E501 line too long (80 > 79 characters)
 core/services/pdf_crawler.py:42:80: E501 line too long (87 > 79 characters)
 core/services/pdf_crawler.py:100:80: E501 line too long (85 > 79 characters)
 core/services/pdf_crawler.py:102:80: E501 line too long (86 > 79 characters)
@@ -58,6 +61,8 @@ core/services/pdf_processor.py:234:80: E501 line too long (82 > 79 characters)
 core/services/pdf_processor.py:269:80: E501 line too long (88 > 79 characters)
 core/utils/config_loader.py:31:80: E501 line too long (82 > 79 characters)
 core/utils/config_loader.py:32:80: E501 line too long (84 > 79 characters)
+core/utils/image_captioning.py:1:1: F401 'torch' imported but unused
+core/utils/lang_utils.py:30:80: E501 line too long (86 > 79 characters)
 web_app/routes_main.py:66:80: E501 line too long (104 > 79 characters)
 web_app/routes_main.py:68:80: E501 line too long (143 > 79 characters)
 web_app/routes_main.py:70:80: E501 line too long (94 > 79 characters)
@@ -70,7 +75,7 @@ web_app/routes_main.py:91:80: E501 line too long (83 > 79 characters)
 web_app/routes_main.py:137:80: E501 line too long (85 > 79 characters)
 web_app/routes_main.py:150:80: E501 line too long (89 > 79 characters)
 web_app/routes_main.py:167:80: E501 line too long (84 > 79 characters)
-61    E501 line too long (86 > 79 characters)
-2     F401 'core.utils.error_utils.log_error' imported but unused
-3     F541 f-string is missing placeholders
+67    E501 line too long (86 > 79 characters)
+3     F401 'core.utils.error_utils.log_error' imported but unused
 6     F841 local variable 'j_file' is assigned to but never used
+1     W291 trailing whitespace

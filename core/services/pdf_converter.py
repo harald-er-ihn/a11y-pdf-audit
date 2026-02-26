@@ -1,9 +1,13 @@
+import argparse
 import os
 import subprocess
 
+import pikepdf
 import psutil
 
 from core.utils.error_utils import log_error, log_info, log_warning
+from core.utils.image_captioning import get_image_description
+from core.utils.lang_utils import get_document_language, translate_description
 
 # Marker-Import mit Fallback
 try:
@@ -27,8 +31,9 @@ def is_on_fly():
     return os.environ.get("FLY_APP_NAME") is not None
 
 
-def convert_to_pdfa_technical(input_path, output_path):
-    """Klassische technische Reparatur via Ghostscript (v1.3 Standard)."""
+def fix_technical(input_path, output_path):
+    """Klassische technische Reparatur via Ghostscript."""
+    # Ghostscript Parameter zur technischen Sanierung nach PDF/A-1b
     cmd = [
         "gs",
         "-dPDFA",
@@ -46,72 +51,102 @@ def convert_to_pdfa_technical(input_path, output_path):
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
         return result.returncode == 0 and os.path.exists(output_path)
     except Exception as e:
-        log_error(f"   ❌ Ghostscript Fehler: {e}")
+        if not __name__ == "__main__":  # Im CLI wollen wir print nutzen
+            log_error(f"   ❌ Ghostscript Fehler: {e}")
         return False
 
 
 def improve_with_marker(input_path, output_path):
-    """Semantische Rekonstruktion via Marker."""
     try:
         models = load_all_models()
-        full_text, _, _ = convert_single_pdf(input_path, models)
-        HTML(string=f"<html><body>{full_text}</body></html>").write_pdf(
-            output_path, pdf_variant="pdf/ua-1"
-        )
-        return True
-    except Exception as e:
-        log_error(f"Marker Error: {e}")
-        return False
+        full_text, images, _ = convert_single_pdf(input_path, models)
 
+        # --- NEU: Sprache erkennen ---
+        doc_lang = get_document_language(full_text)
 
-def fix_technical(input_path, output_path):
-    """Technische Rekonstruktion via Ghostscript."""
-    cmd = [
-        "gs",
-        "-dPDFA",
-        "-dBATCH",
-        "-dNOPAUSE",
-        "-dNOOUTERSAVE",
-        "-sDEVICE=pdfwrite",
-        "-dPDFACompatibilityPolicy=1",
-        "-sOutputFile=" + output_path,
-        input_path,
-    ]
-    return subprocess.run(cmd, capture_output=True).returncode == 0
+        # 2. Bilder mit BLIP beschreiben UND übersetzen
+        for img_name, img_data in images.items():
+            en_description = get_image_description(img_data)
 
+            # --- NEU: Beschreibung übersetzen ---
+            final_description = translate_description(en_description, doc_lang)
+            log_info(f"   🖼️ Bild: {final_description} ({doc_lang})")
 
-def improve_pdf_with_ai(input_path, output_path):
-    """Semantische Rekonstruktion via Marker AI (v1.3 High-End)."""
-    if not HAS_AI_LIBS:
-        log_error("   ❌ KI-Bibliotheken (Marker/Torch) nicht installiert.")
-        return False
+            temp_img_path = os.path.join(os.path.dirname(output_path), img_name)
+            img_data.save(temp_img_path)
 
-    try:
-        log_info(f"   🤖 KI-Modelle werden geladen (Marker)...")
-        models = load_all_models()
-        # PDF -> Markdown/HTML Struktur
-        full_text, images, out_meta = convert_single_pdf(input_path, models)
+            full_text = full_text.replace(
+                f"[{img_name}]",
+                f'<img src="file://{temp_img_path}" alt="{final_description}">',
+            )
 
-        # Das Ergebnis (Markdown/HTML) via WeasyPrint als PDF/UA neu aufbauen
-        # (Einfacher Wrapper um den Text für dieses Beispiel)
-        html_content = f"<html><body>{full_text}</body></html>"
+        # 3. HTML bauen (mit dynamischer Sprache)
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="{doc_lang}"> 
+        <head>
+            <meta charset="UTF-8">
+            <style>body {{ font-family: DejaVu Sans, sans-serif; }}</style>
+        </head>
+        <body>{full_text}</body>
+        </html>
+        """
+
+        # 4. WeasyPrint
         HTML(string=html_content).write_pdf(output_path, pdf_variant="pdf/ua-1")
+
+        # 5. Metadaten-Fix (Pikepdf)
+        with pikepdf.open(output_path, allow_overwriting_input=True) as pdf:
+            # WICHTIG für VeraPDF: Sprache im Root-Level setzen!
+            pdf.Root.Lang = pikepdf.String(doc_lang)
+
+            # Tab-Order & DisplayDocTitle (wie gehabt)
+            for page in pdf.pages:
+                page.Tabs = pikepdf.Name("/S")
+            pdf.Root.ViewerPreferences = pikepdf.Dictionary(DisplayDocTitle=True)
+            pdf.save(output_path)
+
         return True
     except Exception as e:
-        log_error(f"   ❌ Marker AI Fehler: {e}")
+        log_error(f"   ❌ Fehler: {e}")
         return False
 
 
 def run_improvement(input_path, output_path, force_ai=False):
-    """
-    Hauptfunktion: Entscheidet zwischen technischem Fix und KI-Rekonstruktion.
-    """
-    total_ram = psutil.virtual_memory().total / (1024**3)
-    on_fly = os.environ.get("FLY_APP_NAME") is not None
+    """Entscheidungslogik zwischen GS und Marker."""
+    if not os.path.exists(input_path):
+        return False
 
+    total_ram = psutil.virtual_memory().total / (1024**3)
+    on_fly = is_on_fly()
+
+    # KI Modus nur wenn lokal, genug RAM und Libs vorhanden
     if force_ai and not on_fly and total_ram >= 4 and HAS_AI_LIBS:
-        log_info(f"   ✨ Modus: AI-Rekonstruktion (Marker)")
         return improve_with_marker(input_path, output_path)
     else:
-        log_info(f"   🔧 Modus: Technischer Fix (Ghostscript)")
         return fix_technical(input_path, output_path)
+
+
+# --- CLI INTERFACE ---
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="PDF A11y Auditor - Converter CLI")
+    parser.add_argument("input", help="Pfad zum Quell-PDF")
+    parser.add_argument("output", help="Pfad zum Ziel-PDF")
+    parser.add_argument(
+        "--ai",
+        action="store_true",
+        help="Nutze Marker AI für Rekonstruktion (benötigt viel RAM)",
+    )
+
+    args = parser.parse_args()
+
+    print(f"🚀 Starte Konvertierung: {args.input}")
+
+    success = run_improvement(args.input, args.output, force_ai=args.ai)
+
+    if success:
+        print(f"✅ Erfolg! Datei gespeichert unter: {args.output}")
+        # Kleiner Bonus: Direkt VeraPDF Check vorschlagen
+        print(f"Tipp: Prüfe die Datei mit: verapdf --format text {args.output}")
+    else:
+        print(f"❌ Fehler bei der Konvertierung von {args.input}")

@@ -29,20 +29,24 @@ core/services/generate_report_from_json.py:304:4: W0612: Unused variable 'v_ver'
 core/services/generate_report_from_json.py:305:4: W0612: Unused variable 'l_path' (unused-variable)
 core/services/generate_report_from_json.py:306:4: W0612: Unused variable 'c_info' (unused-variable)
 ************* Module services.pdf_converter
+core/services/pdf_converter.py:86:32: C0303: Trailing whitespace (trailing-whitespace)
 core/services/pdf_converter.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-core/services/pdf_converter.py:4:0: E0401: Unable to import 'psutil' (import-error)
-core/services/pdf_converter.py:48:11: W0718: Catching too general exception Exception (broad-exception-caught)
-core/services/pdf_converter.py:46:17: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
-core/services/pdf_converter.py:62:11: W0718: Catching too general exception Exception (broad-exception-caught)
-core/services/pdf_converter.py:80:11: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
-core/services/pdf_converter.py:100:11: W0718: Catching too general exception Exception (broad-exception-caught)
-core/services/pdf_converter.py:90:17: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
-core/services/pdf_converter.py:93:19: W0612: Unused variable 'images' (unused-variable)
-core/services/pdf_converter.py:93:27: W0612: Unused variable 'out_meta' (unused-variable)
-core/services/pdf_converter.py:112:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-core/services/pdf_converter.py:113:17: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
-core/services/pdf_converter.py:116:17: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
-core/services/pdf_converter.py:6:0: W0611: Unused log_warning imported from core.utils.error_utils (unused-import)
+core/services/pdf_converter.py:53:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_converter.py:51:17: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
+core/services/pdf_converter.py:54:11: C0117: Consider changing "not __name__ == '__main__'" to "__name__ != '__main__'" (unnecessary-negation)
+core/services/pdf_converter.py:59:0: C0116: Missing function or method docstring (missing-function-docstring)
+core/services/pdf_converter.py:110:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_converter.py:124:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+core/services/pdf_converter.py:8:0: W0611: Unused log_warning imported from core.utils.error_utils (unused-import)
+************* Module utils.image_captioning
+core/utils/image_captioning.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+core/utils/image_captioning.py:13:4: W0603: Using the global statement (global-statement)
+core/utils/image_captioning.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/utils/image_captioning.py:1:0: W0611: Unused import torch (unused-import)
+************* Module utils.lang_utils
+core/utils/lang_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+core/utils/lang_utils.py:18:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/utils/lang_utils.py:32:11: W0718: Catching too general exception Exception (broad-exception-caught)
 ************* Module utils.zip_utils
 core/utils/zip_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module routes_main
@@ -52,5 +56,5 @@ web_app/routes_main.py:84:0: C0301: Line too long (103/100) (line-too-long)
 web_app/routes_main.py:89:0: C0301: Line too long (108/100) (line-too-long)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.36/10 (previous run: 9.36/10, +0.00)
+Your code has been rated at 9.43/10 (previous run: 9.36/10, +0.07)
 
