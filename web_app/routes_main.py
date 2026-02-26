@@ -32,6 +32,12 @@ def index():
     return render_template("index.html")
 
 
+@main_bp.route("/german-law")
+def german_law():
+    """Zeigt die Seite mit den rechtlichen Hinweisen an."""
+    return render_template("german_law.html")
+
+
 @main_bp.route("/improve-pdf")
 def improve_pdf_info():
     """Details zum KI-Rekonstruktions-Feature."""

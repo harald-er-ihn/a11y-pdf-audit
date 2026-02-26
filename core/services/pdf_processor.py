@@ -255,7 +255,9 @@ def _process_single_pdf(url, idx, total, temp_dir, verapdf_path, force_ai=False)
     return entry
 
 
-def process_pdf_links(link_list_file, output_json, temp_dir, verapdf_path):
+def process_pdf_links(
+    link_list_file, output_json, temp_dir, verapdf_path, force_ai=False
+):
     """Hauptfunktion zur Verarbeitung der Linkliste."""
     os.makedirs(temp_dir, exist_ok=True)
 
