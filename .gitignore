@@ -2,6 +2,7 @@
 venv/
 .venv/
 .env
+vendor_packages/
 
 # Bytecode / caches
 __pycache__/

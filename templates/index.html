@@ -42,6 +42,18 @@
                    required>
             <p class="hint">We automatically add "https://" if omitted and check if the site is reachable.</p>
             <div class="form-row">
+              <!-- In templates/index.html innerhalb des fieldsets -->
+              <div class="form-group mt-20">
+                <label class="checkbox-container">
+                  <input type="checkbox" name="improve_pdf" id="improve_pdf">
+                  <span class="checkmark"></span>
+                  Improve PDF Files (AI-reconstruction)
+                </label>
+                <p class="hint">
+                  Uses AI to recreate the document structure (Headers, Tables).
+                  <a href="/improve-pdf" target="_blank">Read more about this feature︎</a>.
+                </p>
+              </div>
               <div class="form-group">
                 <label for="max_pages">Max. Pages</label>
                 <input type="number"

@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 import requests
 from PyPDF2 import PdfReader
 
-from core.services.pdf_converter import convert_to_pdfa
+from core.services.pdf_converter import convert_to_pdfa, run_improvement
 from core.utils.config_loader import load_config
 from core.utils.error_utils import log_error, log_info, log_warning
 
@@ -202,42 +202,36 @@ def _log_verification_result(fname, sr_status, st_status, sr_details):
 
 
 # pylint: disable=too-many-locals
-def _process_single_pdf(url, idx, total, temp_dir, verapdf_path):
+def _process_single_pdf(url, idx, total, temp_dir, verapdf_path, force_ai=False):
     """Lädt ein einzelnes PDF und prüft es."""
     fname = os.path.basename(urlparse(url).path) or f"doc_{idx}.pdf"
     lpath = os.path.join(temp_dir, fname)
-
     log_info(f"[{idx}/{total}] ⏳ Prüfe: {fname}")
 
     entry = {
         "url": url,
         "filename": fname,
         "status": "UNKNOWN",
-        "details": "",
-        "profile": "",
-        "author": "Unknown",
-        "date": "Unknown",
+        "repaired": False,
+        "repaired_path": None,
     }
 
     try:
-        _download_file(url, lpath)
-        entry.update(_get_pdf_metadata(lpath))
+        # Download (vereinfacht für dieses Listing)
+        resp = requests.get(url, timeout=20)
+        with open(lpath, "wb") as f:
+            f.write(resp.content)
 
-        # 1. Strikter Check
-        st_st, st_det, _, timeout_used = _run_verapdf(verapdf_path, lpath)
+        # 1. Audit (Strict & SR) - Logik wie gehabt
+        from core.services.pdf_processor import _run_verapdf  # interner Aufruf
 
-        # 2. Lockere Prüfung
-        if st_st == "ERROR" and "Timeout" in st_det:
-            sr_st = "ERROR"
-            sr_det = "VeraPDF Timeout (Skipped SR Check)"
-            log_warning(f"   ⏩ Überspringe SR-Check: {fname}")
-        else:
-            sr_st, sr_det, _, _ = _run_verapdf(
-                verapdf_path,
-                lpath,
-                load_config()["active_paths"].get("custom_profile"),
-                timeout_used,
-            )
+        st_st, st_det, _, t_used = _run_verapdf(verapdf_path, lpath)
+        sr_st, sr_det, _, _ = _run_verapdf(
+            verapdf_path,
+            lpath,
+            load_config()["active_paths"].get("custom_profile"),
+            t_used,
+        )
 
         entry.update(
             {
@@ -245,30 +239,17 @@ def _process_single_pdf(url, idx, total, temp_dir, verapdf_path):
                 "status_strict": st_st,
                 "details": sr_det,
                 "details_strict": st_det,
-                "repaired": False,  # NEU
-                "repaired_path": None,  # NEU
             }
         )
 
-        # REPARATUR-LOGIK (v1.3.0)
         if sr_st == "FAIL":
-            repaired_fname = f"FIXED_{fname}"
-            repaired_path = os.path.join(temp_dir, repaired_fname)
+            improved_path = os.path.join(temp_dir, f"IMPROVED_{fname}")
+            if run_improvement(lpath, improved_path, force_ai=force_ai):
+                entry["repaired"] = True
+                entry["repaired_path"] = improved_path
 
-        # Original noch auf Platte (falls gelöscht, nochmal downloaden oder lpath behalten)
-        if convert_to_pdfa(lpath, repaired_path):
-            entry["repaired"] = True
-            entry["repaired_path"] = repaired_path
-            log_info(f"   🔧 Reparaturversuch erfolgreich: {repaired_fname}")
-
-        _log_verification_result(fname, sr_st, st_st, sr_det)
-    except Exception as err:  # pylint: disable=broad-exception-caught
-        entry.update({"status": "ERROR", "details": f"Download/System Fehler: {err}"})
-        log_error(f"   Dateifehler ({fname}): {err}")
-    finally:
-        if os.path.exists(lpath):
-            os.remove(lpath)
-
+    except Exception as err:
+        log_error(f"Fehler bei {fname}: {err}")
     return entry
 
 

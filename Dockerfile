@@ -43,10 +43,17 @@ COPY . /app
 # VeraPDF CLI ins Container-Verzeichnis kopieren
 COPY verapdf_local/bin/greenfield-apps-1.28.2.jar /opt/verapdf/veraPDF-cli.jar
 
+# Marker AI (Local only)
+WORKDIR /app/vendor_packages
+COPY vendor_packages /app/vendor_packages
+RUN pip install --no-index --find-links=/app/vendor_packages torch torchvision || true
+RUN pip install marker-pdf || true
+
+
 ENV FLASK_HOST=0.0.0.0
 ENV FLASK_PORT=8000
 ENV FLASK_DEBUG=False
-ENV PYTHONPATH="/usr/lib/python3/dist-packages:/usr/local/lib/python3.12/site-packages"
+ENV PYTHONPATH="/usr/lib/python3/dist-packages:/usr/local/lib/python3.12/site-packages:/app"
 # Zeitzone für Python erzwingen
 ENV TZ=Europe/Berlin
 
@@ -54,3 +61,6 @@ EXPOSE 8000
 
 # ÄNDERUNG: --workers auf 1 gesetzt
 CMD ["gunicorn", "web_app.app:app", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "300"]
+
+
+

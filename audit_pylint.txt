@@ -1,12 +1,21 @@
 ************* Module facade
-core/facade.py:39:4: R0914: Too many local variables (16/15) (too-many-locals)
+core/facade.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+core/facade.py:13:0: C0115: Missing class docstring (missing-class-docstring)
+core/facade.py:26:4: C0116: Missing function or method docstring (missing-function-docstring)
+core/facade.py:45:18: E1123: Unexpected keyword argument 'force_ai' in function call (unexpected-keyword-arg)
+core/facade.py:13:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+core/facade.py:9:0: W0611: Unused log_error imported from core.utils.error_utils (unused-import)
 ************* Module services.pdf_crawler
 core/services/pdf_crawler.py:26:27: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
-core/services/pdf_crawler.py:36:0: C0116: Missing function or method docstring (missing-function-docstring)
-core/services/pdf_crawler.py:114:0: R0914: Too many local variables (17/15) (too-many-locals)
+core/services/pdf_crawler.py:110:0: R0914: Too many local variables (17/15) (too-many-locals)
 ************* Module services.pdf_processor
 core/services/pdf_processor.py:156:0: C0301: Line too long (112/100) (line-too-long)
+core/services/pdf_processor.py:16:0: E0611: No name 'convert_to_pdfa' in module 'core.services.pdf_converter' (no-name-in-module)
 core/services/pdf_processor.py:111:0: R0914: Too many local variables (19/15) (too-many-locals)
+core/services/pdf_processor.py:205:0: R0913: Too many arguments (6/5) (too-many-arguments)
+core/services/pdf_processor.py:251:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_processor.py:226:8: C0415: Import outside toplevel (core.services.pdf_processor._run_verapdf) (import-outside-toplevel)
+core/services/pdf_processor.py:16:0: W0611: Unused convert_to_pdfa imported from core.services.pdf_converter (unused-import)
 ************* Module services.generate_report_from_json
 core/services/generate_report_from_json.py:85:0: C0301: Line too long (116/100) (line-too-long)
 core/services/generate_report_from_json.py:183:0: C0301: Line too long (108/100) (line-too-long)
@@ -20,17 +29,28 @@ core/services/generate_report_from_json.py:305:4: W0612: Unused variable 'l_path
 core/services/generate_report_from_json.py:306:4: W0612: Unused variable 'c_info' (unused-variable)
 ************* Module services.pdf_converter
 core/services/pdf_converter.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-core/services/pdf_converter.py:35:11: W0718: Catching too general exception Exception (broad-exception-caught)
-core/services/pdf_converter.py:28:17: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
-core/services/pdf_converter.py:30:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+core/services/pdf_converter.py:4:0: E0401: Unable to import 'psutil' (import-error)
+core/services/pdf_converter.py:48:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_converter.py:46:17: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
+core/services/pdf_converter.py:62:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_converter.py:80:11: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
+core/services/pdf_converter.py:100:11: W0718: Catching too general exception Exception (broad-exception-caught)
+core/services/pdf_converter.py:90:17: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+core/services/pdf_converter.py:93:19: W0612: Unused variable 'images' (unused-variable)
+core/services/pdf_converter.py:93:27: W0612: Unused variable 'out_meta' (unused-variable)
+core/services/pdf_converter.py:112:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+core/services/pdf_converter.py:113:17: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+core/services/pdf_converter.py:116:17: W1309: Using an f-string that does not have any interpolated variables (f-string-without-interpolation)
+core/services/pdf_converter.py:6:0: W0611: Unused log_warning imported from core.utils.error_utils (unused-import)
 ************* Module utils.zip_utils
 core/utils/zip_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module routes_main
-web_app/routes_main.py:54:0: C0301: Line too long (104/100) (line-too-long)
-web_app/routes_main.py:56:0: C0301: Line too long (143/100) (line-too-long)
-web_app/routes_main.py:72:0: C0301: Line too long (103/100) (line-too-long)
-web_app/routes_main.py:77:0: C0301: Line too long (108/100) (line-too-long)
+web_app/routes_main.py:61:0: C0301: Line too long (104/100) (line-too-long)
+web_app/routes_main.py:63:0: C0301: Line too long (143/100) (line-too-long)
+web_app/routes_main.py:79:0: C0301: Line too long (103/100) (line-too-long)
+web_app/routes_main.py:84:0: C0301: Line too long (108/100) (line-too-long)
+web_app/routes_main.py:90:8: E1123: Unexpected keyword argument 'force_ai' in function call (unexpected-keyword-arg)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.65/10 (previous run: 9.66/10, -0.01)
+Your code has been rated at 9.19/10 (previous run: 9.65/10, -0.46)
 

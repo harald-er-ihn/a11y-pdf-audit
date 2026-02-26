@@ -34,16 +34,12 @@ class CrawlContext:  # pylint: disable=too-few-public-methods
 
 
 def is_exact_domain(url, allowed_netloc):
+    """Versucht, die eingegebene URL valide zu machen."""
     try:
-        netloc = urlparse(url).netloc.lower()  # .lower() hier wichtig!
+        netloc = urlparse(url).netloc.lower()
         if not netloc:
             return True
-
-        # Bereinigte allowed_netloc (ohne www.)
-        clean_allowed = allowed_netloc.lower().replace("www.", "")
-        clean_netloc = netloc.replace("www.", "")
-
-        return clean_netloc == clean_allowed
+        return netloc.replace("www.", "") == allowed_netloc.lower().replace("www.", "")
     except ValueError:
         return False
 
@@ -115,6 +111,7 @@ def crawl_site_logic(
     start_url, output_file, max_pages=50, max_depth=1, user_agent="Bot"
 ):
     """Hauptfunktion des Crawlers."""
+    allowed_netloc = urlparse(start_url).netloc.lower()
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     allowed_netloc = urlparse(start_url).netloc.lower()  # Hier einmal klein machen
     log_info(f"Crawler Scope: Nur {allowed_netloc}")

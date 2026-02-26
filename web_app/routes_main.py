@@ -32,6 +32,12 @@ def index():
     return render_template("index.html")
 
 
+@main_bp.route("/improve-pdf")
+def improve_pdf_info():
+    """Details zum KI-Rekonstruktions-Feature."""
+    return render_template("improve_pdf.html")
+
+
 @main_bp.route("/start-audit", methods=["POST"])
 def start_audit():
     """Startet den Audit-Prozess inkl. intelligenter URL-Validierung."""
@@ -41,6 +47,7 @@ def start_audit():
         depth = int(request.form.get("depth", 1))
     except ValueError:
         return "Ungültige Eingabe", 400
+    improve_pdf = request.form.get("improve_pdf") == "on"
 
     if url:
         url = url.strip()
@@ -80,7 +87,7 @@ def start_audit():
             )
 
         # 3. Audit starten, da URL valide ist
-        start_audit_background(url, max_p, depth)
+        start_audit_background(url, max_p, depth, force_ai=improve_pdf)
         return render_template("success.html", url=url)
 
     return "URL fehlt", 400

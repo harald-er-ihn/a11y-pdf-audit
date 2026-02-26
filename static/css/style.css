@@ -282,3 +282,21 @@ input[type="number"] {
 .status-idle { color: #aaa; }
 .status-live { color: #00ff00; }
 .status-offline { color: #ff0000; }
+
+/* ============================================================
+   10. Checkbox Styling 
+   ============================================================ */
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    gap: 10px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #005A9C;
+}

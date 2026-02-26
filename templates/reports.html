@@ -29,28 +29,28 @@
             <td>{{ file }}</td>
             <td class="text-right">
               <!-- text-right für saubere Buttons -->
-              {% if file.lower().endswith('.zip') %}
+              {% if file.lower().startswith('improve') or file.lower().endswith('.zip') %}
                 <a href="/download/{{ file }}"
                    class="btn-primary green font-09"
-                   title="Download Repair-ZIP-Pack">📦 Download All Fixes (ZIP)</a>
-              {% else %}
-                <a href="/download/{{ file }}"
-                   class="btn-primary font-09"
-                   title="Download PDF Report">📄 Download Report (PDF)</a>
+                   title="Download Improved PDF Files (ZIP)">📦 Download Improved PDF Files (ZIP)</a>
               {% endif %}
-            </td>
-          </tr>
-        {% else %}
-          <tr>
-            <td colspan="2" class="text-center" style="padding: 2rem;">
-              <em>No reports found yet. Start an audit first.</em>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <script>
+              <a href="/download/{{ file }}"
+                 class="btn-primary font-09"
+                 title="Download PDF Report">📄 Download Report (PDF)</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="2" class="text-center" style="padding: 2rem;">
+            <em>No reports found yet. Start an audit first.</em>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
     /* ... (JavaScript bleibt unverändert) ... */
     const logOutput = document.getElementById('terminal-output');
     const logStatus = document.getElementById('log-status');
@@ -105,5 +105,5 @@
 
     setInterval(fetchLogs, 2000);
     fetchLogs();
-  </script>
+</script>
 {% endblock %}
