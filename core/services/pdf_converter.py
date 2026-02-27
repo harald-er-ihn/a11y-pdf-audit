@@ -68,7 +68,10 @@ def improve_with_marker(input_path, output_path):
         # WICHTIG: Marker erwartet Modelle ohne vordefinierte Pfade bei Problemen
         full_text, images, *rest = convert_single_pdf(input_path, load_all_models())
 
-        doc_lang = get_document_language(full_text)
+        # Sprache validieren (Fix: 'English' -> 'en')
+        raw_lang = get_document_language(full_text)
+        doc_lang = raw_lang[:2].lower()  # Erzwingt ISO-Code (z.B. 'de' statt 'Deutsch')
+
         alt_map = _process_ai_images(images, os.path.dirname(output_path), doc_lang)
 
         # HTML-Aufbau

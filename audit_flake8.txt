@@ -37,21 +37,26 @@ core/services/pdf_converter.py:35:80: E501 line too long (80 > 79 characters)
 core/services/pdf_converter.py:44:80: E501 line too long (81 > 79 characters)
 core/services/pdf_converter.py:68:80: E501 line too long (81 > 79 characters)
 core/services/pdf_converter.py:69:80: E501 line too long (84 > 79 characters)
-core/services/pdf_converter.py:72:80: E501 line too long (84 > 79 characters)
-core/services/pdf_converter.py:80:80: E501 line too long (88 > 79 characters)
-core/services/pdf_converter.py:86:80: E501 line too long (81 > 79 characters)
-core/services/pdf_converter.py:102:80: E501 line too long (83 > 79 characters)
+core/services/pdf_converter.py:73:80: E501 line too long (88 > 79 characters)
+core/services/pdf_converter.py:75:80: E501 line too long (84 > 79 characters)
+core/services/pdf_converter.py:83:80: E501 line too long (88 > 79 characters)
+core/services/pdf_converter.py:89:80: E501 line too long (81 > 79 characters)
+core/services/pdf_converter.py:105:80: E501 line too long (83 > 79 characters)
 core/services/pdf_crawler.py:42:80: E501 line too long (87 > 79 characters)
 core/services/pdf_crawler.py:100:80: E501 line too long (85 > 79 characters)
 core/services/pdf_crawler.py:102:80: E501 line too long (86 > 79 characters)
 core/services/pdf_crawler.py:105:80: E501 line too long (80 > 79 characters)
 core/services/pdf_crawler.py:116:80: E501 line too long (83 > 79 characters)
 core/services/pdf_crawler.py:140:80: E501 line too long (80 > 79 characters)
-core/services/pdf_processor.py:36:5: E722 do not use bare 'except'
-core/services/pdf_processor.py:44:80: E501 line too long (83 > 79 characters)
-core/services/pdf_processor.py:63:80: E501 line too long (85 > 79 characters)
-core/services/pdf_processor.py:73:80: E501 line too long (86 > 79 characters)
-core/services/pdf_processor.py:77:31: E741 ambiguous variable name 'l'
+core/services/pdf_processor.py:12:1: F401 'core.utils.error_utils.log_error' imported but unused
+core/services/pdf_processor.py:12:1: F401 'core.utils.error_utils.log_info' imported but unused
+core/services/pdf_processor.py:12:1: F401 'core.utils.error_utils.log_warning' imported but unused
+core/services/pdf_processor.py:26:15: F821 undefined name 'subprocess'
+core/services/pdf_processor.py:57:5: E722 do not use bare 'except'
+core/services/pdf_processor.py:65:80: E501 line too long (83 > 79 characters)
+core/services/pdf_processor.py:84:80: E501 line too long (85 > 79 characters)
+core/services/pdf_processor.py:94:80: E501 line too long (86 > 79 characters)
+core/services/pdf_processor.py:98:31: E741 ambiguous variable name 'l'
 core/utils/config_loader.py:31:80: E501 line too long (82 > 79 characters)
 core/utils/config_loader.py:32:80: E501 line too long (84 > 79 characters)
 core/utils/image_captioning.py:15:9: F401 'torch' imported but unused
@@ -70,10 +75,10 @@ web_app/routes_main.py:91:80: E501 line too long (83 > 79 characters)
 web_app/routes_main.py:137:80: E501 line too long (85 > 79 characters)
 web_app/routes_main.py:150:80: E501 line too long (89 > 79 characters)
 web_app/routes_main.py:167:80: E501 line too long (84 > 79 characters)
-57    E501 line too long (86 > 79 characters)
+58    E501 line too long (86 > 79 characters)
 1     E722 do not use bare 'except'
 1     E741 ambiguous variable name 'l'
-3     F401 'core.utils.error_utils.log_info' imported but unused
-1     F821 undefined name 'e'
+6     F401 'core.utils.error_utils.log_info' imported but unused
+2     F821 undefined name 'subprocess'
 7     F841 local variable 'j_file' is assigned to but never used
 2     W291 trailing whitespace

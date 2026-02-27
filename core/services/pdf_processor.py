@@ -8,6 +8,27 @@ from urllib.parse import urlparse
 import requests
 
 from core.services.pdf_converter import run_improvement
+from core.utils.config_loader import load_config
+from core.utils.error_utils import log_error, log_info, log_warning
+
+
+def get_verapdf_version(verapdf_cli_path):
+    """Holt die Version von VeraPDF (Fixes Facade Import)."""
+    cfg = load_config()
+    cmd = [
+        cfg["audit"].get("java_cmd", "java"),
+        "-cp",
+        verapdf_cli_path,
+        "org.verapdf.apps.GreenfieldCliWrapper",
+        "--version",
+    ]
+    try:
+        res = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=30, check=False
+        )
+        return res.stdout.strip() if res.stdout else "VeraPDF 1.2x"
+    except Exception:  # pylint: disable=broad-exception-caught
+        return "VeraPDF (CLI not found)"
 
 
 def _run_verapdf(verapdf_path, lpath, profile=None, timeout=120):

@@ -18,9 +18,10 @@ core/services/pdf_crawler.py
     M 30:4 CrawlContext.close - A (2)
     M 21:4 CrawlContext.__init__ - A (1)
 core/services/pdf_processor.py
-    F 40:0 _process_single_pdf - B (7)
-    F 73:0 process_pdf_links - A (5)
-    F 13:0 _run_verapdf - A (4)
+    F 61:0 _process_single_pdf - B (7)
+    F 94:0 process_pdf_links - A (5)
+    F 34:0 _run_verapdf - A (4)
+    F 15:0 get_verapdf_version - A (3)
 core/services/generate_report_from_json.py
     F 208:0 _apply_pdf_metadata - B (8)
     F 138:0 _build_file_list - B (7)
@@ -34,7 +35,7 @@ core/services/generate_report_from_json.py
     F 330:0 main_test - A (1)
 core/services/pdf_converter.py
     F 57:0 improve_with_marker - A (4)
-    F 96:0 run_improvement - A (4)
+    F 99:0 run_improvement - A (4)
     F 34:0 _process_ai_images - A (3)
     F 13:0 fix_technical - A (2)
 core/utils/image_captioning.py

@@ -1,4 +1,4 @@
-Run started:2026-02-27 05:56:13.885715
+Run started:2026-02-27 09:20:02.153221
 
 Test results:
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -54,43 +54,55 @@ Test results:
 154	
 
 --------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: core/services/pdf_processor.py:26:14
+25	    try:
+26	        res = subprocess.run(
+27	            cmd, capture_output=True, text=True, timeout=30, check=False
+28	        )
+29	        return res.stdout.strip() if res.stdout else "VeraPDF 1.2x"
+
+--------------------------------------------------
 >> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/blacklists/blacklist_imports.html#b404-import-subprocess
-   Location: core/services/pdf_processor.py:15:4
-14	    """Führt VeraPDF-Check aus."""
-15	    import subprocess
-16	
+   Location: core/services/pdf_processor.py:36:4
+35	    """Führt VeraPDF-Check aus."""
+36	    import subprocess
+37	
 
 --------------------------------------------------
 >> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b603_subprocess_without_shell_equals_true.html
-   Location: core/services/pdf_processor.py:31:14
-30	    try:
-31	        res = subprocess.run(
-32	            cmd, capture_output=True, text=True, timeout=timeout, check=False
-33	        )
-34	        out = res.stdout.strip()
+   Location: core/services/pdf_processor.py:52:14
+51	    try:
+52	        res = subprocess.run(
+53	            cmd, capture_output=True, text=True, timeout=timeout, check=False
+54	        )
+55	        out = res.stdout.strip()
 
 --------------------------------------------------
 
 Code scanned:
-	Total lines of code: 1063
+	Total lines of code: 1083
 	Total lines skipped (#nosec): 0
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 1
 
 Run metrics:
 	Total issues (by severity):
 		Undefined: 0
-		Low: 7
+		Low: 8
 		Medium: 0
 		High: 0
 	Total issues (by confidence):
 		Undefined: 0
 		Low: 0
 		Medium: 0
-		High: 7
+		High: 8
 Files skipped (0):
