@@ -1,34 +1,42 @@
-from deep_translator import GoogleTranslator
-from langdetect import DetectorFactory, detect
-
+"""
+Hilfswerkzeuge für Spracherkennung und Übersetzung.
+"""
 from core.utils.error_utils import log_error, log_info
-
-# Sorgt für konsistente Ergebnisse bei kurzen Texten
-DetectorFactory.seed = 0
 
 
 def get_document_language(text):
-    """Erkennt die Hauptsprache des Textes (z.B. 'de' oder 'en')."""
+    """
+    Erkennt die Hauptsprache eines Textes.
+    Gibt ISO-Code (z.B. 'de') zurück.
+    """
     try:
-        if not text or len(text.strip()) < 10:
-            return "de"  # Fallback auf Deutsch
+        from langdetect import DetectorFactory, detect
+
+        # Sorgt für konsistente Ergebnisse bei kurzen Texten
+        DetectorFactory.seed = 0
+        if not text or len(text.strip()) < 20:
+            return "de"
         lang = detect(text)
         log_info(f"   🌐 Sprache erkannt: {lang}")
         return lang
-    except Exception as e:
+    except Exception as err:
         log_error(f"   ❌ Fehler bei Spracherkennung: {e}")
         return "de"
 
 
 def translate_description(text, target_lang):
-    """Übersetzt die BLIP-Beschreibung in die Zielsprache."""
+    """
+    Übersetzt Text (primär von BLIP/en) in die Zielsprache.
+    """
+    if not text or target_lang == "en":
+        return text
     try:
-        # BLIP liefert immer Englisch
-        if target_lang == "en":
-            return text
+        from deep_translator import GoogleTranslator
 
-        translated = GoogleTranslator(source="en", target=target_lang).translate(text)
-        return translated
-    except Exception as e:
-        log_error(f"   ⚠️ Übersetzung fehlgeschlagen: {e}")
+        # GoogleTranslator ist für A11y Alt-Texte sehr zuverlässig
+        translator = GoogleTranslator(source="en", target=target_lang)
+        log_info(f"   🌐 bersetzt die BLIP-Beschreibung in: {target_lang}")
+        return translator.translate(text)
+    except Exception as err:
+        log_error(f"   ❌ Fehler Übersetzung fehlgeschlagen: {err}")
         return text  # Fallback auf das englische Original

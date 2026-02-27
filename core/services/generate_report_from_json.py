@@ -16,6 +16,26 @@ from core.utils.config_loader import load_config
 from core.utils.error_utils import log_error, log_info, setup_logging
 
 
+def _build_improved_section(results):
+    """Baut die Tabelle für erfolgreich verbesserte Dateien."""
+    improved = [r for r in results if r.get("repaired")]
+    if not improved:
+        return ""
+
+    rows = ""
+    for r in improved:
+        status_after = r.get("status_after", "FAIL")
+        color = "green" if status_after == "PASS" else "red"
+        rows += f"<tr><td>{html.escape(r['filename'])}</td><td style='color:{color}'>{status_after}</td></tr>"
+
+    return f"""
+    <div style='page-break-before: always;'></div>
+    <h2>Improved PDF Files (AI Reconstruction Success)</h2>
+    <table class='report-table'><thead><tr><th>File</th><th>New Status</th></tr></thead>
+    <tbody>{rows}</tbody></table>
+    """
+
+
 def _get_report_style():
     """Liefert das CSS."""
     return """
@@ -160,48 +180,29 @@ def _build_file_list(results):
     return "<ul>" + "".join(items) + "</ul>"
 
 
-def generate_html_content(  # pylint: disable=too-many-arguments
-    results, verapdf_version, base_url, logo_path, config_info
-):
-    """Erzeugt das komplette HTML."""
-    cfg = load_config()
-    cfg_gen = cfg.get("general", {})
-    author = cfg_gen.get("author", "Unknown")
-    year = cfg_gen.get("copyright_year", "2026")
-    base_proj_url = cfg_gen.get("base_url", "")
-
-    # --- Statistik vorbereiten ---
+def generate_html_content(results, v_version, base_url, logo_path, info):
+    # Setup Variablen
+    footer = '<div class="footer">© 2026 Dr. Harald Hutter - PDF A11y Auditor</div>'
     stats = {"PASS": 0, "FAIL": 0, "ERROR": 0}
     for r in results:
-        s_val = r.get("status")
-        if s_val in stats:
-            stats[s_val] += 1
+        stats[r.get("status", "ERROR")] += 1
 
-    # --- Header & Info-Abschnitt ---
-    header = (
-        f'<div class="header-container">'
-        f'<div class="header-logo-wrapper"><img src="{logo_path}" alt="Logo" class="header-logo-img"></div>'
-        f'<div class="header-text-wrapper"><h1>Accessibility Audit Report</h1>'
-        f"<p>{datetime.now().strftime('%Y-%m-%d')} — via a11y-pdf-audit</p></div></div>"
-    )
+    from core.services.generate_report_from_json import (_build_file_list,
+                                                         _build_summary,
+                                                         _get_report_style)
 
-    verapdf_info = f'<div class="verapdf-info">VeraPDF Version: {html.escape(verapdf_version)}</div>'
-
-    footer = (
-        f'<div class="footer-element"><p>© {author} {year} – '
-        f"{base_proj_url}/ – License: MIT License</p></div>"
-    )
-
-    summary = _build_summary(stats, len(results), base_url, config_info)
-    file_list = _build_file_list(results)
-
-    return (
-        f'<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
-        f"<title>Audit Report</title><style>{_get_report_style()}</style>"
-        f"</head><body>{footer}{header}{summary}{_get_about_section(cfg_gen)}"
-        f"<h2>Validation Details</h2>{verapdf_info}"
-        f"<h2>Detailed Results</h2>{file_list}</body></html>"
-    )
+    return f"""
+    <html><head><style>{_get_report_style()}</style></head>
+    <body>
+        {footer}
+        <img src='file://{logo_path}' style='width:150px;'>
+        <h1>Accessibility Audit Report</h1>
+        {_build_summary(stats, len(results), base_url, info)}
+        <h2>Original Scan Results</h2>
+        {_build_file_list(results)}
+        {_build_improved_section(results)}
+    </body></html>
+    """
 
 
 def _apply_pdf_metadata(pdf_path):
@@ -324,27 +325,6 @@ def _build_improved_file_list(results):
         """
     html += "</ul>"
     return html
-
-
-def generate_html_content(results, verapdf_version, base_url, logo_path, config_info):
-    # ... (dein bisheriger Code bis zum Ende der Detailed Results) ...
-
-    main_html = f"""
-        <!DOCTYPE html><html>...
-        <body>
-            {footer}{header}{summary}{_get_about_section(cfg_gen)}
-            <h2>Validation Details</h2>{verapdf_info}
-            <h2>Detailed Results (Original Files)</h2>{file_list}
-            
-            <!-- NEUE SEKTION -->
-            <div style="page-break-before: always;"></div>
-            <h2>Improved PDF Files (Success Audit)</h2>
-            <p>The following files failed the initial audit and were automatically processed for accessibility improvements. 
-            The status below shows the re-validation results of the <em>improved</em> versions.</p>
-            {_build_improved_file_list(results)}
-        </body></html>
-    """
-    return main_html
 
 
 def main_test():

@@ -1,7 +1,8 @@
 core/facade.py
-    M 26:4 AuditFacade.run_full_audit - B (7)
-    C 13:0 AuditFacade - A (5)
-    M 14:4 AuditFacade.__init__ - A (1)
+    M 30:4 AuditFacade.run_full_audit - B (6)
+    C 16:0 AuditFacade - A (4)
+    M 17:4 AuditFacade.__init__ - A (1)
+    M 24:4 AuditFacade._generate_names - A (1)
 core/controller.py
     F 41:0 _cleanup_old_reports - B (8)
     F 24:0 _keep_alive_worker - A (5)
@@ -17,27 +18,29 @@ core/services/pdf_crawler.py
     M 30:4 CrawlContext.close - A (2)
     M 21:4 CrawlContext.__init__ - A (1)
 core/services/pdf_processor.py
-    ERROR: expected 'except' or 'finally' block (<unknown>, line 237)
+    F 40:0 _process_single_pdf - B (7)
+    F 73:0 process_pdf_links - A (5)
+    F 13:0 _run_verapdf - A (4)
 core/services/generate_report_from_json.py
-    F 207:0 _apply_pdf_metadata - B (8)
-    F 118:0 _build_file_list - B (7)
-    F 296:0 _build_improved_file_list - B (6)
-    F 255:0 create_report - A (5)
-    F 163:0 generate_html_content - A (3)
-    F 19:0 _get_report_style - A (1)
-    F 76:0 _get_about_section - A (1)
-    F 98:0 _build_summary - A (1)
-    F 329:0 generate_html_content - A (1)
-    F 350:0 main_test - A (1)
+    F 208:0 _apply_pdf_metadata - B (8)
+    F 138:0 _build_file_list - B (7)
+    F 19:0 _build_improved_section - B (6)
+    F 297:0 _build_improved_file_list - B (6)
+    F 256:0 create_report - A (5)
+    F 183:0 generate_html_content - A (2)
+    F 39:0 _get_report_style - A (1)
+    F 96:0 _get_about_section - A (1)
+    F 118:0 _build_summary - A (1)
+    F 330:0 main_test - A (1)
 core/services/pdf_converter.py
-    F 115:0 run_improvement - B (6)
-    F 34:0 fix_technical - A (4)
-    F 59:0 improve_with_marker - A (4)
-    F 23:0 has_enough_ram - A (1)
-    F 29:0 is_on_fly - A (1)
+    F 57:0 improve_with_marker - A (4)
+    F 96:0 run_improvement - A (4)
+    F 34:0 _process_ai_images - A (3)
+    F 13:0 fix_technical - A (2)
 core/utils/image_captioning.py
-    F 11:0 load_blip - A (2)
-    F 23:0 get_image_description - A (2)
+    F 11:0 _initialize_blip - A (2)
+    F 30:0 get_image_description - A (2)
+    F 48:0 load_blip - A (2)
 core/utils/config_loader.py
     F 9:0 load_config - A (2)
 core/utils/error_utils.py
@@ -46,10 +49,10 @@ core/utils/error_utils.py
     F 41:0 log_error - A (1)
     F 46:0 log_warning - A (1)
 core/utils/lang_utils.py
-    F 10:0 get_document_language - A (4)
-    F 23:0 translate_description - A (3)
+    F 7:0 get_document_language - A (4)
+    F 27:0 translate_description - A (4)
 core/utils/zip_utils.py
-    F 7:0 create_repair_zip - A (4)
+    F 7:0 create_repair_zip - A (5)
 web_app/routes_main.py
     F 211:0 cleanup_files - B (9)
     F 48:0 start_audit - B (6)

@@ -39,7 +39,17 @@ RUN apt-get update && \
     pip install --no-cache-dir -r /app/requirements.txt && \
     rm -rf /var/lib/apt/lists/*
 
-# Rest des Projekts kopieren
+# 1. Wir kopieren NUR die requirements zuerst
+COPY requirements.txt /app/requirements.txt
+
+# 2. Wir installieren erst die winzige CPU-Version von Torch (DAS VERHINDERT NVIDIA-DOWNLOADS)
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# 3. Jetzt installieren wir Marker und den Rest (Marker sieht, dass Torch schon da ist und lädt nichts nach)
+RUN pip install --no-cache-dir marker-pdf
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# 4. Erst JETZT kopieren wir den Rest des Codes (so bleibt der obige Layer im Cache, wenn du Code änderst!)
 COPY . /app
 
 # VeraPDF CLI ins Container-Verzeichnis kopieren
@@ -47,10 +57,6 @@ COPY verapdf_local/bin/greenfield-apps-1.28.2.jar /opt/verapdf/veraPDF-cli.jar
 
 # Marker AI (Local only)
 WORKDIR /app/vendor_packages
-COPY vendor_packages /app/vendor_packages
-RUN pip install --no-index --find-links=/app/vendor_packages torch torchvision || true
-RUN pip install marker-pdf || true
-
 
 ENV FLASK_HOST=0.0.0.0
 ENV FLASK_PORT=8000
