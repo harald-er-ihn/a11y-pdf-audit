@@ -20,7 +20,7 @@ def get_document_language(text):
         log_info(f"   🌐 Sprache erkannt: {lang}")
         return lang
     except Exception as err:
-        log_error(f"   ❌ Fehler bei Spracherkennung: {e}")
+        log_error(f"   ❌ Fehler bei Spracherkennung: {err}")
         return "de"
 
 

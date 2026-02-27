@@ -52,7 +52,8 @@ def _cleanup_old_reports(output_dir, days=14):
             try:
                 if os.path.isfile(fpath) and os.stat(fpath).st_mtime < cutoff:
                     os.remove(fpath)
-            except OSError:
+            except OSError as err:
+                log_error(f"Fehler beim Löschen von {fpath}: {err}")
                 pass
 
 

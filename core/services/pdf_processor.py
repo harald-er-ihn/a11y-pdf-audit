@@ -3,13 +3,14 @@ Service zur sequenziellen Verarbeitung und Prüfung von PDFs.
 """
 import json
 import os
+import subprocess
 from urllib.parse import urlparse
 
 import requests
 
 from core.services.pdf_converter import run_improvement
 from core.utils.config_loader import load_config
-from core.utils.error_utils import log_error, log_info, log_warning
+from core.utils.error_utils import log_error
 
 
 def get_verapdf_version(verapdf_cli_path):
@@ -27,13 +28,12 @@ def get_verapdf_version(verapdf_cli_path):
             cmd, capture_output=True, text=True, timeout=30, check=False
         )
         return res.stdout.strip() if res.stdout else "VeraPDF 1.2x"
-    except Exception:  # pylint: disable=broad-exception-caught
-        return "VeraPDF (CLI not found)"
+    except (subprocess.SubprocessError, FileNotFoundError):
+        return "VeraPDF (CLI nicht gefunden)"
 
 
 def _run_verapdf(verapdf_path, lpath, profile=None, timeout=120):
     """Führt VeraPDF-Check aus."""
-    import subprocess
 
     cmd = [
         "java",
@@ -54,15 +54,24 @@ def _run_verapdf(verapdf_path, lpath, profile=None, timeout=120):
         )
         out = res.stdout.strip()
         return ("PASS" if "PASS" in out else "FAIL"), out[:200]
-    except:
-        return "ERROR", "Timeout/Crash"
+    except subprocess.TimeoutExpired:
+        return "ERROR", "Timeout"
 
 
 def _process_single_pdf(url, idx, ctx):
     """Verarbeitet ein einzelnes PDF."""
     fname = os.path.basename(urlparse(url).path) or f"file_{idx}.pdf"
     lpath = os.path.join(ctx["temp_dir"], fname)
-    entry = {"url": url, "filename": fname, "status": "UNKNOWN", "repaired": False}
+    entry = {
+        "url": url,
+        "filename": fname,
+        "status": "UNKNOWN",
+        "status_strict": "UNKNOWN",
+        "details": "",
+        "repaired": False,
+        "author": "Unknown",
+        "date": "Unknown",
+    }
 
     try:
         # Download
@@ -94,12 +103,12 @@ def _process_single_pdf(url, idx, ctx):
 def process_pdf_links(link_file, output_json, temp_dir, verapdf_path, force_ai=False):
     """Steuert die Verarbeitung aller Links."""
     os.makedirs(temp_dir, exist_ok=True)
-    with open(link_file, "r") as f:
+    with open(link_file, "r", encoding="utf-8") as f:
         urls = [l.strip() for l in f if l.strip() and not l.startswith("#")]
 
     ctx = {"temp_dir": temp_dir, "v_path": verapdf_path, "force_ai": force_ai}
     results = [_process_single_pdf(u, i, ctx) for i, u in enumerate(urls, 1)]
 
-    with open(output_json, "w") as f:
+    with open(output_json, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
     return results

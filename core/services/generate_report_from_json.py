@@ -192,16 +192,18 @@ def generate_html_content(results, v_version, base_url, logo_path, info):
                                                          _get_report_style)
 
     return f"""
-    <html><head><style>{_get_report_style()}</style></head>
+    <html lang="en">
+    <head><style>{_get_report_style()}</style></head>
     <body>
         {footer}
-        <img src='file://{logo_path}' style='width:150px;'>
+        <img src='file://{logo_path}' style='width:150px;' alt='Logo'>
         <h1>Accessibility Audit Report</h1>
         {_build_summary(stats, len(results), base_url, info)}
         <h2>Original Scan Results</h2>
         {_build_file_list(results)}
         {_build_improved_section(results)}
-    </body></html>
+    </body>
+    </html>
     """
 
 

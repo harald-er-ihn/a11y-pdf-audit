@@ -14,6 +14,10 @@ from core.utils.zip_utils import create_repair_zip
 
 
 class AuditFacade:
+    """
+    Hauptklasse zur Steuerung des Audit-Ablaufs.
+    """
+
     def __init__(self):
         self.cfg = load_config()
         self.out_dir = self.cfg["active_paths"]["output"]
@@ -28,20 +32,26 @@ class AuditFacade:
         return ts, safe, base
 
     def run_full_audit(self, url, max_p, depth, force_ai=False):
+        """
+        Führt den kompletten Audit durch: Crawl -> Check -> Report.
+        """
         ts, safe, base = self._generate_names(url, max_p, depth)
         link_f = os.path.join(self.reports_dir, f"{base}_links.txt")
         json_f = os.path.join(self.reports_dir, f"{base}.json")
         pdf_f = os.path.join(self.reports_dir, f"{base}.pdf")
 
         # 1. Crawl
+        log_info("--- [1/3] Crawl ---")
         crawl_site_logic(url, link_f, max_p, depth, self.cfg["crawler"]["user_agent"])
 
         # 2. Process & Fix
+        log_info("--- [2/3] Process & Fix ---")
         results = process_pdf_links(
             link_f, json_f, self.temp_dir, self.cfg["active_paths"]["verapdf"], force_ai
         )
 
         # 3. Report
+        log_info("--- [3/3] Report ---")
         create_report(
             json_f,
             pdf_f,
@@ -52,6 +62,7 @@ class AuditFacade:
         )
 
         # 4. ZIP
+        log_info("--- [extra] Zip ---")
         rep_paths = [
             r["repaired_path"]
             for r in results

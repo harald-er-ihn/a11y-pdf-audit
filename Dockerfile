@@ -55,8 +55,6 @@ COPY . /app
 # VeraPDF CLI ins Container-Verzeichnis kopieren
 COPY verapdf_local/bin/greenfield-apps-1.28.2.jar /opt/verapdf/veraPDF-cli.jar
 
-# Marker AI (Local only)
-WORKDIR /app/vendor_packages
 
 ENV FLASK_HOST=0.0.0.0
 ENV FLASK_PORT=8000

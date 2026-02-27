@@ -15,22 +15,26 @@ from bs4 import BeautifulSoup
 from core.utils.error_utils import log_info, log_warning
 
 
-class CrawlContext:  # pylint: disable=too-few-public-methods
-    """Hält den Zustand des Crawlers, um lokale Variablen zu reduzieren."""
+class CrawlContext:
+    """Hält den Zustand des Crawlers."""
 
     def __init__(self, start_url, output_file, config):
         self.queue = deque([(start_url, 0)])
         self.visited = {start_url}
         self.all_pdfs = set()
         self.pages_scanned = 0
-        self.file_handle = open(output_file, "w", encoding="utf-8")
+        self.output_file = output_file
         self.config = config
         self.session = requests.Session()
 
-    def close(self):
-        """Schließt Datei-Handles."""
-        if self.file_handle:
-            self.file_handle.close()
+    def log_pdf(self, url):
+        """Speichert eine gefundene PDF-URL sofort in die Datei."""
+        if url not in self.all_pdfs:
+            self.all_pdfs.add(url)
+            with open(self.output_file, "a", encoding="utf-8") as f:
+                f.write(url + "\n")
+            return True
+        return False
 
 
 def is_exact_domain(url, allowed_netloc):
