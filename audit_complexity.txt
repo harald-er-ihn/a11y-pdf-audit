@@ -1,8 +1,8 @@
 core/facade.py
-    M 34:4 AuditFacade.run_full_audit - B (6)
-    C 16:0 AuditFacade - A (4)
-    M 21:4 AuditFacade.__init__ - A (1)
-    M 28:4 AuditFacade._generate_names - A (1)
+    M 35:4 AuditFacade.run_full_audit - B (6)
+    C 17:0 AuditFacade - A (4)
+    M 22:4 AuditFacade.__init__ - A (1)
+    M 29:4 AuditFacade._generate_names - A (1)
 core/controller.py
     F 41:0 _cleanup_old_reports - B (8)
     F 24:0 _keep_alive_worker - A (5)
@@ -18,10 +18,10 @@ core/services/pdf_crawler.py
     M 30:4 CrawlContext.log_pdf - A (2)
     M 21:4 CrawlContext.__init__ - A (1)
 core/services/pdf_processor.py
-    F 61:0 _process_single_pdf - B (7)
-    F 103:0 process_pdf_links - A (5)
-    F 35:0 _run_verapdf - A (4)
-    F 16:0 get_verapdf_version - A (3)
+    F 62:0 _process_single_pdf - B (7)
+    F 104:0 process_pdf_links - A (5)
+    F 36:0 _run_verapdf - A (4)
+    F 17:0 get_verapdf_version - A (3)
 core/services/generate_report_from_json.py
     F 210:0 _apply_pdf_metadata - B (8)
     F 138:0 _build_file_list - B (7)
@@ -34,13 +34,14 @@ core/services/generate_report_from_json.py
     F 118:0 _build_summary - A (1)
     F 332:0 main_test - A (1)
 core/services/pdf_converter.py
-    F 66:0 run_improvement - A (4)
-    F 12:0 fix_technical - A (2)
-    F 34:0 improve_with_marker - A (2)
+    F 47:0 improve_with_marker - C (12)
+    F 134:0 run_improvement - A (3)
+    F 144:0 main - A (3)
+    F 23:0 fix_technical - A (2)
 core/utils/image_captioning.py
-    F 11:0 _initialize_blip - A (2)
-    F 30:0 get_image_description - A (2)
-    F 48:0 load_blip - A (2)
+    F 12:0 _initialize_blip - A (2)
+    F 31:0 get_image_description - A (2)
+    F 49:0 load_blip - A (2)
 core/utils/config_loader.py
     F 9:0 load_config - A (2)
 core/utils/error_utils.py
@@ -49,8 +50,8 @@ core/utils/error_utils.py
     F 41:0 log_error - A (1)
     F 46:0 log_warning - A (1)
 core/utils/lang_utils.py
-    F 7:0 get_document_language - A (4)
-    F 27:0 translate_description - A (4)
+    F 8:0 get_document_language - A (4)
+    F 28:0 translate_description - A (4)
 core/utils/zip_utils.py
     F 7:0 create_repair_zip - A (5)
 web_app/routes_main.py

@@ -1,6 +1,7 @@
 """
 Service zur automatischen Beschreibung von Bildern (Image Captioning).
 """
+
 from core.utils.error_utils import log_error, log_info
 
 # Globale Instanzen für Lazy-Loading

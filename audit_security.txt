@@ -1,4 +1,4 @@
-Run started:2026-02-27 22:11:30.418123
+Run started:2026-02-28 16:51:10.288310
 
 Test results:
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -16,20 +16,20 @@ Test results:
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/blacklists/blacklist_imports.html#b404-import-subprocess
-   Location: core/services/pdf_converter.py:5:0
-4	import os
-5	import subprocess
-6	
+   Location: core/services/pdf_converter.py:11:0
+10	import os
+11	import subprocess
+12	import sys
 
 --------------------------------------------------
 >> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b603_subprocess_without_shell_equals_true.html
-   Location: core/services/pdf_converter.py:27:15
-26	        # pylint: disable=subprocess-run-check
-27	        proc = subprocess.run(cmd, capture_output=True)
-28	        return proc.returncode == 0
+   Location: core/services/pdf_converter.py:40:15
+39	        # pylint: disable=subprocess-run-check
+40	        proc = subprocess.run(cmd, capture_output=True, check=False)
+41	        return proc.returncode == 0
 
 --------------------------------------------------
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -58,39 +58,39 @@ Test results:
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/blacklists/blacklist_imports.html#b404-import-subprocess
-   Location: core/services/pdf_processor.py:6:0
-5	import os
-6	import subprocess
-7	from urllib.parse import urlparse
+   Location: core/services/pdf_processor.py:7:0
+6	import os
+7	import subprocess
+8	from urllib.parse import urlparse
 
 --------------------------------------------------
 >> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b603_subprocess_without_shell_equals_true.html
-   Location: core/services/pdf_processor.py:27:14
-26	    try:
-27	        res = subprocess.run(
-28	            cmd, capture_output=True, text=True, timeout=30, check=False
-29	        )
-30	        return res.stdout.strip() if res.stdout else "VeraPDF 1.2x"
+   Location: core/services/pdf_processor.py:28:14
+27	    try:
+28	        res = subprocess.run(
+29	            cmd, capture_output=True, text=True, timeout=30, check=False
+30	        )
+31	        return res.stdout.strip() if res.stdout else "VeraPDF 1.2x"
 
 --------------------------------------------------
 >> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
    Severity: Low   Confidence: High
    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
    More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b603_subprocess_without_shell_equals_true.html
-   Location: core/services/pdf_processor.py:52:14
-51	    try:
-52	        res = subprocess.run(
-53	            cmd, capture_output=True, text=True, timeout=timeout, check=False
-54	        )
-55	        out = res.stdout.strip()
+   Location: core/services/pdf_processor.py:53:14
+52	    try:
+53	        res = subprocess.run(
+54	            cmd, capture_output=True, text=True, timeout=timeout, check=False
+55	        )
+56	        out = res.stdout.strip()
 
 --------------------------------------------------
 
 Code scanned:
-	Total lines of code: 1075
+	Total lines of code: 1146
 	Total lines skipped (#nosec): 0
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 1
 

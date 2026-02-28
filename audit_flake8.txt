@@ -1,9 +1,9 @@
 core/controller.py:19:80: E501 line too long (86 > 79 characters)
 core/controller.py:63:80: E501 line too long (87 > 79 characters)
 core/controller.py:76:80: E501 line too long (85 > 79 characters)
-core/facade.py:45:80: E501 line too long (86 > 79 characters)
-core/facade.py:50:80: E501 line too long (88 > 79 characters)
-core/facade.py:73:80: E501 line too long (86 > 79 characters)
+core/facade.py:46:80: E501 line too long (86 > 79 characters)
+core/facade.py:51:80: E501 line too long (88 > 79 characters)
+core/facade.py:74:80: E501 line too long (86 > 79 characters)
 core/services/generate_report_from_json.py:29:80: E501 line too long (110 > 79 characters)
 core/services/generate_report_from_json.py:34:80: E501 line too long (88 > 79 characters)
 core/services/generate_report_from_json.py:65:80: E501 line too long (80 > 79 characters)
@@ -31,23 +31,29 @@ core/services/generate_report_from_json.py:340:5: F841 local variable 'b_url' is
 core/services/generate_report_from_json.py:343:5: F841 local variable 'v_ver' is assigned to but never used
 core/services/generate_report_from_json.py:344:5: F841 local variable 'l_path' is assigned to but never used
 core/services/generate_report_from_json.py:345:5: F841 local variable 'c_info' is assigned to but never used
-core/services/pdf_converter.py:2:80: E501 line too long (82 > 79 characters)
-core/services/pdf_converter.py:53:37: F821 undefined name 'output_pdf'
-core/services/pdf_converter.py:72:80: E501 line too long (83 > 79 characters)
+core/services/pdf_converter.py:18:80: E501 line too long (82 > 79 characters)
+core/services/pdf_converter.py:20:1: E402 module level import not at top of file
+core/services/pdf_converter.py:62:80: E501 line too long (86 > 79 characters)
+core/services/pdf_converter.py:65:80: E501 line too long (81 > 79 characters)
+core/services/pdf_converter.py:68:80: E501 line too long (80 > 79 characters)
+core/services/pdf_converter.py:102:80: E501 line too long (87 > 79 characters)
+core/services/pdf_converter.py:107:80: E501 line too long (83 > 79 characters)
+core/services/pdf_converter.py:109:80: E501 line too long (82 > 79 characters)
+core/services/pdf_converter.py:138:80: E501 line too long (83 > 79 characters)
 core/services/pdf_crawler.py:46:80: E501 line too long (87 > 79 characters)
 core/services/pdf_crawler.py:104:80: E501 line too long (85 > 79 characters)
 core/services/pdf_crawler.py:106:80: E501 line too long (86 > 79 characters)
 core/services/pdf_crawler.py:109:80: E501 line too long (80 > 79 characters)
 core/services/pdf_crawler.py:120:80: E501 line too long (83 > 79 characters)
 core/services/pdf_crawler.py:144:80: E501 line too long (80 > 79 characters)
-core/services/pdf_processor.py:13:1: F401 'core.utils.error_utils.log_error' imported but unused
-core/services/pdf_processor.py:93:80: E501 line too long (85 > 79 characters)
-core/services/pdf_processor.py:103:80: E501 line too long (86 > 79 characters)
-core/services/pdf_processor.py:107:31: E741 ambiguous variable name 'l'
+core/services/pdf_processor.py:14:1: F401 'core.utils.error_utils.log_error' imported but unused
+core/services/pdf_processor.py:94:80: E501 line too long (85 > 79 characters)
+core/services/pdf_processor.py:104:80: E501 line too long (86 > 79 characters)
+core/services/pdf_processor.py:108:31: E741 ambiguous variable name 'l'
 core/utils/config_loader.py:31:80: E501 line too long (82 > 79 characters)
 core/utils/config_loader.py:32:80: E501 line too long (84 > 79 characters)
-core/utils/image_captioning.py:15:9: F401 'torch' imported but unused
-core/utils/image_captioning.py:53:9: F401 'torch' imported but unused
+core/utils/image_captioning.py:16:9: F401 'torch' imported but unused
+core/utils/image_captioning.py:54:9: F401 'torch' imported but unused
 web_app/routes_main.py:66:80: E501 line too long (104 > 79 characters)
 web_app/routes_main.py:68:80: E501 line too long (143 > 79 characters)
 web_app/routes_main.py:70:80: E501 line too long (94 > 79 characters)
@@ -60,9 +66,9 @@ web_app/routes_main.py:91:80: E501 line too long (83 > 79 characters)
 web_app/routes_main.py:137:80: E501 line too long (85 > 79 characters)
 web_app/routes_main.py:150:80: E501 line too long (89 > 79 characters)
 web_app/routes_main.py:167:80: E501 line too long (84 > 79 characters)
-49    E501 line too long (86 > 79 characters)
+1     E402 module level import not at top of file
+55    E501 line too long (86 > 79 characters)
 1     E741 ambiguous variable name 'l'
 3     F401 'core.utils.error_utils.log_error' imported but unused
-1     F821 undefined name 'output_pdf'
 6     F841 local variable 'j_file' is assigned to but never used
 2     W291 trailing whitespace

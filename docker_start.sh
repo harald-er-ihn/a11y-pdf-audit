@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
-# docker_start.sh
-# Minimaler Start-Helper für a11y-pdf-audit
-# Usage:
-#   ./docker_start.sh         # build & start
-#   ./docker_start.sh --no-build  # start using existing image
+# docker_start.sh - Optimiert für Marker AI & Model Caching
 
 set -euo pipefail
 
+# --- Konfiguration ---
 IMAGE="a11y-pdf-audit:local"
 CONTAINER="a11y-test"
 HOST_PORT="${HOST_PORT:-8000}"
 CONTAINER_PORT=8000
 BUILD=1
-TIMEOUT=30  # seconds to wait for HTTP 200
+TIMEOUT=60  # Erhöht, da KI-Modelle laden Zeit braucht
+
+# PFADE - Hier nutzen wir deinen lokalen Cache
+HOST_MODEL_CACHE="${HOME}/.cache/datalab/models"
+HOST_OUTPUT_DIR="$(pwd)/output"
+
+# Ordner sicherstellen
+mkdir -p "$HOST_MODEL_CACHE"
+mkdir -p "$HOST_OUTPUT_DIR"
 
 usage() {
   cat <<EOF
 Usage: $0 [--no-build] [--timeout <secs>]
 
 Options:
-  --no-build       Skip docker build (use existing image)
+  --no-build       Skip docker build
   --timeout <sec>  Wait timeout for HTTP 200 (default: ${TIMEOUT}s)
   -h, --help       Show this help
 EOF
@@ -37,65 +42,60 @@ done
 
 # Prechecks
 if ! command -v docker >/dev/null 2>&1; then
-  echo "ERROR: docker not found in PATH. Install Docker first." >&2
+  echo "❌ ERROR: docker not found." >&2
   exit 1
 fi
-if ! command -v curl >/dev/null 2>&1; then
-  echo "WARNING: curl not found — HTTP checks will be skipped." >&2
-  SKIP_CURL=1
-else
-  SKIP_CURL=0
-fi
 
-# Remove existing container if present
+# Cleanup
 if docker ps -a --format '{{.Names}}' | grep -xq "${CONTAINER}"; then
-  echo "Removing existing container ${CONTAINER}..."
+  echo "🔄 Entferne alten Container ${CONTAINER}..."
   docker rm -f "${CONTAINER}" >/dev/null || true
 fi
 
-# Build image (optional)
+# Build
 if [[ "${BUILD}" -eq 1 ]]; then
-  echo "Building Docker image ${IMAGE} (this can take a while)..."
-  DOCKER_BUILDKIT=1 docker build --progress=plain -t "${IMAGE}" .
+  echo "🛠️ Baue Docker image ${IMAGE}..."
+  DOCKER_BUILDKIT=1 docker build -t "${IMAGE}" .
 fi
 
-# Run container
-echo "Starting container ${CONTAINER} (image: ${IMAGE})..."
+# Run
+echo "🚀 Starte Container ${CONTAINER}..."
+# WICHTIG: 
+# -v für Model-Cache (verhindert Re-Downloads)
+# --shm-size für PyTorch Stabilität
 docker run -d --name "${CONTAINER}" \
-  -v "$(pwd)/output:/app/output" \
-  -p "${HOST_PORT}:${CONTAINER_PORT}" "${IMAGE}" \
-   >/tmp/docker_start.cid
+  -v "${HOST_MODEL_CACHE}:/app/models_cache" \
+  -v "${HOST_OUTPUT_DIR}:/app/output" \
+  --shm-size=2g \
+  -p "${HOST_PORT}:${CONTAINER_PORT}" \
+  "${IMAGE}"
 
-CID=$(cat /tmp/docker_start.cid)
-rm -f /tmp/docker_start.cid
-echo "Container started: ${CID}"
-
-# Wait for HTTP endpoint (if curl present)
-if [[ "${SKIP_CURL}" -eq 0 ]]; then
-  echo "Waiting up to ${TIMEOUT}s for http://localhost:${HOST_PORT} to return HTTP 200..."
-  i=0
-  until [[ $i -ge $TIMEOUT ]]; do
-    code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${HOST_PORT}" || true)
-    if [[ "$code" == "200" ]]; then
-      echo "OK: HTTP 200 received."
-      break
-    fi
-    sleep 1
-    i=$((i+1))
-  done
-
-  if [[ "$code" != "200" ]]; then
-    echo "Warning: Service did not return HTTP 200 within ${TIMEOUT}s (last code: ${code})."
+# Healthcheck
+echo "⏳ Warte auf Service-Ready (Timeout: ${TIMEOUT}s)..."
+i=0
+READY=0
+while [[ $i -lt $TIMEOUT ]]; do
+  if curl -s -o /dev/null -w "%{http_code}" "http://localhost:${HOST_PORT}" | grep -q "200\|404\|405"; then
+    echo "✅ Service ist erreichbar!"
+    READY=1
+    break
   fi
-else
-  echo "Skipping HTTP readiness check (curl not available)."
+  # Zeige Fortschritt in den Logs, falls er noch Modelle lädt
+  if (( i % 10 == 0 )); then
+     echo "   ... warte noch (prüfe 'docker logs ${CONTAINER}' für Download-Status)"
+  fi
+  sleep 2
+  i=$((i+2))
+done
+
+if [[ $READY -eq 0 ]]; then
+  echo "⚠️ Service eventuell noch beim Modell-Laden oder Fehler aufgetreten."
 fi
 
-# Show last logs
-echo "---- Last logs (tail 200) for ${CONTAINER} ----"
-docker logs --tail 200 "${CONTAINER}" || true
-echo "---- end logs ----"
+echo "📋 Letzte 20 Zeilen Log:"
+docker logs --tail 20 "${CONTAINER}"
 
-echo
-echo "If you want to attach to logs: docker logs -f ${CONTAINER}"
-echo "To remove the container: docker rm -f ${CONTAINER}"
+echo ""
+echo "🔗 URL: http://localhost:${HOST_PORT}"
+echo "📂 Output: ${HOST_OUTPUT_DIR}"
+echo "💡 Logs verfolgen: docker logs -f ${CONTAINER}"

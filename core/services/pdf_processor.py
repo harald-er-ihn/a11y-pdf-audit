@@ -1,6 +1,7 @@
 """
 Service zur sequenziellen Verarbeitung und Prüfung von PDFs.
 """
+
 import json
 import os
 import subprocess

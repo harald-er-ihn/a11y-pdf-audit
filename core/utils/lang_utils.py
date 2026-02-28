@@ -1,6 +1,7 @@
 """
 Hilfswerkzeuge für Spracherkennung und Übersetzung.
 """
+
 from core.utils.error_utils import log_error, log_info
 
 
