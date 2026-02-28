@@ -4,30 +4,10 @@ core/facade.py:17:0: R0903: Too few public methods (1/2) (too-few-public-methods
 core/controller.py:35:15: W0718: Catching too general exception Exception (broad-exception-caught)
 core/controller.py:57:16: W0107: Unnecessary pass statement (unnecessary-pass)
 core/controller.py:84:11: W0718: Catching too general exception Exception (broad-exception-caught)
-************* Module services.pdf_crawler
-core/services/pdf_crawler.py:18:0: R0903: Too few public methods (1/2) (too-few-public-methods)
-core/services/pdf_crawler.py:114:0: R0914: Too many local variables (17/15) (too-many-locals)
-core/services/pdf_crawler.py:135:8: E1101: Instance of 'CrawlContext' has no 'file_handle' member (no-member)
-core/services/pdf_crawler.py:137:12: E1101: Instance of 'CrawlContext' has no 'file_handle' member (no-member)
-core/services/pdf_crawler.py:173:8: E1101: Instance of 'CrawlContext' has no 'close' member (no-member)
 ************* Module services.pdf_processor
 core/services/pdf_processor.py:95:11: W0718: Catching too general exception Exception (broad-exception-caught)
-core/services/pdf_processor.py:14:0: W0611: Unused log_error imported from core.utils.error_utils (unused-import)
 ************* Module services.generate_report_from_json
-core/services/generate_report_from_json.py:29:0: C0301: Line too long (110/100) (line-too-long)
-core/services/generate_report_from_json.py:105:0: C0301: Line too long (116/100) (line-too-long)
-core/services/generate_report_from_json.py:322:68: C0303: Trailing whitespace (trailing-whitespace)
-core/services/generate_report_from_json.py:183:0: C0116: Missing function or method docstring (missing-function-docstring)
-core/services/generate_report_from_json.py:190:4: C0415: Import outside toplevel (core.services.generate_report_from_json._build_file_list, core.services.generate_report_from_json._build_summary, core.services.generate_report_from_json._get_report_style) (import-outside-toplevel)
-core/services/generate_report_from_json.py:183:35: W0613: Unused argument 'v_version' (unused-argument)
-core/services/generate_report_from_json.py:306:4: W0621: Redefining name 'html' from outer scope (line 6) (redefined-outer-name)
-core/services/generate_report_from_json.py:308:16: E1101: Instance of 'str' has no 'escape' member (no-member)
-core/services/generate_report_from_json.py:338:4: W0612: Unused variable 'j_file' (unused-variable)
-core/services/generate_report_from_json.py:339:4: W0612: Unused variable 'o_pdf' (unused-variable)
-core/services/generate_report_from_json.py:340:4: W0612: Unused variable 'b_url' (unused-variable)
-core/services/generate_report_from_json.py:343:4: W0612: Unused variable 'v_ver' (unused-variable)
-core/services/generate_report_from_json.py:344:4: W0612: Unused variable 'l_path' (unused-variable)
-core/services/generate_report_from_json.py:345:4: W0612: Unused variable 'c_info' (unused-variable)
+core/services/generate_report_from_json.py:154:0: R0913: Too many arguments (6/5) (too-many-arguments)
 ************* Module utils.image_captioning
 core/utils/image_captioning.py:14:4: W0603: Using the global statement (global-statement)
 core/utils/image_captioning.py:16:8: C0415: Import outside toplevel (torch) (import-outside-toplevel)
@@ -52,5 +32,5 @@ web_app/routes_main.py:84:0: C0301: Line too long (103/100) (line-too-long)
 web_app/routes_main.py:89:0: C0301: Line too long (108/100) (line-too-long)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.21/10 (previous run: 8.78/10, +0.42)
+Your code has been rated at 9.65/10 (previous run: 9.36/10, +0.28)
 

@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# 🧩 a11y-pdf-audit - Optimiert für Marker AI & WeasyPrint
+# 🧩 a11y-pdf-audit - Fix für Python 3.12 (pkg_resources)
 # ------------------------------------------------------------
 FROM python:3.12-slim
 
@@ -8,15 +8,14 @@ ENV PYTHONPATH="/app" \
     TZ=Europe/Berlin \
     FLASK_HOST=0.0.0.0 \
     FLASK_PORT=8000 \
-    # Marker/Huggingface Cache-Ordner festlegen
     MARKER_CACHE_DIR=/app/models_cache \
     HF_HOME=/app/models_cache \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app
+RUN mkdir -p /data /app/output
 
-# 2. System-Abhängigkeiten (Kombiniert für weniger Layer)
-# Headless JRE für VeraPDF, Pango/Cairo für WeasyPrint, GS für Fixes
+# 2. System-Abhängigkeiten
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ghostscript \
@@ -31,39 +30,41 @@ RUN apt-get update && \
         fonts-dejavu-core \
         fonts-liberation \
         tzdata \
-        # Build-Tools (nur für die Installation benötigt)
         build-essential \
         gcc && \
-    # Zeitzone setzen
     ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 3. Python-Abhängigkeiten intelligent installieren
+# 3. Python-Abhängigkeiten
 COPY requirements.txt .
 
-RUN python -m pip install --upgrade pip setuptools wheel && \
-    # Erst Torch-CPU (spart GB-weise NVIDIA-Treiber im Image)
+RUN python -m pip install --upgrade pip && \
+    # Torch-CPU zuerst (spart Platz)
     pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
-    # Dann den Rest der Requirements
+    # Dann alle Requirements
     pip install --no-cache-dir -r requirements.txt && \
-    # Build-Tools wieder entfernen, um Image klein zu halten (Optional)
+    # EXTREM WICHTIG: setuptools AM ENDE installieren, damit pkg_resources garantiert da ist
+    pip install --no-cache-dir setuptools==70.0.0 wheel && \
+    # Cleanup
     apt-get purge -y --auto-remove build-essential gcc
 
-# 4. VeraPDF & Code kopieren
-# Erstelle Cache-Ordner vorab
+# 4. App-Code & VeraPDF
 RUN mkdir -p /app/models_cache && mkdir -p /opt/verapdf
-
 COPY verapdf_local/bin/greenfield-apps-1.28.2.jar /opt/verapdf/veraPDF-cli.jar
 COPY . .
 
 EXPOSE 8000
 
-# 5. Start-Konfiguration
-# Workers=1 ist bei KI-Modellen (Marker) Pflicht, sonst explodiert der RAM
-CMD ["gunicorn", "web_app.app:app", \
+# 4.b Entrypoint für swap-Space 2G
+RUN chmod +x entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
+
+
+
+# 5. Start (Geändert auf "python3 -m gunicorn" um Pfad-Probleme zu umgehen)
+CMD ["python3", "-m", "gunicorn", "web_app.app:app", \
      "--bind", "0.0.0.0:8000", \
      "--workers", "1", \
      "--timeout", "600", \
-     "--access-log-file", "-", \
-     "--error-log-file", "-"]
+     "--log-level", "debug"]

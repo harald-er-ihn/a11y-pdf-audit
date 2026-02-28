@@ -4,33 +4,12 @@ core/controller.py:76:80: E501 line too long (85 > 79 characters)
 core/facade.py:46:80: E501 line too long (86 > 79 characters)
 core/facade.py:51:80: E501 line too long (88 > 79 characters)
 core/facade.py:74:80: E501 line too long (86 > 79 characters)
-core/services/generate_report_from_json.py:29:80: E501 line too long (110 > 79 characters)
-core/services/generate_report_from_json.py:34:80: E501 line too long (88 > 79 characters)
-core/services/generate_report_from_json.py:65:80: E501 line too long (80 > 79 characters)
-core/services/generate_report_from_json.py:101:80: E501 line too long (114 > 79 characters)
-core/services/generate_report_from_json.py:104:80: E501 line too long (85 > 79 characters)
-core/services/generate_report_from_json.py:105:80: E501 line too long (116 > 79 characters)
-core/services/generate_report_from_json.py:106:80: E501 line too long (90 > 79 characters)
-core/services/generate_report_from_json.py:107:80: E501 line too long (82 > 79 characters)
-core/services/generate_report_from_json.py:108:80: E501 line too long (96 > 79 characters)
-core/services/generate_report_from_json.py:109:80: E501 line too long (80 > 79 characters)
-core/services/generate_report_from_json.py:110:80: E501 line too long (90 > 79 characters)
-core/services/generate_report_from_json.py:113:80: E501 line too long (81 > 79 characters)
-core/services/generate_report_from_json.py:150:80: E501 line too long (80 > 79 characters)
-core/services/generate_report_from_json.py:164:80: E501 line too long (85 > 79 characters)
-core/services/generate_report_from_json.py:170:80: E501 line too long (94 > 79 characters)
-core/services/generate_report_from_json.py:185:80: E501 line too long (84 > 79 characters)
-core/services/generate_report_from_json.py:237:80: E501 line too long (82 > 79 characters)
-core/services/generate_report_from_json.py:280:80: E501 line too long (80 > 79 characters)
-core/services/generate_report_from_json.py:288:80: E501 line too long (84 > 79 characters)
-core/services/generate_report_from_json.py:321:40: W291 trailing whitespace
-core/services/generate_report_from_json.py:322:69: W291 trailing whitespace
-core/services/generate_report_from_json.py:338:5: F841 local variable 'j_file' is assigned to but never used
-core/services/generate_report_from_json.py:339:5: F841 local variable 'o_pdf' is assigned to but never used
-core/services/generate_report_from_json.py:340:5: F841 local variable 'b_url' is assigned to but never used
-core/services/generate_report_from_json.py:343:5: F841 local variable 'v_ver' is assigned to but never used
-core/services/generate_report_from_json.py:344:5: F841 local variable 'l_path' is assigned to but never used
-core/services/generate_report_from_json.py:345:5: F841 local variable 'c_info' is assigned to but never used
+core/services/generate_report_from_json.py:40:80: E501 line too long (83 > 79 characters)
+core/services/generate_report_from_json.py:67:80: E501 line too long (88 > 79 characters)
+core/services/generate_report_from_json.py:98:80: E501 line too long (80 > 79 characters)
+core/services/generate_report_from_json.py:108:80: E501 line too long (82 > 79 characters)
+core/services/generate_report_from_json.py:112:80: E501 line too long (82 > 79 characters)
+core/services/generate_report_from_json.py:144:80: E501 line too long (81 > 79 characters)
 core/services/pdf_converter.py:18:80: E501 line too long (82 > 79 characters)
 core/services/pdf_converter.py:20:1: E402 module level import not at top of file
 core/services/pdf_converter.py:62:80: E501 line too long (86 > 79 characters)
@@ -40,18 +19,12 @@ core/services/pdf_converter.py:102:80: E501 line too long (87 > 79 characters)
 core/services/pdf_converter.py:107:80: E501 line too long (83 > 79 characters)
 core/services/pdf_converter.py:109:80: E501 line too long (82 > 79 characters)
 core/services/pdf_converter.py:138:80: E501 line too long (83 > 79 characters)
-core/services/pdf_crawler.py:46:80: E501 line too long (87 > 79 characters)
-core/services/pdf_crawler.py:104:80: E501 line too long (85 > 79 characters)
-core/services/pdf_crawler.py:106:80: E501 line too long (86 > 79 characters)
-core/services/pdf_crawler.py:109:80: E501 line too long (80 > 79 characters)
-core/services/pdf_crawler.py:120:80: E501 line too long (83 > 79 characters)
-core/services/pdf_crawler.py:144:80: E501 line too long (80 > 79 characters)
-core/services/pdf_processor.py:14:1: F401 'core.utils.error_utils.log_error' imported but unused
+core/services/pdf_crawler.py:149:80: E501 line too long (80 > 79 characters)
 core/services/pdf_processor.py:94:80: E501 line too long (85 > 79 characters)
-core/services/pdf_processor.py:104:80: E501 line too long (86 > 79 characters)
-core/services/pdf_processor.py:108:31: E741 ambiguous variable name 'l'
-core/utils/config_loader.py:31:80: E501 line too long (82 > 79 characters)
-core/utils/config_loader.py:32:80: E501 line too long (84 > 79 characters)
+core/services/pdf_processor.py:105:80: E501 line too long (86 > 79 characters)
+core/services/pdf_processor.py:109:31: E741 ambiguous variable name 'l'
+core/utils/config_loader.py:33:80: E501 line too long (82 > 79 characters)
+core/utils/config_loader.py:34:80: E501 line too long (84 > 79 characters)
 core/utils/image_captioning.py:16:9: F401 'torch' imported but unused
 core/utils/image_captioning.py:54:9: F401 'torch' imported but unused
 web_app/routes_main.py:66:80: E501 line too long (104 > 79 characters)
@@ -67,8 +40,6 @@ web_app/routes_main.py:137:80: E501 line too long (85 > 79 characters)
 web_app/routes_main.py:150:80: E501 line too long (89 > 79 characters)
 web_app/routes_main.py:167:80: E501 line too long (84 > 79 characters)
 1     E402 module level import not at top of file
-55    E501 line too long (86 > 79 characters)
+37    E501 line too long (86 > 79 characters)
 1     E741 ambiguous variable name 'l'
-3     F401 'core.utils.error_utils.log_error' imported but unused
-6     F841 local variable 'j_file' is assigned to but never used
-2     W291 trailing whitespace
+2     F401 'torch' imported but unused

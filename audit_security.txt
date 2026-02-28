@@ -1,4 +1,4 @@
-Run started:2026-02-28 16:51:10.288310
+Run started:2026-02-28 22:23:25.784535
 
 Test results:
 >> Issue: [B110:try_except_pass] Try, Except, Pass detected.
@@ -30,28 +30,6 @@ Test results:
 39	        # pylint: disable=subprocess-run-check
 40	        proc = subprocess.run(cmd, capture_output=True, check=False)
 41	        return proc.returncode == 0
-
---------------------------------------------------
->> Issue: [B110:try_except_pass] Try, Except, Pass detected.
-   Severity: Low   Confidence: High
-   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
-   More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b110_try_except_pass.html
-   Location: core/services/pdf_crawler.py:71:8
-70	                        pdf_links.add(loc)
-71	        except Exception:  # pylint: disable=broad-exception-caught
-72	            pass
-73	
-
---------------------------------------------------
->> Issue: [B110:try_except_pass] Try, Except, Pass detected.
-   Severity: Low   Confidence: High
-   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
-   More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b110_try_except_pass.html
-   Location: core/services/pdf_crawler.py:156:16
-155	                        continue
-156	                except Exception:  # pylint: disable=broad-exception-caught
-157	                    pass
-158	
 
 --------------------------------------------------
 >> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
@@ -90,19 +68,19 @@ Test results:
 --------------------------------------------------
 
 Code scanned:
-	Total lines of code: 1146
+	Total lines of code: 1013
 	Total lines skipped (#nosec): 0
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 1
 
 Run metrics:
 	Total issues (by severity):
 		Undefined: 0
-		Low: 8
+		Low: 6
 		Medium: 0
 		High: 0
 	Total issues (by confidence):
 		Undefined: 0
 		Low: 0
 		Medium: 0
-		High: 8
+		High: 6
 Files skipped (0):

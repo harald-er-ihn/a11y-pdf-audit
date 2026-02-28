@@ -20,8 +20,10 @@ def load_config():
 
     # Automatische Erkennung ob Fly.io oder Lokal
     if os.environ.get("FLY_APP_NAME"):
+        # Nutze das Volume /data/output falls gesetzt, sonst Default
+        vol_path = os.environ.get("OUTPUT_DIR", "/data/output")
         config["active_paths"] = {
-            "output": config["paths"]["output_dir_fly"],
+            "output": vol_path,
             "verapdf": config["paths"]["verapdf_cli_fly"],
             "custom_profile": config["paths"]["custom_profile_fly"],
         }

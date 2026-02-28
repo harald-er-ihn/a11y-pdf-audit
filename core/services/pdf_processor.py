@@ -92,9 +92,10 @@ def _process_single_pdf(url, idx, ctx):
                 entry["repaired_path"] = improved_path
                 # Erfolgskontrolle
                 entry["status_after"], _ = _run_verapdf(ctx["v_path"], improved_path)
-    except Exception as e:
+    except Exception as err:
+        log_error(f"   ❌ Downloadfehler: {err}")
         entry["status"] = "ERROR"
-        entry["details"] = str(e)
+        entry["details"] = str(err)
     finally:
         if os.path.exists(lpath):
             os.remove(lpath)

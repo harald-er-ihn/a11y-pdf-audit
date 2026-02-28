@@ -21,4 +21,12 @@ primary_region = 'fra'
 
 [mounts]
   source = "a11y_data"
-  destination = "/app/output"
+  destination = "/data"
+
+[env]
+  # Wir biegen alle Pfade auf das Volume um
+  HF_HOME = "/data/hf_models"
+  SURYA_CACHE_DIR = "/data/surya"
+  MARKER_CACHE_DIR = "/data/marker"
+  # WICHTIG: Deine App muss wissen, wo die Reports hin sollen
+  OUTPUT_DIR = "/data/output"
