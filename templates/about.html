@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}About – a11y PDF Audit{% endblock %}
+{% block meta_description %}
+  Learn about the technical architecture, features, and the motivation behind the PDF A11y Auditor tool.
+{% endblock %}
+{% block content %}
+  <div class="container" style="margin-top:40px;">
+    <h1>Automated Accessibility Checks for Downloadable PDFs</h1>
+    <p class="intro-text">
+      Learn about the technical architecture, features, and the motivation behind the PDF A11y Auditor tool.
+    </p>
+    <h2 id="DevelopmentLicense">Development and License</h2>
+    <p>
+      Developed by Dr. Harald Hutter.
+      <br>
+      License: MIT License.
+      <br>
+      <a href="https://a11y-pdf-audit.fly.dev/" title="PDF A11y Auditor App">https://a11y-pdf-audit.fly.dev/</a>
+    </p>
+    <h3>Open Source:</h3>
+    View source code, contribute or report issues on
+    <a href="https://github.com/harald-er-ihn/a11y-pdf-audit"
+       target="_blank"
+       rel="noopener noreferrer"
+       title="Source Code on GitHub">GitHub Repository</a>.
+    <h2 id="PurposeIdea">Purpose and Idea</h2>
+    <p>
+      The <strong>a11y PDF Audit</strong> is a modular web application designed to automatically check websites for accessible PDF files.
+      It crawls any given URL, downloads discovered PDFs, validates them using VeraPDF,
+      and generates structured HTML and PDF reports automatically.
+      <br>
+      <strong>VeraPDF</strong> is a purpose-built, open source, file-format validator covering all PDF/A and PDF/UA parts and conformance levels.
+      <br>
+      <br>
+      <a href="https://verapdf.org/"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="btn-primary"
+         title="VeraPDF Official Website">🔍 VeraPDF - Industry Supported PDF/A Validation</a>
+    </p>
+    <h3 id="GermanFederalMonitoringAgencyForAccessibilityInInformationTechnology"
+        class="mt-40">German Federal Monitoring Agency for Accessibility in Information Technology</h3>
+    <p>
+      The Federal Monitoring Agency for Accessibility of Information Technology (BFIT-Bund) began its work in autumn 2019.
+      It was established on the basis of Section 13(3) of the Disability Equality Act (BGG).
+      As the federal monitoring body, BFIT-Bund performs tasks assigned to Germany by the European Union (EU) Directive on the monitoring,
+      review and reporting of digital services provided by public bodies. (Section 8 of Directive (EU) 2016/2102)
+    </p>
+    <blockquote>
+      <p>
+        "Many people don't know that PDFs actually have to be barrier-free. There are still misunderstandings, e.g. some people say that PDFs are not a website - but it is clear, and PDFs must be just as accessible. I would like to clarify that."
+      </p>
+      <footer>
+        — Michael Wahl, <cite>Head of the
+        <a href="https://www.bfit-bund.de/"
+           target="_blank"
+           rel="noopener noreferrer"
+           title="BFIT-Bund Official Website">German Federal Monitoring Agency for Accessibility in Information Technology</a>
+      </cite>
+    </footer>
+  </blockquote>
+  <h2 id="MainFeatures">Main Features (v1.3.0)</h2>
+  <ul>
+    <li>
+      🔍 <strong>Dual-Audit System:</strong> Validates PDFs simultaneously against the strict ISO PDF/UA-1 standard AND our custom, pragmatic <strong>ScreenReadable</strong> profile.
+    </li>
+    <li>
+      🌐 <strong>Recursive Crawler:</strong> Searches websites for downloadable PDFs (configurable depth & limit) with smart error handling.
+    </li>
+    <li>
+      📊 <strong>Reporting:</strong> Generates detailed reports in PDF format (using WeasyPrint) with side-by-side Strict vs. ScreenReadable results.
+    </li>
+    <li>
+      💻 <strong>Web Interface:</strong> Easy-to-use Flask frontend with live server logs and report overview.
+    </li>
+    <li>
+      🧹 <strong>Auto-Cleanup:</strong> Automatically deletes reports older than 14 days to preserve server storage.
+    </li>
+    <li>
+      💯 <strong>Perfect Performance:</strong> Achieves 100/100 in Google PageSpeed Insights (Performance, Accessibility, Best Practices, SEO).
+    </li>
+  </ul>
+  <h2 id="LimitationsIssues">Limitations and Issues</h2>
+  <p>
+    <strong>VeraPDF vs. axesCheck (PAC)</strong>
+    <br>
+    There is a known discrepancy between <strong>VeraPDF</strong> (used by this tool) and
+    <strong>axesCheck/PAC</strong> regarding ISO 14289-1:2014 (PDF/UA-1), specifically rule <strong>7.5 (Tables)</strong>.
+  </p>
+  <ul>
+    <li>
+      <strong>VeraPDF</strong> tends to be very strict and may report `FAIL` on tables where the headers cannot be determined
+      <strong>algorithmically</strong> according to its strict interpretation of the standard.
+    </li>
+    <li>
+      <strong>axesCheck</strong> might pass the same file if the logical structure is semantically sufficient for screen readers.
+    </li>
+    <li>
+      <strong>Solution:</strong> We introduced the <strong>ScreenReadable Profile</strong> alongside the strict check to bridge this gap.
+    </li>
+  </ul>
+  <div class="bg-gray-box">
+    <h3>Solution: The "ScreenReadable" Profile</h3>
+    <p>
+      To bridge the gap between strict ISO validators and real-world screen reader behavior (like JAWS, NVDA, or axesCheck), this tool runs a dual-audit.
+      First test against the strict PDF/UA-1 standard,
+      and then against a custom <strong>ScreenReadable</strong> profile, which ignores visual font metrics and strict matrix checks.
+    </p>
+    <a href="/screenreadable"
+       class="btn-primary font-09"
+       title="View Details of ScreenReadable Profile">View Excluded Rules Details</a>
+  </div>
+  <h2 id="QualityTesting">Quality and Testing</h2>
+  <table class="report-table">
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Purpose</th>
+        <th>Status / Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>✅ flake8 / djlint</td>
+        <td>Formatting & Style Checking</td>
+        <td>No critical issues found.</td>
+      </tr>
+      <tr>
+        <td>⭐ pylint</td>
+        <td>Code Quality / Docstrings Review</td>
+        <td>Score: > 9.5 / 10 points.</td>
+      </tr>
+      <tr>
+        <td>🔒 bandit</td>
+        <td>Security Analysis</td>
+        <td>No high severity findings.</td>
+      </tr>
+      <tr>
+        <td>🌿 radon cc</td>
+        <td>Cyclomatic Complexity Tests</td>
+        <td>Mainly A-level functions.</td>
+      </tr>
+      <tr>
+        <td>
+          🚀 PageSpeed
+          <br>
+          Insights
+        </td>
+        <td>
+          provides suggestions
+          <br>
+          on how
+          <br>
+          that page may be improved
+        </td>
+        <td>
+          Performance (LCP=0.2s) 100
+          <br>
+          Accessibility 100
+          <br>
+          Best Practices 100
+          <br>
+          SEO 100
+        </td>
+      </tr>
+      <tr>
+        <td>
+          🔐 Screaming Frog
+          <br>
+          SEO Spider
+        </td>
+        <td>
+          use for crawling
+          <br>
+          up to 500 URLs at a time
+        </td>
+        <td>All reported issues solved.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

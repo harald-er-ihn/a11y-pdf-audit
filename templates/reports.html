@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Reports – PDF A11y Auditor{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>Audit Reports Overview</h1>
+    <div class="log-container">
+      <div class="log-header">
+        <span>🖥️ Live Server Log</span>
+        <span id="log-status">Connecting...</span>
+      </div>
+      <div class="log-content" id="terminal-output">Waiting for logs...</div>
+    </div>
+    <h2>Downloads</h2>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th>Website / Title</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody id="file-list-body">
+        {% for file in files %}
+          <tr>
+            <td class="title-cell" data-filename="{{ file }}">
+              <!-- Fallback (wird von JS überschrieben) -->
+              <div style="font-weight: 500;">📄 {{ file }}</div>
+            </td>
+            <td class="text-right" style="vertical-align: middle;">
+              <a href="/download/{{ file }}"
+                 class="btn-primary font-09"
+                 title="Download Report (PDF): {{ file }}">📄 Download Report (PDF)</a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="2" class="text-center" style="padding: 2rem;">
+              <em>No reports found yet. Start an audit first.</em>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // --- Log Handling ---
+    const logOutput = document.getElementById('terminal-output');
+    const logStatus = document.getElementById('log-status');
+    let isAutoScrolling = true;
+    let reloadTriggered = false;
+
+    function fetchLogs() {
+        if (reloadTriggered) return;
+        fetch('/api/logs')
+            .then(response => response.json())
+            .then(data => {
+                if (data.logs) {
+                    logOutput.textContent = data.logs;
+                    logStatus.textContent = data.logs.trim() === "" ? "● Idle" : "● Live";
+                    logStatus.className = data.logs.trim() === "" ? "status-idle" : "status-live";
+                    if (isAutoScrolling) logOutput.scrollTop = logOutput.scrollHeight;
+                    if (data.logs.includes("Prozess fertig.")) {
+                        logStatus.textContent = "✅ Done - Refreshing...";
+                        reloadTriggered = true;
+                        setTimeout(() => { window.location.reload(); }, 2500);
+                    }
+                }
+            })
+            .catch(() => { logStatus.textContent = "○ Offline"; });
+    }
+    setInterval(fetchLogs, 2000);
+    fetchLogs();
+
+    // --- Title Formatting ---
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.title-cell').forEach(cell => {
+            const filename = cell.getAttribute('data-filename');
+            
+            // Sucht nach dem Muster: TYPE_DATUM_URL.ext
+            // z.B. IMPROVED_20260303-143019_www.tu-dortmund.de_.zip
+            // oder REPORT_20260303-143019_www.tu-dortmund.de__P10_D3.pdf
+            const regex = /^(?:IMPROVED_REPORT|IMPROVED|REPORT)_(\d{8}-\d{6})_(.+?)\.(?:zip|pdf)$/i;
+            const match = filename.match(regex);
+            
+            if (match) {
+                const datePart = match[1];
+                let urlPart = match[2];
+                let isRootOrDir = false;
+                
+                // Formatiere das Datum (von YYYYMMDD-HHMMSS zu DD.MM.YYYY HH:MM)
+                const yyyy = datePart.substring(0,4);
+                const mm = datePart.substring(4,6);
+                const dd = datePart.substring(6,8);
+                const hh = datePart.substring(9,11);
+                const min = datePart.substring(11,13);
+                const niceDate = `${dd}.${mm}.${yyyy} - ${hh}:${min} Uhr`;
+
+                // Wenn im String __P steht (z.B. __P10_D3), bedeutet das, die URL endete auf einen Slash '/'
+                if (urlPart.match(/__P\d+_D\d+/)) {
+                    isRootOrDir = true;
+                }
+                
+                // Entferne die Crawler-Parameter (z.B. _P10_D3 oder __P10_D3) aus dem Titel
+                urlPart = urlPart.replace(/_?_P\d+_D\d+.*$/, '');
+
+                // Wenn der bereinigte String jetzt noch mit einem Unterstrich endet, war es auch ein Slash
+                if (urlPart.endsWith('_')) {
+                    isRootOrDir = true;
+                    urlPart = urlPart.replace(/_+$/, ''); // Letzte Unterstriche entfernen
+                }
+
+                // Wandle die verbleibenden Unterstriche zurück in Slashes
+                let niceUrl = urlPart.replace(/_/g, '/');
+                
+                // Hänge den Root-Slash an, falls es das Hauptverzeichnis war
+                if (isRootOrDir) {
+                    niceUrl += '/';
+                }
+
+                // Setze das neue HTML zusammen
+                cell.innerHTML = `
+                    <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 4px; color: #2c3e50;">
+                        🌐 ${niceUrl}
+                    </div>
+                    <div style="font-size: 0.85em; color: #7f8c8d;">
+                        🕒 ${niceDate} &nbsp;|&nbsp; 📄 <span style="font-family: monospace;">${filename}</span>
+                    </div>
+                `;
+            }
+        });
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Open Source Licenses – PDF A11y Auditor{% endblock %}
+{% block meta_description %}Overview of the open source licenses used in the PDF A11y Auditor project.{% endblock %}
+{% block content %}
+  <div class="container mt-40">
+    <h1>Open Source Licenses</h1>
+    <p class="intro-text">
+      This project is built on the shoulders of giants. We proudly use the following open-source libraries and tools to make digital accessibility a reality.
+    </p>
+    <div class="bg-gray-box mb-20">
+      <h3>PDF A11y Auditor (This Software)</h3>
+      <p>
+        <strong>License:</strong> MIT License
+        <br>
+        <strong>Author:</strong> Dr. Harald Hutter
+        <br>
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files, to deal in the Software without restriction.
+      </p>
+    </div>
+    <h2>Core Technologies & PDF Processing</h2>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th style="width: 25%;">Software / Library</th>
+          <th style="width: 20%;">License</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>VeraPDF</strong>
+          </td>
+          <td>GPL v3+ / MPL v2+</td>
+          <td>Industry Supported PDF/A and PDF/UA Validation tool.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>WeasyPrint</strong>
+          </td>
+          <td>BSD 3-Clause</td>
+          <td>Visual rendering engine for HTML and CSS that exports to PDF/UA.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>PikePDF (QPDF)</strong>
+          </td>
+          <td>MPL-2.0</td>
+          <td>A Python library for reading, writing, and manipulating PDF files.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>PyPDF2 / pypdf</strong>
+          </td>
+          <td>BSD-3-Clause</td>
+          <td>A pure-python PDF library capable of splitting, merging, and transforming PDF files.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="mt-40">Web Server & Utilities</h2>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th style="width: 25%;">Software / Library</th>
+          <th style="width: 20%;">License</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>Flask</strong>
+          </td>
+          <td>BSD 3-Clause</td>
+          <td>A lightweight WSGI web application framework.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Gunicorn</strong>
+          </td>
+          <td>MIT</td>
+          <td>Python WSGI HTTP Server for UNIX.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Langdetect</strong>
+          </td>
+          <td>Apache-2.0 / MIT</td>
+          <td>Language detection library ported from Google's language-detection.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>BeautifulSoup4</strong>
+          </td>
+          <td>MIT</td>
+          <td>Library for pulling data out of HTML and XML files (Web Crawling).</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="mt-40 font-09" style="color: #666;">
+      <em>Trademarks and logos are the property of their respective owners. The use of these libraries complies with their respective open-source licenses.</em>
+    </p>
+  </div>
+{% endblock %}

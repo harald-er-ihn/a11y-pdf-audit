@@ -1,0 +1,11 @@
+models_local/
+output/
+venv/
+.git/
+__pycache__/
+*.pyc
+__pycache__
+.env
+tests
+assets/
+*.pdf

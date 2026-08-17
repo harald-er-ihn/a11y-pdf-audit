@@ -1,0 +1,11 @@
+-r requirements.txt
+
+# --- Codeanalyse / Formatierung ---
+black>=23.12.1
+djlint>=1.36.4
+isort>=5.13.2
+pylint>=3.0.3
+
+# --- Hinweis ---
+# shellcheck und jq werden normalerweise über apt installiert:
+# sudo apt install -y shellcheck jq

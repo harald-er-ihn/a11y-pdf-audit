@@ -1,0 +1,19 @@
+# --- Basisbibliotheken ---
+setuptools>=70.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.2
+lxml>=4.9.3
+
+# --- PDF-Verarbeitung ---
+PyPDF2>=3.0.1
+weasyprint>=63.0
+
+# --- Server ---
+Flask>=2.2,<3
+gunicorn>=21.2.0
+
+# --- Codeanalyse / Formatierung ---
+black>=23.12.1
+djlint>=1.36.4
+isort>=5.13.2
+pylint>=3.0.3

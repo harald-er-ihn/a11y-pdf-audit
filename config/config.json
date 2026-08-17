@@ -1,0 +1,43 @@
+ {
+  "general": {
+    "app_name": "a11y-pdf-audit",
+    "version": "1.3.0",
+    "base_url": "https://a11y-pdf-audit.fly.dev",
+    "author": "Dr. Harald Hutter",
+    "copyright_year": "2026"
+  },
+  "pdf_metadata": {
+    "Title": "",
+    "Author": "Dr. Harald Hutter",
+    "Subject": "Accessibility Audit Results (PDF/UA and WCAG Compliance)",
+    "Keywords": ["PDF/UA", "WCAG", "Accessibility", "Audit", "VeraPDF"],
+    "Producer": "",
+    "Lang": ["en-US"]
+  },
+  "assets": {
+    "logo_file": "static/AccessibilityMatters.webp",
+    "logo_alt": "Hashtag 'Accessibility Matters' with colorful paint splashes behind the text"
+  },
+  "crawler": {
+    "user_agent": "Mozilla/5.0 (compatible; a11y-pdf-audit/1.3; +https://a11y-pdf-audit.fly.dev)",
+    "timeout": 30,
+    "default_max_pages": 10,
+    "default_depth": 2
+  },
+"audit": {
+    "java_cmd": "java",
+    "verapdf_params":["-Xmx512m", "-cp", "{jar_path}", "org.verapdf.apps.GreenfieldCliWrapper"],
+    "timeout_version_sec": 30,
+    "timeout_check_sec": 120,
+    "timeout_factor": 4,
+    "verapdf_retries": 1
+  },
+  "paths": {
+    "output_dir_fly": "/a11y_data/output",
+    "output_dir_local": "output",
+    "verapdf_cli_fly": "/opt/verapdf/veraPDF-cli.jar",
+    "verapdf_cli_local": "verapdf_local/bin/greenfield-apps-1.28.2.jar",
+    "custom_profile_fly": "/app/config/profiles/screenReadable.xml",
+    "custom_profile_local": "config/profiles/screenReadable.xml"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "extensions": "html,jinja2",
+  "preserve_blocks": true,
+  "ignore_tags": "djlint:disable,djlint:enable",
+  "indent": 2,
+  "max_line_length": 120,
+  "format_css": false,
+  "format_js": false,
+  "blank_lines_after_tag": 0,
+  "ignore": ["node_modules/", "venv/", "static/", "migrations/"],
+  "require_pragma": false,
+  "fix_missing_endtags": true,
+  "fix_invalid_nested_tags": true,
+  "quiet": true,
+  "verbose": false
+}

@@ -1,0 +1,302 @@
+/* ============================================================
+   1. GRUNDLEGENDE TYPOGRAFIE & LAYOUT
+   ============================================================ */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+main {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.container {
+    width: 100%;
+}
+
+/* ============================================================
+   2. ÜBERSCHRIFTEN & HEADER
+   ============================================================ */
+h1 { color: #2c3e50; margin-bottom: 0.5rem; }
+h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 2rem; }
+h3 { color: #555; margin-top: 1.5rem; }
+
+/* Header Titel (Div für SEO, optisch wie H2) */
+.header-title {
+    color: #34495e;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+    display: block;
+}
+
+/* Bilder / Logo */
+.header-logo {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+    display: block;
+    /* Verhindert schwarze Artefakte auf manchen Readern */
+    background-color: transparent; 
+}
+
+/* ============================================================
+   3. NAVIGATION (GRID)
+   ============================================================ */
+.nav-row {
+    display: grid;
+    /* Mobil: 2 Spalten, exakt gleich breit */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+/* Spezialverhalten für Buttons in der Navigation */
+.nav-row .btn-secondary {
+    display: flex;
+    width: 100%;
+    padding: 0.8rem 0.5rem;
+    margin: 0; /* Verhindert Versatz im Grid */
+}
+
+@media (min-width: 600px) {
+    .nav-row {
+        /* Desktop: Alle 4 nebeneinander */
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================================
+   4. FORMULARE & INPUTS
+   ============================================================ */
+fieldset {
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+}
+
+legend {
+    font-weight: bold;
+    padding: 0 0.5rem;
+    color: #005A9C;
+}
+
+label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+input[type="text"], 
+input[type="url"], 
+input[type="number"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 120px;
+}
+
+.hint {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* ============================================================
+   5. BUTTONS
+   ============================================================ */
+/* Basis für alle Buttons */
+.btn-primary, .btn-secondary, .btn-danger, .btn-donate {
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: 500;
+    border: none;
+    box-sizing: border-box;
+}
+
+.btn-primary:active, .btn-secondary:active { transform: scale(0.98); }
+
+/* Primärer Button (Breit & auffällig) */
+.btn-primary {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: #005A9C;
+    color: white;
+    font-size: 1.1rem;
+}
+.btn-primary:hover { background-color: #004a80; }
+
+/* Sekundärer Button (Kompakt im Text, breit in der Nav) */
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    background-color: #6c757d;
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.btn-secondary:hover { background-color: #5a6268; }
+
+.btn-danger {
+    background-color: #c0392b;
+    color: white;
+    padding: 5px 12px;
+}
+.btn-danger:hover { background-color: #a93226; }
+
+.btn-donate {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: #FFC439; /* PayPal Gold */
+    color: #000;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: 1px solid #daaa2e;
+}
+.btn-donate:hover { background-color: #f2b826; }
+
+
+.btn-primary.green {
+    background-color: #2e7d32; /* Sattes Waldgrün */
+    border: 1px solid #1b5e20;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary.green:hover {
+    background-color: #1b5e20;
+    transform: translateY(-1px);
+}
+/* ============================================================
+   6. TABELLEN
+   ============================================================ */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+.report-table th, .report-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.report-table th { background-color: #f2f2f2; }
+
+/* ============================================================
+   7. LOGS & TERMINAL
+   ============================================================ */
+.log-container {
+    background-color: #1e1e1e;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+    box-shadow: inset 0 0 10px #000;
+    border: 1px solid #333;
+}
+.log-header {
+    color: #fff;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+}
+.log-content {
+    height: 180px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* ============================================================
+   8. FOOTER
+   ============================================================ */
+.footer {
+    margin-top: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+}
+.footer p { margin-bottom: 1rem; }
+
+/* ============================================================
+   9. UTILITY CLASSES
+   ============================================================ */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-success { color: #2e7d32; }
+.text-error { color: #c0392b; }
+
+.mt-30 { margin-top: 30px; }
+.mt-40 { margin-top: 40px; }
+.mb-20 { margin-bottom: 20px; }
+
+.font-08 { font-size: 0.8rem; }
+.font-09 { font-size: 0.9rem; }
+.w-15 { width: 15%; }
+
+.bg-gray-box {
+    background-color: #f2f2f2;
+    padding: 15px;
+    border-left: 5px solid #005A9C;
+    margin: 20px 0;
+}
+
+.status-idle { color: #aaa; }
+.status-live { color: #00ff00; }
+.status-offline { color: #ff0000; }
+
+/* ============================================================
+   10. Checkbox Styling 
+   ============================================================ */
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    gap: 10px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #005A9C;
+}

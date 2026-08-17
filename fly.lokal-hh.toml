@@ -1,0 +1,24 @@
+app = "a11y-pdf-audit"
+primary_region = 'fra'
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  memory = '1gb'
+  cpus = 1
+  memory_mb = 1024
+
+[[mounts]]
+  source = "a11y_data_3gb"
+  destination = "/a11y_data"
+  
+[env]
+  OUTPUT_DIR = "/a11y_data/output"

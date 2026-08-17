@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Error – PDF A11y Auditor{% endblock %}
+{% block content %}
+  <div class="content-center text-center p-2rem">
+    <h1 class="headline-error" style="color: #c0392b;">
+      ❌ Something went wrong
+    </h2>
+    <p class="intro-text">
+      An unexpected error occurred while processing your request.
+      <br>
+      Please return to the home page or try again later.
+    </p>
+    <p class="error-msg font-12">{{ error }}</p>
+    <br>
+    {% if log_tail %}
+      <div class="result-box log-box-bg">
+        <h3>🧾 Log Details:</h3>
+        <pre class="pre-wrap">{{ log_tail }}</pre>
+      </div>
+    {% endif %}
+    <br>
+    <a href="/" class="btn-secondary">Back Home</a>
+  </div>
+{% endblock %}

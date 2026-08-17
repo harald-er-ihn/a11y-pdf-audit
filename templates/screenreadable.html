@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}ScreenReadable Profile – PDF A11y Auditor{% endblock %}
+{% block meta_description %}
+  Details about the customized ScreenReadable validation profile and the excluded ISO 14289-1 rules.
+{% endblock %}
+{% block content %}
+  <div class="container mt-40">
+    <h1>The "ScreenReadable" Profile</h1>
+    <p class="intro-text">
+      Why does a PDF sometimes fail a strict ISO test, but is still perfectly readable for a screen reader?
+    </p>
+    <p>
+      Strict PDF/UA-1 validation (via veraPDF) enforces rules that are crucial for long-term archiving, perfect print reproduction, and mathematical matrix perfection.
+      However, modern screen readers (like JAWS, NVDA) and pragmatic tools (like axesCheck) only need a solid logical tag structure and a clean Unicode text layer.
+    </p>
+    <p>
+      To provide realistic accessibility feedback, we created the <strong>ScreenReadable</strong> profile.
+      It is based on the official PDF/UA-1 profile, but we explicitly <strong>excluded</strong> the following rules that do not affect screen reader usability.
+    </p>
+    <div class="container mt-40">
+      <a href="/about" class="btn-secondary" title="Back to About Page">Back (to About)</a>
+    </div>
+    <h2>Excluded Rules (Diff to ISO 14289-1)</h2>
+    <h3>1. Metadata & Syntax Settings</h3>
+    <p>
+      Screen readers read the document text and metadata directly, regardless of specific PDF window settings or missing PDF/UA identification stamps.
+    </p>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th class="w-15">Clause</th>
+          <th>Description of ignored strict rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>5 (Test 1-5)</strong>
+          </td>
+          <td>
+            The PDF/UA version and conformance level of a file shall be specified using the PDF/UA Identification extension schema (<code>pdfuaid:part</code>).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>6.1 (Test 1)</strong>
+          </td>
+          <td>The file header shall consist of "%PDF-1.n" followed by a single EOL marker.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>7.1 (Test 10)</strong>
+          </td>
+          <td>
+            The document catalog dictionary shall include a ViewerPreferences dictionary containing a <code>DisplayDocTitle</code> key, whose value shall be true.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>2. Strict Table Matrix Algorithms</h3>
+    <p>
+      While strict ISO validation requires mathematically perfect matrices for row/column spans and explicit Scope attributes for every nested table, screen readers and axesCheck can easily parse standard semantic HTML/PDF table structures without these exact programmatic definitions.
+    </p>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th class="w-15">Clause</th>
+          <th>Description of ignored strict rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>7.2 (Test 41-43)</strong>
+          </td>
+          <td>
+            Table columns/rows shall have the same number of rows/columns (taking into account row spans and column spans).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>7.5 (Test 1-2)</strong>
+          </td>
+          <td>
+            If the table's structure is not determinable via Headers and IDs, then structure elements of type TH shall have a <code>Scope</code> attribute.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>3. Visual Font Embeddings & Metrics</h3>
+    <p>
+      Screen readers do not render visual glyphs; they synthesize speech using the Unicode text layer (ToUnicode). Therefore, precise glyph widths, complete CharSet embeddings, and CID dictionaries are irrelevant for audio output. <em>(Note: We kept Clause 7.21.7 active, because proper ToUnicode mapping is vital for screen readers!)</em>
+    </p>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th class="w-15">Clause</th>
+          <th>Description of ignored strict rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>7.21.3.1 - 7.21.3.3</strong>
+          </td>
+          <td>Rules regarding CIDSystemInfo, CIDToGIDMap entries, and non-standard CMap embeddings.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>7.21.4.1 - 7.21.4.2</strong>
+          </td>
+          <td>
+            Font programs shall be embedded. CharSet strings and CIDSet streams shall list all glyphs present in the font program.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>7.21.5 (Test 1)</strong>
+          </td>
+          <td>
+            For every font, the glyph width information in the font dictionary and in the embedded font program shall be exactly consistent.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>7.21.6 (Test 1-4)</strong>
+          </td>
+          <td>Character encodings (MacRomanEncoding, WinAnsiEncoding) and Microsoft Symbol encoding requirements.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
